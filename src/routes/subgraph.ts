@@ -1,12 +1,12 @@
 import express, { Request, Response, NextFunction } from 'express';
 import { query } from 'express-validator';
 import { validate } from '../common/validate';
-// import { ParameterError } from '../../common/error';
 import {
     showInfo,
     showError,
 } from '../handler/logHandler';
 import { etlPersonalStatsSubgraph } from '../etl/etlSubgraph';
+import { Subgraph } from '../types';
 
 
 const router = express.Router();
@@ -17,14 +17,14 @@ const wrapAsync = function wrapAsync(fn: any) {
     };
 };
 
-// E.g.: http://localhost:3010/database/gro_personal_position_mc?network=mainnet&address=0x2ce1a66f22a2dc6e410d9021d57aeb8d13d6bfef
+// E.g.: http://localhost:3010/database/gro_personal_position_mc?subgraph=eth_prod_hosted&address=0x2ce1a66f22a2dc6e410d9021d57aeb8d13d6bfef
 router.get(
     '/gro_personal_position_mc',
     validate([
-        query('network')
+        query('subgraph')
             .trim()
             .notEmpty()
-            .withMessage(`network can't be empty`),
+            .withMessage(`field <subgraph> can't be empty`),
         query('address')
             .notEmpty()
             .withMessage(`address can't be empty`)
@@ -35,15 +35,26 @@ router.get(
     ]),
     wrapAsync(async (req: Request, res: Response) => {
         try {
-            let { network, address } = req.query;
-            network = network || '';
-            const personalStats = await etlPersonalStatsSubgraph(
-                address as string,
-                0,
-                []);
-            res.json(personalStats);
+            const { subgraph, address } = req.query;
+            if ((<any>Object).values(Subgraph).includes(subgraph)) {
+                const personalStats = await etlPersonalStatsSubgraph(
+                    subgraph as Subgraph,
+                    address as string,
+                    0,
+                    []);
+                res.json(personalStats);
+            } else if (subgraph) {
+                const err_msg = `unknown target subgraph <${subgraph}>`;
+                showError('routes->subgraph.ts on /gro_personal_position_mc', err_msg);
+                res.json({
+                    "gro_personal_position_mc": {
+                        status: 'error',
+                        data: err_msg,
+                    }
+                });
+            }
         } catch (err) {
-            showError('routes->database.ts on /gro_personal_position_mc', err);
+            showError('routes->subgraph.ts on /gro_personal_position_mc', err);
             res.json({
                 "gro_personal_position_mc": {
                     status: 'error',

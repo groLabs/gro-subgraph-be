@@ -5,28 +5,37 @@ import {
 } from '../handler/logHandler';
 import { parsePersonalStatsSubgraphEthereum } from '../parser/personalStatsEth';
 import { parsePersonalStatsSubgraphAvalanche } from '../parser/personalStatsAvax';
-import { personalStatsSubgraphParserTotals } from '../parser/personalStatsTotals'
+import { personalStatsSubgraphParserTotals } from '../parser/personalStatsTotals';
+import { Subgraph } from '../types';
+import { SUBGRAPH_URL } from '../constants';
+import {
+    getUrl,
+    // isEthSubgraph,
+    // isAvaxSubgraph,
+} from '../utils/utils';
 
 const ITERATION = 800;
 
 export const etlPersonalStatsSubgraph = async (
+    subgraph: Subgraph,
     account: string,
     skip: number,
     result: any
 ) => {
     try {
+        const url = getUrl(subgraph);
         const [
             resultEth,
             resultAvax,
         ] = await Promise.all([
             getPersonalStats(
-                'personalStatsEth',
+                url.ETH,
                 account,
                 skip,
                 result
             ),
             getPersonalStats(
-                'personalStatsAvax',
+                url.AVAX,
                 account,
                 skip,
                 result
@@ -45,7 +54,6 @@ export const etlPersonalStatsSubgraph = async (
             resultAvaxParsed
         );
         console.dir(resultTotals, { depth: null });
-        //const res = JSON.parse(resultTotals);
         return resultTotals;
     } catch (err) {
         showError(
@@ -56,29 +64,29 @@ export const etlPersonalStatsSubgraph = async (
 }
 
 const getPersonalStats = async (
-    target: string,
+    url: string,
     account: string,
     skip: number,
     result: any
 ): Promise<any> => {
     try {
         const data = await callSubgraph(
-            target,
+            url,
             account,
             ITERATION,
             skip
         );
         if (!data) {
             // TODO: return response with error / throw 'Error during subgraph API call';
-            console.log(`Error calling subgraph API`);
+            console.log(`No data returned from subgraph API (e.g.: invalid URL)`);
             return null;
         } else if (data.users.length === 0) {
-            const network = (target === 'personalStatsEth')
-                ? 'Ethereum network'
-                : (target === 'personalStatsAvax')
-                    ? 'Avalanche network'
-                    : 'Unknown network';
-            showInfo(`User ${account} not found in subgraph for ${network}`);
+            // const network = isEthSubgraph(target)
+            //     ? 'Ethereum network'
+            //     : isAvaxSubgraph(target)
+            //         ? 'Avalanche network'
+            //         : 'Unknown network';
+            // showInfo(`User ${account} not found in subgraph for ${network}`);
             return data;
         } else {
             if (skip === 0) {
@@ -90,7 +98,7 @@ const getPersonalStats = async (
             return (data.users[0].transfers.length < ITERATION)
                 ? result
                 : getPersonalStats(
-                    target,
+                    url,
                     account,
                     skip + ITERATION,
                     result

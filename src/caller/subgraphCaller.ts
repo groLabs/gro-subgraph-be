@@ -1,48 +1,47 @@
 import axios from 'axios';
-// import { showError } from '../handler/logHandler';
+import { showError } from '../handler/logHandler';
 import { queryPersonalStatsEth } from '../graphql/personalStatsEth';
 import { queryPersonalStatsAvax } from '../graphql/personalStatsAvax';
 import { SUBGRAPH_URL } from '../constants';
+import { Subgraph as sg } from '../types';
+import { 
+    getUrl,
+    isEthSubgraph,
+    isAvaxSubgraph
+} from '../utils/utils';
 
+
+// TODO: typed return
 export const callSubgraph = async (
-    query: string,
+    url: string,
     account: string,
     first: number,
     skip: number
 ) => {
     let q;
-    const URL = (query === 'personalStatsEth')
-        ? SUBGRAPH_URL.ETH_PROD_HOSTED
-        : (query === 'personalStatsAvax')
-            ? SUBGRAPH_URL.AVAX_PROD_HOSTED
-            : 'NO_URL';
 
-    switch (query) {
-        case 'personalStatsEth':
-            q = queryPersonalStatsEth(
-                account,
-                first,
-                skip
-            )
-            break;
-        case 'personalStatsAvax':
-            q = queryPersonalStatsAvax(
-                account,
-                first,
-                skip
-            )
-            break;
-        default:
-            // showError(
-            //     'subgraphCaller.ts.ts->callSubgraph()',
-            //     `Invalid subgraph request (${query})`,
-            // );
-            console.log('errorin');
-            return null;
+    if (isEthSubgraph(url)) {
+        q = queryPersonalStatsEth(
+            account,
+            first,
+            skip
+        );
+    } else if (isAvaxSubgraph(url)) {
+        q = queryPersonalStatsAvax(
+            account,
+            first,
+            skip
+        );
+    } else {
+        showError(
+            'subgraphCaller.ts->callSubgraph()',
+            `unknown subgraph api ${url}}`,
+        );
+        return null;
     }
 
     const result = await axios.post(
-        URL,
+        url,
         { query: q }
     );
 
