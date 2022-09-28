@@ -56,9 +56,9 @@ export const personalStatsSubgraphParserTotals = (
                             + parseFloat(stats_avax.avalanche.net_returns.total)
                         ).toString()
                     },
-                    ...stats_eth,
-                    ...stats_avax
-                }
+                },
+                ...stats_eth,
+                ...stats_avax
             }
         }
         return personalStats;
