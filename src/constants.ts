@@ -1,3 +1,5 @@
+export const PORT = 3015;
+
 export const SUBGRAPH_URL = {
     UNKNOWN: {
         ETH: 'tbc',
