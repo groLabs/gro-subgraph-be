@@ -66,5 +66,7 @@ function onListening() {
     var bind = typeof addr === 'string'
         ? `pipe ${addr}`
         : `port ${(addr?.port) ? addr?.port : 'unknown'}`;
-    showInfo(`Subgraph express server listening on ${bind}`);
+    const msg = `Subgraph express server listening on ${bind}`;
+    showInfo(msg);
+    console.log(msg);
 }

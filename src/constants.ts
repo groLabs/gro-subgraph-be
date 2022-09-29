@@ -1,5 +1,5 @@
 export const PORT = 3015;
-
+export const TX_ITERATION = 800; // # of records retrieved per subgraph call (limited to 1000 per call)
 export const SUBGRAPH_URL = {
     UNKNOWN: {
         ETH: 'tbc',

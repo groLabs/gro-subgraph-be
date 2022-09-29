@@ -1,16 +1,15 @@
 import { showError } from '../handler/logHandler';
 import { TransferTx } from '../interfaces/IPersonalStats';
+import { NO_AVAX_USER } from './personalStatsEmpty';
 
 export const parsePersonalStatsSubgraphAvalanche = (
     account: string,
     stats_avax: any
 ) => {
     try {
-        // console.dir(stats_avax, { depth: null });
         if (stats_avax.users.length === 0)
             return NO_AVAX_USER(account);
 
-        // const currentTimestamp = moment().unix();
         const md_avax = stats_avax.masterDatas[0];
         const totals_avax = stats_avax.users[0].totals;
         const transfers_avax = stats_avax.users[0].transfers;
@@ -161,7 +160,6 @@ export const parsePersonalStatsSubgraphAvalanche = (
                 }
             }
         }
-        //console.dir(result, { depth: null });
         return result;
 
     } catch (err) {
@@ -173,98 +171,4 @@ export const parsePersonalStatsSubgraphAvalanche = (
     }
 }
 
-export const NO_AVAX_USER = (
-    address: string
-) => ({
-    "avalanche": {
-        "status": 'ok',
-        "network_id": '43114',
-        "launch_timestamp": '1638483222',
-        "address": address,
-        "amount_added": {
-            "groDAI.e_vault": '0',
-            "groUSDC.e_vault": '0',
-            "groUSDT.e_vault": '0',
-            "groDAI.e_vault_v1_7": '0',
-            "groUSDC.e_vault_v1_7": '0',
-            "groUSDT.e_vault_v1_7": '0',
-            "total": '0'
-        },
-        "amount_removed": {
-            "groDAI.e_vault": '0',
-            "groUSDC.e_vault": '0',
-            "groUSDT.e_vault": '0',
-            "groDAI.e_vault_v1_7": '0',
-            "groUSDC.e_vault_v1_7": '0',
-            "groUSDT.e_vault_v1_7": '0',
-            "total": '0'
-        },
-        "net_amount_added": {
-            "groDAI.e_vault": '0',
-            "groUSDC.e_vault": '0',
-            "groUSDT.e_vault": '0',
-            "groDAI.e_vault_v1_7": '0',
-            "groUSDC.e_vault_v1_7": '0',
-            "groUSDT.e_vault_v1_7": '0',
-            "total": '0'
-        },
-        "current_balance": {
-            "groDAI.e_vault": '0',
-            "groUSDC.e_vault": '0',
-            "groUSDT.e_vault": '0',
-            "groDAI.e_vault_v1_7": '0',
-            "groUSDC.e_vault_v1_7": '0',
-            "groUSDT.e_vault_v1_7": '0',
-            "total": '0'
-        },
-        "net_returns": {
-            "groDAI.e_vault": '0',
-            "groUSDC.e_vault": '0',
-            "groUSDT.e_vault": '0',
-            "groDAI.e_vault_v1_7": '0',
-            "groUSDC.e_vault_v1_7": '0',
-            "groUSDT.e_vault_v1_7": '0',
-            "total": '0'
-        },
-        "transaction": {
-            "deposits": [],
-            "withdrawals": [],
-            "transfers_in": [],
-            "transfers_out": [],
-            "approvals": [],
-            "failures": []
-        },
-        "gro_gate": {
-            "status": "N/A",
-            "total_claimable_allowance": "N/A",
-            "total_remaining_allowance": "N/A",
-            "snapshot_ts": "N/A",
-            "gro_balance_at_snapshot": "N/A",
-            "gro_gate_at_snapshot": "N/A",
-            "proofs": [],
-            "root": "N/A",
-            "root_matched": "N/A",
-            "groDAI.e_vault": {
-                "claimable_allowance": "N/A",
-                "remaining_allowance": "N/A",
-                "claimable": "N/A",
-                "base_allowance": "N/A",
-                "base_allowance_claimed": "N/A"
-            },
-            "groUSDC.e_vault": {
-                "claimable_allowance": "N/A",
-                "remaining_allowance": "N/A",
-                "claimable": "N/A",
-                "base_allowance": "N/A",
-                "base_allowance_claimed": "N/A"
-            },
-            "groUSDT.e_vault": {
-                "claimable_allowance": "N/A",
-                "remaining_allowance": "N/A",
-                "claimable": "N/A",
-                "base_allowance": "N/A",
-                "base_allowance_claimed": "N/A"
-            }
-        }
-    }
-});
+

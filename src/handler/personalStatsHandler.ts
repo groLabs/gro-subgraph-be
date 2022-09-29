@@ -1,9 +1,6 @@
 import { callSubgraph } from '../caller/subgraphCaller';
-import {
-    showInfo,
-    showError
-} from '../handler/logHandler';
-const ITERATION = 800;
+import { showError } from '../handler/logHandler';
+import { TX_ITERATION } from '../constants';
 
 
 export const getPersonalStats = async (
@@ -16,7 +13,7 @@ export const getPersonalStats = async (
         const data = await callSubgraph(
             url,
             account,
-            ITERATION,
+            TX_ITERATION,
             skip
         );
         if (!data) {
@@ -30,12 +27,12 @@ export const getPersonalStats = async (
                 const transfers = result.users[0].transfers.concat(data.users[0].transfers);
                 result.users[0].transfers = transfers;
             }
-            return (data.users[0].transfers.length < ITERATION)
+            return (data.users[0].transfers.length < TX_ITERATION)
                 ? result
                 : getPersonalStats(
                     url,
                     account,
-                    skip + ITERATION,
+                    skip + TX_ITERATION,
                     result
                 );
         }
