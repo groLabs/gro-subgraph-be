@@ -60,11 +60,8 @@ export const logger = createLogger({
     exitOnError: false,
 });
 
-
-if (process.env.NODE_ENV !== Env.PROD) {
-    logger.add(
-        new transports.Console({
-            format: logMsgFormat,
-        })
-    );
-}
+logger.add(
+    new transports.Console({
+        format: logMsgFormat,
+    })
+);
