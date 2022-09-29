@@ -2,10 +2,7 @@ import axios from 'axios';
 import { showError } from '../handler/logHandler';
 import { queryPersonalStatsEth } from '../graphql/personalStatsEth';
 import { queryPersonalStatsAvax } from '../graphql/personalStatsAvax';
-import { SUBGRAPH_URL } from '../constants';
-import { Subgraph as sg } from '../types';
-import { 
-    getUrl,
+import {
     isEthSubgraph,
     isAvaxSubgraph
 } from '../utils/utils';
@@ -19,7 +16,6 @@ export const callSubgraph = async (
     skip: number
 ) => {
     let q;
-
     if (isEthSubgraph(url)) {
         q = queryPersonalStatsEth(
             account,
@@ -39,21 +35,17 @@ export const callSubgraph = async (
         );
         return null;
     }
-
     const result = await axios.post(
         url,
         { query: q }
     );
-
     if (result.data.errors) {
         for (const err of result.data.errors) {
-            // showError(
-            //     'subgraphCaller.ts->callSubgraph()',
-            //     `Error: ${err.message}`,
-            // );
-            console.log(`${err.message}`);
+            showError(
+                'subgraphCaller.ts->callSubgraph()',
+                err.message,
+            );
         }
     }
-
     return result.data.data;
 }
