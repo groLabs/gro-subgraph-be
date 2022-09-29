@@ -1,9 +1,10 @@
-import { createLogger, transports, format } from 'winston';
 import 'winston-daily-rotate-file';
+import { createLogger, transports, format } from 'winston';
+import { Env } from '../types';
+
 const { combine, timestamp, printf, errors } = format;
-
-
 const logFolder = './';
+
 
 const logMsgFormat = printf(({ level, message, timestamp, stack }) => {
     return (stack)
@@ -60,11 +61,10 @@ export const logger = createLogger({
 });
 
 
-if (process.env.NODE_ENV !== 'prod') {
+if (process.env.NODE_ENV !== Env.PROD) {
     logger.add(
         new transports.Console({
             format: logMsgFormat,
         })
     );
 }
-

@@ -5,3 +5,8 @@ export enum Subgraph {
     TEST_HOSTED = 'test_hosted',
     TEST_STUDIO = 'test_studio',
 }
+
+export enum Env {
+    PROD = 'prod',
+    DEV = 'dev',
+}
