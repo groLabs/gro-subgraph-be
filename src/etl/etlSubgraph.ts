@@ -14,11 +14,12 @@ import { Env } from '../types';
 
 export const etlPersonalStatsSubgraph = async (
     subgraph: Subgraph,
-    account: string,
+    _account: string,
     skip: number,
     result: any
 ) => {
     try {
+        const account = _account.toLowerCase(); // Subgraphs store addresses in lowercase
         const url = getUrl(subgraph);
         const [
             resultEth,
