@@ -1,6 +1,9 @@
+.env
+.DS_Store
+logs
 build
 generated
 node_modules
 subgraph.yaml
 schema.graphql
-.DS_Store
+subgraph-*.json
