@@ -3,37 +3,6 @@ import { TransferTx } from '../interfaces/IPersonalStats';
 import { NO_ETH_USER } from './personalStatsEmpty'
 
 
-const getPoolData = (poolId: number, stats_eth: any) => {
-    const pool = stats_eth.users[0][`pool_${poolId}`];
-    const isData = (pool.length > 0) ? true : false;
-    return {
-        "net_reward": isData ? pool[0].net_reward : '0',
-        "balance": isData ? pool[0].balance : '0',
-        "rewards": {
-            "claim_now": "N/A",
-            "vest_all": "N/A"
-        }
-    }
-}
-
-const getAllPoolsData = (stats_eth: any) => {
-    let net_reward = 0;
-    let balance = 0;
-    for (let i=0; i<=6; i += 1) {
-        const pool = getPoolData(i, stats_eth);
-        net_reward += parseFloat(pool.net_reward);
-        balance += parseFloat(pool.balance);
-    }
-    return {
-        "net_reward": net_reward.toString(),
-        "balance": balance.toString(),
-        "rewards": {
-            "claim_now": "N/A",
-            "vest_all": "N/A"
-        }
-    }
-}
-
 export const parsePersonalStatsSubgraphEthereum = (
     account: string,
     stats_eth: any
@@ -161,5 +130,61 @@ export const parsePersonalStatsSubgraphEthereum = (
             `${err}`,
         );
         return NO_ETH_USER;
+    }
+}
+
+//TODO: balance should be in USD | depends on pool
+const getPoolData = (poolId: number, stats_eth: any) => {
+    const pool = stats_eth.users[0][`pool_${poolId}`];
+    const isData = (pool.length > 0) ? true : false;
+    let pricePerShare = 1;
+    switch (poolId) {
+        case 0:
+            pricePerShare = parseFloat(stats_eth.prices[0].gro);
+            break;
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            pricePerShare = parseFloat(stats_eth.prices[0].gvt);
+            break;
+        case 4:
+            break;
+        case 5:
+            break;
+        case 6:
+            break;
+        default:
+            pricePerShare = 1; // TODO: no cal
+            break;
+    }
+    if (isData && (poolId === 0 || poolId === 3))
+        console.log('balance', pool[0].balance, 'pricePerShare', pricePerShare) // ** TEST
+    return {
+        "net_reward": isData ? pool[0].net_reward : '0',
+        "balance": isData ? (parseFloat(pool[0].balance) * pricePerShare).toString() : '0',
+        "rewards": {
+            "claim_now": "N/A",
+            "vest_all": "N/A"
+        }
+    }
+}
+
+const getAllPoolsData = (stats_eth: any) => {
+    let net_reward = 0;
+    let balance = 0;
+    for (let i = 0; i <= 6; i += 1) {
+        const pool = getPoolData(i, stats_eth);
+        net_reward += parseFloat(pool.net_reward);
+        balance += parseFloat(pool.balance);
+    }
+    return {
+        "net_reward": net_reward.toString(),
+        "balance": balance.toString(),
+        "rewards": {
+            "claim_now": "N/A",
+            "vest_all": "N/A"
+        }
     }
 }

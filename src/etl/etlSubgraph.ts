@@ -52,8 +52,8 @@ export const etlPersonalStatsSubgraph = async (
                 resultAvaxParsed
             );
             showInfo(`Personal stats requested for user ${account}`);
-            if (process.env.NODE_ENV === Env.DEV)
-                console.dir(resultTotals, { depth: null });
+            // if (process.env.NODE_ENV === Env.DEV)
+            //     console.dir(resultTotals, { depth: null });
             return resultTotals;
         } else {
             return personalStatsError;
