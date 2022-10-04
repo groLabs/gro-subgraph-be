@@ -1,5 +1,6 @@
 export const PORT = 3015;
 export const TX_ITERATION = 800; // # of records retrieved per subgraph call (limited to 1000 per call)
+
 export const SUBGRAPH_URL = {
     UNKNOWN: {
         ETH: 'tbc',
@@ -21,6 +22,5 @@ export const SUBGRAPH_URL = {
         ETH: 'tbc',
         AVAX: 'https://api.thegraph.com/subgraphs/name/sjuanati/gro-test-avax', // (1)
     }
-
     // (1): To be updated when Avalanche network goes decentralised
 }

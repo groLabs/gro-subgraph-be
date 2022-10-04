@@ -8,7 +8,7 @@ export const parsePersonalStatsSubgraphEthereum = (
     stats_eth: any
 ) => {
     try {
-        const currentTimestamp = moment().unix().toString();
+        const currentTimestamp = stats_eth._meta.block.timestamp;
         if (stats_eth.users.length === 0)
             return NO_ETH_USER(
                 currentTimestamp,

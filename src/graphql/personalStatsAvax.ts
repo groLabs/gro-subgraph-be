@@ -4,6 +4,13 @@ export const queryPersonalStatsAvax = (
     skip: number
 ) => (
     `{
+        _meta {
+            hasIndexingErrors
+            block {
+              number
+              timestamp
+            }
+        }
         masterDatas {
             status
             networkId
