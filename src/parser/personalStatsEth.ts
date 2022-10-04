@@ -1,7 +1,22 @@
-import moment from 'moment';
 import { showError } from '../handler/logHandler';
 import { TransferTx } from '../interfaces/IPersonalStats';
 import { NO_ETH_USER } from './personalStatsEmpty'
+
+
+const getPoolData = (poolId: number, stats_eth: any) => {
+    const pool = stats_eth.users[0][`pool_${poolId}`];
+    console.log('pool', pool);
+    const isData = (pool.length > 0) ? true : false;
+    console.log('isData', isData);
+    return {
+        "net_reward": isData ? pool[0].net_reward : 'N/A',
+        "balance": isData ? pool[0].balance : 'N/A',
+        "rewards": {
+            "claim_now": "N/A",
+            "vest_all": "N/A"
+        }
+    }
+}
 
 export const parsePersonalStatsSubgraphEthereum = (
     account: string,
@@ -108,62 +123,13 @@ export const parsePersonalStatsSubgraphEthereum = (
                             "vest_all": "N/A"
                         }
                     },
-                    "single_staking_100_gro_0": {
-                        "net_reward": "N/A",
-                        "balance": "N/A",
-                        "rewards": {
-                            "claim_now": "N/A",
-                            "vest_all": "N/A"
-                        }
-                    },
-                    "uniswap_v2_5050_gro_gvt_1": {
-                        "net_reward": "N/A",
-                        "balance": "N/A",
-                        "rewards": {
-                            "claim_now": "N/A",
-                            "vest_all": "N/A"
-                        }
-                    },
-                    "uniswap_v2_5050_gro_usdc_2": {
-                        "net_reward": "N/A",
-                        "balance": "N/A",
-                        "rewards": {
-                            "claim_now": "N/A",
-                            "vest_all": "N/A"
-                        }
-                    },
-                    "single_staking_100_gvt_3": {
-                        "net_reward": "N/A",
-                        "balance": "N/A",
-                        "rewards": {
-                            "claim_now": "N/A",
-                            "vest_all": "N/A"
-                        }
-                    },
-                    "curve_meta_pwrd_3crv_4": {
-                        "net_reward": "N/A",
-                        "balance": "N/A",
-                        "rewards": {
-                            "claim_now": "N/A",
-                            "vest_all": "N/A"
-                        }
-                    },
-                    "balancer_v2_8020_gro_weth_5": {
-                        "net_reward": "N/A",
-                        "balance": "N/A",
-                        "rewards": {
-                            "claim_now": "N/A",
-                            "vest_all": "N/A"
-                        }
-                    },
-                    "single_staking_100_pwrd_6": {
-                        "net_reward": "N/A",
-                        "balance": "N/A",
-                        "rewards": {
-                            "claim_now": "N/A",
-                            "vest_all": "N/A"
-                        }
-                    }
+                    "single_staking_100_gro_0": getPoolData(0, stats_eth),
+                    "uniswap_v2_5050_gro_gvt_1": getPoolData(1, stats_eth),
+                    "uniswap_v2_5050_gro_usdc_2": getPoolData(2, stats_eth),
+                    "single_staking_100_gvt_3": getPoolData(3, stats_eth),
+                    "curve_meta_pwrd_3crv_4": getPoolData(4, stats_eth),
+                    "balancer_v2_8020_gro_weth_5": getPoolData(5, stats_eth),
+                    "single_staking_100_pwrd_6": getPoolData(6, stats_eth)
                 },
                 "gro_balance_combined": "N/A",
                 "vesting_airdrop": {
