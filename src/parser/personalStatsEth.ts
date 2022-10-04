@@ -5,12 +5,28 @@ import { NO_ETH_USER } from './personalStatsEmpty'
 
 const getPoolData = (poolId: number, stats_eth: any) => {
     const pool = stats_eth.users[0][`pool_${poolId}`];
-    console.log('pool', pool);
     const isData = (pool.length > 0) ? true : false;
-    console.log('isData', isData);
     return {
-        "net_reward": isData ? pool[0].net_reward : 'N/A',
-        "balance": isData ? pool[0].balance : 'N/A',
+        "net_reward": isData ? pool[0].net_reward : '0',
+        "balance": isData ? pool[0].balance : '0',
+        "rewards": {
+            "claim_now": "N/A",
+            "vest_all": "N/A"
+        }
+    }
+}
+
+const getAllPoolsData = (stats_eth: any) => {
+    let net_reward = 0;
+    let balance = 0;
+    for (let i=0; i<=6; i += 1) {
+        const pool = getPoolData(i, stats_eth);
+        net_reward += parseFloat(pool.net_reward);
+        balance += parseFloat(pool.balance);
+    }
+    return {
+        "net_reward": net_reward.toString(),
+        "balance": balance.toString(),
         "rewards": {
             "claim_now": "N/A",
             "vest_all": "N/A"
@@ -115,14 +131,7 @@ export const parsePersonalStatsSubgraphEthereum = (
                     }
                 },
                 "pools": {
-                    "all": {
-                        "net_reward": "N/A",
-                        "balance": "N/A",
-                        "rewards": {
-                            "claim_now": "N/A",
-                            "vest_all": "N/A"
-                        }
-                    },
+                    "all": getAllPoolsData(stats_eth),
                     "single_staking_100_gro_0": getPoolData(0, stats_eth),
                     "uniswap_v2_5050_gro_gvt_1": getPoolData(1, stats_eth),
                     "uniswap_v2_5050_gro_usdc_2": getPoolData(2, stats_eth),
