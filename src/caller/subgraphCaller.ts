@@ -39,12 +39,11 @@ export const callSubgraph = async (
         { query: q }
     );
     if (result.data.errors) {
-        for (const err of result.data.errors) {
-            showError(
-                'caller/subgraphCaller.ts->callSubgraph()',
-                err.message,
-            );
-        }
+        showError(
+            'caller/subgraphCaller.ts->callSubgraph() [Error from Subgraph]',
+            JSON.stringify(result.data.errors, null, 1),
+        );
     }
-    return result.data.data;
+
+    return result.data;
 }

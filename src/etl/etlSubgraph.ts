@@ -40,7 +40,19 @@ export const etlPersonalStatsSubgraph = async (
                 result
             )
         ]);
-        if (resultEth && resultAvax) {
+        if (resultEth.errors) {
+            return personalStatsError(
+                moment().unix().toString(),
+                _account,
+                resultEth.errors.map((item: any) => item)
+            );
+        } else if (resultAvax.errors) {
+            return personalStatsError(
+                moment().unix().toString(),
+                _account,
+                resultAvax.errors.map((item: any) => item)
+            );
+        } else if (resultEth && resultAvax) {
             const resultEthParsed = parsePersonalStatsSubgraphEthereum(
                 account,
                 resultEth
@@ -57,19 +69,19 @@ export const etlPersonalStatsSubgraph = async (
             //     console.dir(resultTotals, { depth: null });
             return resultTotals;
         } else {
-            const address = (resultEth.users.length > 0)
-                ? resultEth.users[0].address
-                : 'N/A';
             return personalStatsError(
                 moment().unix().toString(),
-                address,
+                _account,
+                'Unknown error in /etl/etlSubgraph->etlPersonalStatsSubgraph()'
             );
         }
     } catch (err) {
+        console.log('** 4');
         showError('etl/etlSubgraph.ts->etlPersonalStatsSubgraph()', err);
         return personalStatsError(
             moment().unix().toString(),
-            'N/A',
+            _account,
+            err as string
         );
     }
 }

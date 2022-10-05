@@ -18,10 +18,12 @@ const emptyTotals = {
 export const personalStatsError = (
     currentTimestamp: string,
     address: string,
+    error_msg: string,
 ): IPersonalStatsTotals => {
     return {
         'gro_personal_position_mc': {
             'status': Status.ERROR,
+            'error_msg': error_msg,
             'current_timestamp': currentTimestamp,
             'address': address,
             'network': NetworkName.MAINNET,

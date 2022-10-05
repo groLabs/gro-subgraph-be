@@ -10,24 +10,24 @@ export const getPersonalStats = async (
     result: any
 ): Promise<any> => {
     try {
-        const data = await callSubgraph(
+        const call = await callSubgraph(
             url,
             account,
             TX_ITERATION,
             skip
         );
-        if (!data) {
-            return null;
-        } else if (data.users.length === 0) {
-            return data;
+        if (call.errors) {
+            return call;
+        } else if (call.data.users.length === 0) {
+            return call.data;
         } else {
             if (skip === 0) {
-                result = data;
+                result = call.data;
             } else {
-                const transfers = result.users[0].transfers.concat(data.users[0].transfers);
+                const transfers = result.users[0].transfers.concat(call.data.users[0].transfers);
                 result.users[0].transfers = transfers;
             }
-            return (data.users[0].transfers.length < TX_ITERATION)
+            return (call.data.users[0].transfers.length < TX_ITERATION)
                 ? result
                 : getPersonalStats(
                     url,

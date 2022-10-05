@@ -16,20 +16,6 @@ const wrapAsync = function wrapAsync(fn: any) {
     };
 };
 
-const errorPersonalStats = (
-    address: string,
-    err: any,
-) => {
-    let emptyStats = personalStatsError(
-        moment().unix().toString(),
-        address,
-    );
-    return {
-        err_message: err,
-        ...emptyStats,
-    }
-}
-
 // E.g.: http://localhost:3010/database/gro_personal_position_mc?subgraph=eth_prod_hosted&address=0x2ce1a66f22a2dc6e410d9021d57aeb8d13d6bfef
 router.get(
     '/gro_personal_position_mc',
@@ -61,17 +47,19 @@ router.get(
                 // subgraph value is incorrect
                 const err_msg = `unknown target subgraph <${subgraph}>`;
                 showError('routes->subgraph.ts on /gro_personal_position_mc', err_msg);
-                res.json(errorPersonalStats(
+                res.json(personalStatsError(
+                    moment().unix().toString(),
                     address?.toString() || 'N/A',
-                    err_msg,
+                    err_msg
                 ));
             }
         } catch (err) {
             showError('routes/subgraph.ts->gro_personal_position_mc', err);
-            res.json(errorPersonalStats(
+            res.json(personalStatsError(
+                moment().unix().toString(),
                 'N/A',
-                err,
-            ));
+                err as string,
+            ))
         }
     })
 );

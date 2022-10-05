@@ -94,6 +94,7 @@ export interface IPersonalStatsAvalanche {
 export interface IPersonalStatsTotals {
     'gro_personal_position_mc': {
         'status': Status,
+        'error_msg': string,
         'current_timestamp': string,
         'address': string,
         'network': NetworkName,

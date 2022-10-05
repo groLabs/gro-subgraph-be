@@ -21,6 +21,7 @@ export const personalStatsSubgraphParserTotals = (
                     && stats_avax.status === 'ok')
                     ? Status.OK
                     : Status.ERROR,
+                "error_msg": '',
                 "current_timestamp": stats_eth.current_timestamp,
                 "address": stats_eth.address,
                 "network": stats_eth.network,
@@ -78,7 +79,8 @@ export const personalStatsSubgraphParserTotals = (
         );
         return personalStatsError(
             moment().unix().toString(),
-            stats_eth.address || 'unknown address'
+            (stats_eth.address) ? stats_eth.address : 'unknown address',
+            err as string,
         );
     }
 }

@@ -4,11 +4,6 @@ import { ValidationChain, validationResult } from 'express-validator';
 import { personalStatsError } from '../parser/personalStatsError';
 
 
-let emptyStats = personalStatsError(
-    moment().unix().toString(),
-    'N/A'
-);
-
 //TODO: change to ES6
 const validate = function validate(validations: ValidationChain[]) {
     return async (req: Request, res: Response, next: NextFunction) => {
@@ -17,10 +12,11 @@ const validate = function validate(validations: ValidationChain[]) {
         if (errors.isEmpty()) {
             return next();
         }
-        res.status(400).json({
-            err_message: errors,
-            ...emptyStats,
-        });
+        res.status(400).json(personalStatsError(
+            moment().unix().toString(),
+            'N/A',
+            JSON.stringify(errors)
+        ));
         return next();
     };
 };
