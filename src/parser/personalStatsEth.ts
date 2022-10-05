@@ -45,10 +45,10 @@ export const parsePersonalStatsSubgraphEthereum = (
 
         const result = {
             "status": md_eth.status as Status,
-            "network_id": md_eth.networkId as NetworkId,
+            "network_id": md_eth.networkId.toString() as NetworkId,
             "network": md_eth.networkName as NetworkName,
-            "launch_timestamp": md_eth.launchTimestamp as string,
-            "current_timestamp": currentTimestamp as string,
+            "launch_timestamp": md_eth.launchTimestamp.toString(),
+            "current_timestamp": currentTimestamp.toString(),
             "address": stats_eth.users[0].address as string,
             "airdrops": [] as [],
             "amount_added": {

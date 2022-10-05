@@ -8,6 +8,7 @@ import {
     NetworkId,
 } from '../types';
 
+
 export const parsePersonalStatsSubgraphAvalanche = (
     stats_avax: any
 ): IPersonalStatsAvalanche => {
@@ -165,7 +166,7 @@ export const parsePersonalStatsSubgraphAvalanche = (
         return result;
     } catch (err) {
         showError(
-            'personalStatsSubgraphParserAvax.ts->parsePersonalStatsSubgraphAvalanche()',
+            'parser/personalStatsAvax.ts->parsePersonalStatsSubgraphAvalanche()',
             `${err}`,
         );
         return emptyAvaxUser(Status.ERROR);

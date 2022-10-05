@@ -67,7 +67,7 @@ router.get(
                 ));
             }
         } catch (err) {
-            showError('routes->subgraph.ts on /gro_personal_position_mc', err);
+            showError('routes/subgraph.ts->gro_personal_position_mc', err);
             res.json(errorPersonalStats(
                 'N/A',
                 err,

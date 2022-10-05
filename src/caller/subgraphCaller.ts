@@ -8,13 +8,12 @@ import {
 } from '../utils/utils';
 
 
-// TODO: typed return
 export const callSubgraph = async (
     url: string,
     account: string,
     first: number,
     skip: number
-) => {
+): Promise<any> => {
     let q;
     if (isEthSubgraph(url)) {
         q = queryPersonalStatsEth(
@@ -30,7 +29,7 @@ export const callSubgraph = async (
         );
     } else {
         showError(
-            'subgraphCaller.ts->callSubgraph()',
+            'caller/subgraphCaller.ts->callSubgraph()',
             `unknown subgraph api ${url}}`,
         );
         return null;
@@ -42,7 +41,7 @@ export const callSubgraph = async (
     if (result.data.errors) {
         for (const err of result.data.errors) {
             showError(
-                'subgraphCaller.ts->callSubgraph()',
+                'caller/subgraphCaller.ts->callSubgraph()',
                 err.message,
             );
         }

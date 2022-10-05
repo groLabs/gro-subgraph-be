@@ -8,6 +8,7 @@ import {
 import { Status } from '../types';
 import { personalStatsError } from './personalStatsError';
 
+
 export const personalStatsSubgraphParserTotals = (
     stats_eth: IPersonalStatsEthereum,
     stats_avax: IPersonalStatsAvalanche,

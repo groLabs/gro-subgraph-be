@@ -66,7 +66,7 @@ export const etlPersonalStatsSubgraph = async (
             );
         }
     } catch (err) {
-        showError('etlSubgraph.ts->etlPersonalStatsSubgraph()', err);
+        showError('etl/etlSubgraph.ts->etlPersonalStatsSubgraph()', err);
         return personalStatsError(
             moment().unix().toString(),
             'N/A',
