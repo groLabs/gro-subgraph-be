@@ -1,233 +1,254 @@
+import { 
+    IPersonalStatsEthereum,
+    IPersonalStatsAvalanche,
+} from '../interfaces/IPersonalStats';
+import { 
+    Status,
+    NetworkName
+} from '../types';
 
-export const NO_AVAX_USER = (
-    address: string
-) => ({
-    "avalanche": {
-        "status": 'ok',
-        "network_id": '43114',
-        "launch_timestamp": '1638483222',
-        "address": address,
-        "amount_added": {
-            "groDAI.e_vault": '0',
-            "groUSDC.e_vault": '0',
-            "groUSDT.e_vault": '0',
-            "groDAI.e_vault_v1_7": '0',
-            "groUSDC.e_vault_v1_7": '0',
-            "groUSDT.e_vault_v1_7": '0',
-            "total": '0'
+
+export const NO_AVAX_USER = (status: Status): IPersonalStatsAvalanche => ({
+    'status': status,
+    'network_id': '43114',
+    'launch_timestamp': '1638483222',
+    'amount_added': {
+        'groDAI.e_vault': '0',
+        'groUSDC.e_vault': '0',
+        'groUSDT.e_vault': '0',
+        'groDAI.e_vault_v1_7': '0',
+        'groUSDC.e_vault_v1_7': '0',
+        'groUSDT.e_vault_v1_7': '0',
+        'total': '0'
+    },
+    'amount_removed': {
+        'groDAI.e_vault': '0',
+        'groUSDC.e_vault': '0',
+        'groUSDT.e_vault': '0',
+        'groDAI.e_vault_v1_7': '0',
+        'groUSDC.e_vault_v1_7': '0',
+        'groUSDT.e_vault_v1_7': '0',
+        'total': '0'
+    },
+    'net_amount_added': {
+        'groDAI.e_vault': '0',
+        'groUSDC.e_vault': '0',
+        'groUSDT.e_vault': '0',
+        'groDAI.e_vault_v1_7': '0',
+        'groUSDC.e_vault_v1_7': '0',
+        'groUSDT.e_vault_v1_7': '0',
+        'total': '0'
+    },
+    'current_balance': {
+        'groDAI.e_vault': '0',
+        'groUSDC.e_vault': '0',
+        'groUSDT.e_vault': '0',
+        'groDAI.e_vault_v1_7': '0',
+        'groUSDC.e_vault_v1_7': '0',
+        'groUSDT.e_vault_v1_7': '0',
+        'total': '0'
+    },
+    'net_returns': {
+        'groDAI.e_vault': '0',
+        'groUSDC.e_vault': '0',
+        'groUSDT.e_vault': '0',
+        'groDAI.e_vault_v1_7': '0',
+        'groUSDC.e_vault_v1_7': '0',
+        'groUSDT.e_vault_v1_7': '0',
+        'total': '0'
+    },
+    'transaction': {
+        'deposits': [],
+        'withdrawals': [],
+        'transfers_in': [],
+        'transfers_out': [],
+        'approvals': [],
+        'failures': []
+    },
+    'gro_gate': {
+        'status': Status.ok,
+        'total_claimable_allowance': 'N/A',
+        'total_remaining_allowance': 'N/A',
+        'snapshot_ts': 'N/A',
+        'gro_balance_at_snapshot': 'N/A',
+        'gro_gate_at_snapshot': 'N/A',
+        'proofs': [],
+        'root': 'N/A',
+        'root_matched': 'N/A',
+        'groDAI.e_vault': {
+            'claimable_allowance': 'N/A',
+            'remaining_allowance': 'N/A',
+            'claimable': 'N/A',
+            'base_allowance': 'N/A',
+            'base_allowance_claimed': 'N/A'
         },
-        "amount_removed": {
-            "groDAI.e_vault": '0',
-            "groUSDC.e_vault": '0',
-            "groUSDT.e_vault": '0',
-            "groDAI.e_vault_v1_7": '0',
-            "groUSDC.e_vault_v1_7": '0',
-            "groUSDT.e_vault_v1_7": '0',
-            "total": '0'
+        'groUSDC.e_vault': {
+            'claimable_allowance': 'N/A',
+            'remaining_allowance': 'N/A',
+            'claimable': 'N/A',
+            'base_allowance': 'N/A',
+            'base_allowance_claimed': 'N/A'
         },
-        "net_amount_added": {
-            "groDAI.e_vault": '0',
-            "groUSDC.e_vault": '0',
-            "groUSDT.e_vault": '0',
-            "groDAI.e_vault_v1_7": '0',
-            "groUSDC.e_vault_v1_7": '0',
-            "groUSDT.e_vault_v1_7": '0',
-            "total": '0'
-        },
-        "current_balance": {
-            "groDAI.e_vault": '0',
-            "groUSDC.e_vault": '0',
-            "groUSDT.e_vault": '0',
-            "groDAI.e_vault_v1_7": '0',
-            "groUSDC.e_vault_v1_7": '0',
-            "groUSDT.e_vault_v1_7": '0',
-            "total": '0'
-        },
-        "net_returns": {
-            "groDAI.e_vault": '0',
-            "groUSDC.e_vault": '0',
-            "groUSDT.e_vault": '0',
-            "groDAI.e_vault_v1_7": '0',
-            "groUSDC.e_vault_v1_7": '0',
-            "groUSDT.e_vault_v1_7": '0',
-            "total": '0'
-        },
-        "transaction": {
-            "deposits": [],
-            "withdrawals": [],
-            "transfers_in": [],
-            "transfers_out": [],
-            "approvals": [],
-            "failures": []
-        },
-        "gro_gate": {
-            "status": "N/A",
-            "total_claimable_allowance": "N/A",
-            "total_remaining_allowance": "N/A",
-            "snapshot_ts": "N/A",
-            "gro_balance_at_snapshot": "N/A",
-            "gro_gate_at_snapshot": "N/A",
-            "proofs": [],
-            "root": "N/A",
-            "root_matched": "N/A",
-            "groDAI.e_vault": {
-                "claimable_allowance": "N/A",
-                "remaining_allowance": "N/A",
-                "claimable": "N/A",
-                "base_allowance": "N/A",
-                "base_allowance_claimed": "N/A"
-            },
-            "groUSDC.e_vault": {
-                "claimable_allowance": "N/A",
-                "remaining_allowance": "N/A",
-                "claimable": "N/A",
-                "base_allowance": "N/A",
-                "base_allowance_claimed": "N/A"
-            },
-            "groUSDT.e_vault": {
-                "claimable_allowance": "N/A",
-                "remaining_allowance": "N/A",
-                "claimable": "N/A",
-                "base_allowance": "N/A",
-                "base_allowance_claimed": "N/A"
-            }
+        'groUSDT.e_vault': {
+            'claimable_allowance': 'N/A',
+            'remaining_allowance': 'N/A',
+            'claimable': 'N/A',
+            'base_allowance': 'N/A',
+            'base_allowance_claimed': 'N/A'
         }
     }
 });
 
 export const NO_ETH_USER = (
     currentTimestamp: string,
-    address: string
-) => ({
-    "ethereum": {
-        "status": 'ok',
-        "network_id": '1',
-        "network": 'mainnet',
-        "launch_timestamp": '1638483222',
-        "current_timestamp": currentTimestamp,
-        "address": address,
-        "airdrops": [],
-        "transaction": {
-            "deposits": [],
-            "withdrawals": [],
-            "transfers_in": [],
-            "transfers_out": [],
-            "approvals": [],
-            "failures": []
-        },
-        "amount_added": {
-            "pwrd": '0',
-            "gvt": '0',
-            "total": '0'
-        },
-        "amount_removed": {
-            "pwrd": '0',
-            "gvt": '0',
-            "total": '0'
-        },
-        "net_amount_added": {
-            "pwrd": '0',
-            "gvt": '0',
-            "total": '0'
-        },
-        "current_balance": {
-            "pwrd": '0',
-            "gvt": '0',
-            "total": '0'
-        },
-        "net_returns": {
-            "pwrd": '0',
-            "gvt": '0',
-            "total": '0'
-        },
-        "net_returns_ratio": {
-            "pwrd": "N/A",
-            "gvt": "N/A",
-            "total": "N/A"
-        },
-        "vest_bonus": {
-            "locked_gro": "N/A",
-            "net_reward": "N/A",
-            "rewards": {
-                "claim_now": "N/A",
-                "vest_all": "N/A"
-            }
-        },
-        "pools": {
-            "all": {
-                "net_reward": "N/A",
-                "balance": "N/A",
-                "rewards": {
-                    "claim_now": "N/A",
-                    "vest_all": "N/A"
-                }
-            },
-            "single_staking_100_gro_0": {
-                "net_reward": "N/A",
-                "balance": "N/A",
-                "rewards": {
-                    "claim_now": "N/A",
-                    "vest_all": "N/A"
-                }
-            },
-            "uniswap_v2_5050_gro_gvt_1": {
-                "net_reward": "N/A",
-                "balance": "N/A",
-                "rewards": {
-                    "claim_now": "N/A",
-                    "vest_all": "N/A"
-                }
-            },
-            "uniswap_v2_5050_gro_usdc_2": {
-                "net_reward": "N/A",
-                "balance": "N/A",
-                "rewards": {
-                    "claim_now": "N/A",
-                    "vest_all": "N/A"
-                }
-            },
-            "single_staking_100_gvt_3": {
-                "net_reward": "N/A",
-                "balance": "N/A",
-                "rewards": {
-                    "claim_now": "N/A",
-                    "vest_all": "N/A"
-                }
-            },
-            "curve_meta_pwrd_3crv_4": {
-                "net_reward": "N/A",
-                "balance": "N/A",
-                "rewards": {
-                    "claim_now": "N/A",
-                    "vest_all": "N/A"
-                }
-            },
-            "balancer_v2_8020_gro_weth_5": {
-                "net_reward": "N/A",
-                "balance": "N/A",
-                "rewards": {
-                    "claim_now": "N/A",
-                    "vest_all": "N/A"
-                }
-            },
-            "single_staking_100_pwrd_6": {
-                "net_reward": "N/A",
-                "balance": "N/A",
-                "rewards": {
-                    "claim_now": "N/A",
-                    "vest_all": "N/A"
-                }
-            }
-        },
-        "gro_balance_combined": "N/A",
-        "vesting_airdrop": {
-            "name": "N/A",
-            "token": "N/A",
-            "amount": "0.00",
-            "claim_initialized": "N/A",
-            "claimed_amount": "0.00",
-            "claimable_amount": "0.00",
-            "proofs": []
+    address: string,
+    status: Status
+): IPersonalStatsEthereum => ({
+    'status': status,
+    'network_id': '1',
+    'network': NetworkName.mainnet,
+    'launch_timestamp': '1638483222',
+    'current_timestamp': currentTimestamp,
+    'address': address,
+    'airdrops': [],
+    'transaction': {
+        'deposits': [],
+        'withdrawals': [],
+        'transfers_in': [],
+        'transfers_out': [],
+        'approvals': [],
+        'failures': []
+    },
+    'amount_added': {
+        'pwrd': '0',
+        'gvt': '0',
+        'total': '0'
+    },
+    'amount_removed': {
+        'pwrd': '0',
+        'gvt': '0',
+        'total': '0'
+    },
+    'net_amount_added': {
+        'pwrd': '0',
+        'gvt': '0',
+        'total': '0'
+    },
+    'current_balance': {
+        'pwrd': '0',
+        'gvt': '0',
+        'total': '0'
+    },
+    'net_returns': {
+        'pwrd': '0',
+        'gvt': '0',
+        'total': '0'
+    },
+    'net_returns_ratio': {
+        'pwrd': 'N/A',
+        'gvt': 'N/A',
+        'total': 'N/A'
+    },
+    'vest_bonus': {
+        'locked_gro': 'N/A',
+        'net_reward': 'N/A',
+        'rewards': {
+            'claim_now': 'N/A',
+            'vest_all': 'N/A'
         }
+    },
+    'pools': {
+        'all': {
+            'net_reward': 'N/A',
+            'balance': 'N/A',
+            'coinBalance': 'N/A',
+            'rewards': {
+                'claim_now': 'N/A',
+                'vest_all': 'N/A'
+            }
+        },
+        'single_staking_100_gro_0': {
+            'net_reward': 'N/A',
+            'balance': 'N/A',
+            'coinBalance': 'N/A',
+            'rewards': {
+                'claim_now': 'N/A',
+                'vest_all': 'N/A'
+            }
+        },
+        'uniswap_v2_5050_gro_gvt_1': {
+            'net_reward': 'N/A',
+            'balance': 'N/A',
+            'coinBalance': 'N/A',
+            'rewards': {
+                'claim_now': 'N/A',
+                'vest_all': 'N/A'
+            }
+        },
+        'uniswap_v2_5050_gro_usdc_2': {
+            'net_reward': 'N/A',
+            'balance': 'N/A',
+            'coinBalance': 'N/A',
+            'rewards': {
+                'claim_now': 'N/A',
+                'vest_all': 'N/A'
+            }
+        },
+        'single_staking_100_gvt_3': {
+            'net_reward': 'N/A',
+            'balance': 'N/A',
+            'coinBalance': 'N/A',
+            'rewards': {
+                'claim_now': 'N/A',
+                'vest_all': 'N/A'
+            }
+        },
+        'curve_meta_pwrd_3crv_4': {
+            'net_reward': 'N/A',
+            'balance': 'N/A',
+            'coinBalance': 'N/A',
+            'rewards': {
+                'claim_now': 'N/A',
+                'vest_all': 'N/A'
+            }
+        },
+        'balancer_v2_8020_gro_weth_5': {
+            'net_reward': 'N/A',
+            'balance': 'N/A',
+            'coinBalance': 'N/A',
+            'rewards': {
+                'claim_now': 'N/A',
+                'vest_all': 'N/A'
+            }
+        },
+        'single_staking_100_pwrd_6': {
+            'net_reward': 'N/A',
+            'balance': 'N/A',
+            'coinBalance': 'N/A',
+            'rewards': {
+                'claim_now': 'N/A',
+                'vest_all': 'N/A'
+            }
+        }
+    },
+    'gro_balance_combined': 'N/A',
+    'vesting_airdrop': {
+        'name': 'N/A',
+        'token': 'N/A',
+        'amount': 'N/A',
+        'claim_initialized': 'N/A',
+        'claimed_amount': 'N/A',
+        'claimable_amount': 'N/A',
+        'proofs': []
     }
 });
+
+export const NO_POOL_DATA = {
+    'net_reward': 'N/A',
+    'balance': 'N/A',
+    'coinBalance': 'N/A',
+    'rewards': {
+        'claim_now': 'N/A',
+        'vest_all': 'N/A'
+    }
+}
