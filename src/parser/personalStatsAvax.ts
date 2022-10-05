@@ -13,7 +13,7 @@ export const parsePersonalStatsSubgraphAvalanche = (
 ): IPersonalStatsAvalanche => {
     try {
         if (stats_avax.users.length === 0)
-            return emptyAvaxUser(Status.ok);
+            return emptyAvaxUser(Status.OK);
 
         const md_avax = stats_avax.masterDatas[0];
         const totals_avax = stats_avax.users[0].totals;
@@ -130,7 +130,7 @@ export const parsePersonalStatsSubgraphAvalanche = (
                 'failures': [] as []
             },
             'gro_gate': {
-                'status': Status.ok,
+                'status': Status.OK,
                 'total_claimable_allowance': 'N/A',
                 'total_remaining_allowance': 'N/A',
                 'snapshot_ts': 'N/A',
@@ -168,7 +168,7 @@ export const parsePersonalStatsSubgraphAvalanche = (
             'personalStatsSubgraphParserAvax.ts->parsePersonalStatsSubgraphAvalanche()',
             `${err}`,
         );
-        return emptyAvaxUser(Status.error);
+        return emptyAvaxUser(Status.ERROR);
     }
 }
 

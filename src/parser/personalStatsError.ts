@@ -21,10 +21,10 @@ export const personalStatsError = (
 ): IPersonalStatsTotals => {
     return {
         'gro_personal_position_mc': {
-            'status': Status.error,
+            'status': Status.ERROR,
             'current_timestamp': currentTimestamp,
             'address': address,
-            'network': NetworkName.mainnet,
+            'network': NetworkName.MAINNET,
             'mc_totals': {
                 'amount_added': emptyTotals,
                 'amount_removed': emptyTotals,
@@ -32,8 +32,8 @@ export const personalStatsError = (
                 'current_balance': emptyTotals,
                 'net_returns': emptyTotals
             },
-            'ethereum': emptyEthUser(currentTimestamp, address, Status.error),
-            'avalanche': emptyAvaxUser(Status.error)
+            'ethereum': emptyEthUser(currentTimestamp, address, Status.ERROR),
+            'avalanche': emptyAvaxUser(Status.ERROR)
         }
     }
 }

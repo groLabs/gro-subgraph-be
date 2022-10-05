@@ -13,46 +13,46 @@ export enum Env {
 
 // @dev: Should be aligned with subgraph schema
 export enum Token {
-  unknown = 'unknown',
-  pwrd = 'pwrd',
-  gvt = 'gvt',
-  gro = 'gro',
-  dai = 'dai',
-  usdc = 'usdc',
-  usdt = 'usdt',
-  balancer_gro_weth = 'balancer_gro_weth',
-  uniswap_gvt_gro = 'uniswap_gvt_gro',
-  uniswap_gro_usdc = 'uniswap_gro_usdc',
-  curve_pwrd3crv = 'curve_pwrd3crv',
+  UNKNOWN = 'unknown',
+  PWRD = 'pwrd',
+  GVT = 'gvt',
+  GRO = 'gro',
+  DAI = 'dai',
+  USDC = 'usdc',
+  USDT = 'usdt',
+  BALANCER_GRO_WETH = 'balancer_gro_weth',
+  UNISWAP_GVT_GRO = 'uniswap_gvt_gro',
+  UNISWAP_GRO_USDC = 'uniswap_gro_usdc',
+  CURVE_PWRD3CRV = 'curve_pwrd3crv',
 }
 
 // @dev: Should be aligned with subgraph schema
 export enum TxType {
-  core_deposit = 'core_deposit',
-  core_withdrawal = 'core_withdrawal',
-  staker_deposit = 'staker_deposit',
-  staker_withdrawal = 'staker_withdrawal',
-  transfer_in = 'transfer_in',
-  transfer_out = 'transfer_out',
-  claim = 'claim',
-  multiclaim = 'multiclaim',
-  vest = 'vest',
-  approval = 'approval',
+  CORE_DEPOSIT = 'core_deposit',
+  CORE_WITHDRAWAL = 'core_withdrawal',
+  STAKER_DEPOSIT = 'staker_deposit',
+  STAKER_WITHDRAWAL = 'staker_withdrawal',
+  TRANSFER_IN = 'transfer_in',
+  TRANSFER_OUT = 'transfer_out',
+  CLAIM = 'claim',
+  MULTICLAIM = 'multiclaim',
+  VEST = 'vest',
+  APPROVAL = 'approval',
 }
 
 // @dev: Should be aligned with subgraph schema
 export enum Status {
-  ok = 'ok',
-  error = 'error',
+  OK = 'ok',
+  ERROR = 'error',
 }
 
 // @dev: Should be aligned with subgraph schema
 export enum NetworkName {
-  mainnet = 'mainnet',
-  avalanche = 'avalanche',
+  MAINNET = 'mainnet',
+  AVALANCHE = 'avalanche',
 }
 
 export enum NetworkId {
-  mainnet = '1',
-  avalanche = '43114',
+  MAINNET = '1',
+  AVALANCHE = '43114',
 }

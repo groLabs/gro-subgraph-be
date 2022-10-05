@@ -18,8 +18,8 @@ export const personalStatsSubgraphParserTotals = (
                 "status": (
                     stats_eth.status === 'ok'
                     && stats_avax.status === 'ok')
-                    ? Status.ok
-                    : Status.error,
+                    ? Status.OK
+                    : Status.ERROR,
                 "current_timestamp": stats_eth.current_timestamp,
                 "address": stats_eth.address,
                 "network": stats_eth.network,

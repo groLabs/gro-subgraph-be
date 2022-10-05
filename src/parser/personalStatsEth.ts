@@ -25,7 +25,7 @@ export const parsePersonalStatsSubgraphEthereum = (
             return emptyEthUser(
                 currentTimestamp,
                 account,
-                Status.ok,
+                Status.OK,
             );
 
         const md_eth = stats_eth.masterDatas[0];
@@ -139,7 +139,7 @@ export const parsePersonalStatsSubgraphEthereum = (
         return emptyEthUser(
             moment().unix().toString(),
             account,
-            Status.error,
+            Status.ERROR,
         );
     }
 }
