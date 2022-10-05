@@ -1,5 +1,13 @@
+import moment from 'moment';
 import { Request, Response, NextFunction } from 'express';
 import { ValidationChain, validationResult } from 'express-validator';
+import { personalStatsError } from '../parser/personalStatsError';
+
+
+let emptyStats = personalStatsError(
+    moment().unix().toString(),
+    'N/A'
+);
 
 //TODO: change to ES6
 const validate = function validate(validations: ValidationChain[]) {
@@ -9,18 +17,14 @@ const validate = function validate(validations: ValidationChain[]) {
         if (errors.isEmpty()) {
             return next();
         }
-        res.status(400).json(errors);
+        res.status(400).json({
+            err_message: errors,
+            ...emptyStats,
+        });
         return next();
     };
 };
 
-const handle = (promise: Promise<any>) => {
-    promise
-        .then((data) => [data, undefined])
-        .catch((error) => Promise.resolve([undefined, error]));
-};
-
 export {
     validate,
-    handle,
 };

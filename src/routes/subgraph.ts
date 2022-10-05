@@ -1,11 +1,10 @@
+import moment from 'moment';
 import express, { Request, Response, NextFunction } from 'express';
 import { query } from 'express-validator';
 import { validate } from '../common/validate';
-import {
-    showInfo,
-    showError,
-} from '../handler/logHandler';
+import { showError } from '../handler/logHandler';
 import { etlPersonalStatsSubgraph } from '../etl/etlSubgraph';
+import { personalStatsError } from '../parser/personalStatsError';
 import { Subgraph } from '../types';
 
 
@@ -16,6 +15,20 @@ const wrapAsync = function wrapAsync(fn: any) {
         fn(req, res, next).catch(next);
     };
 };
+
+const errorPersonalStats = (
+    address: string,
+    err: any,
+) => {
+    let emptyStats = personalStatsError(
+        moment().unix().toString(),
+        address,
+    );
+    return {
+        err_message: err,
+        ...emptyStats,
+    }
+}
 
 // E.g.: http://localhost:3010/database/gro_personal_position_mc?subgraph=eth_prod_hosted&address=0x2ce1a66f22a2dc6e410d9021d57aeb8d13d6bfef
 router.get(
@@ -37,6 +50,7 @@ router.get(
         try {
             const { subgraph, address } = req.query;
             if ((<any>Object).values(Subgraph).includes(subgraph)) {
+                // address & subgraph fields are correct
                 const personalStats = await etlPersonalStatsSubgraph(
                     subgraph as Subgraph,
                     address as string,
@@ -44,27 +58,22 @@ router.get(
                     []);
                 res.json(personalStats);
             } else if (subgraph) {
+                // subgraph value is incorrect
                 const err_msg = `unknown target subgraph <${subgraph}>`;
                 showError('routes->subgraph.ts on /gro_personal_position_mc', err_msg);
-                res.json({
-                    "gro_personal_position_mc": {
-                        status: 'error',
-                        data: err_msg,
-                    }
-                });
+                res.json(errorPersonalStats(
+                    address?.toString() || 'N/A',
+                    err_msg,
+                ));
             }
         } catch (err) {
             showError('routes->subgraph.ts on /gro_personal_position_mc', err);
-            res.json({
-                "gro_personal_position_mc": {
-                    status: 'error',
-                    data: err,
-                }
-            });
+            res.json(errorPersonalStats(
+                'N/A',
+                err,
+            ));
         }
     })
 );
 
 export default router;
-
-
