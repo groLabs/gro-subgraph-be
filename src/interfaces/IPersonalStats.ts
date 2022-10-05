@@ -6,7 +6,8 @@ import { IVestingBonus } from './IVestingBonus';
 import { IVestingAirdrop } from './IVestingAirdrop';
 import {
     Status,
-    NetworkName
+    NetworkId,
+    NetworkName,
 } from '../types';
 
 
@@ -35,7 +36,7 @@ interface ITotalsSummary {
 
 export interface IPersonalStatsEthereum {
     'status': Status,
-    'network_id': string,
+    'network_id': NetworkId,
     'airdrops': [],
     'transaction': {
         'deposits': ITransferTx[],
@@ -87,7 +88,7 @@ export interface IPersonalStatsAvalanche {
         'failures': []
     },
     'gro_gate': IGroGate,
-    'network_id': string
+    'network_id': NetworkId
 }
 
 export interface IPersonalStatsTotals {
@@ -95,7 +96,7 @@ export interface IPersonalStatsTotals {
         'status': Status,
         'current_timestamp': string,
         'address': string,
-        'network': string,
+        'network': NetworkName,
         'mc_totals': {
             'amount_added': ITotalsSummary,
             'amount_removed': ITotalsSummary,

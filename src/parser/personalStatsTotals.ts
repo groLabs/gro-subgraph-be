@@ -65,8 +65,6 @@ export const personalStatsSubgraphParserTotals = (
                         ).toString()
                     },
                 },
-                // ...stats_eth,
-                // ...stats_avax
                 'ethereum': stats_eth,
                 'avalanche': stats_avax,
             }
@@ -74,12 +72,12 @@ export const personalStatsSubgraphParserTotals = (
         return personalStats;
     } catch (err) {
         showError(
-            'personalStatsSubgraphParserTotals.ts->personalStatsSubgraphParserTotals()',
+            'parser/personalStatsTotals.ts->personalStatsSubgraphParserTotals()',
             `${err}`,
         );
         return personalStatsError(
             moment().unix().toString(),
-            'test'
-        )
+            stats_eth.address || 'unknown address'
+        );
     }
 }

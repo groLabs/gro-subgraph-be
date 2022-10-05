@@ -1,17 +1,19 @@
 import { showError } from '../handler/logHandler';
-import { Status } from '../types';
 import { ITransferTx } from '../interfaces/ITransferTx';
 import { IApprovalTx } from '../interfaces/IApprovalTx';
-import { NO_AVAX_USER } from './personalStatsEmpty';
+import { emptyAvaxUser } from './personalStatsEmpty';
 import { IPersonalStatsAvalanche } from '../interfaces/IPersonalStats';
+import { 
+    Status,
+    NetworkId,
+} from '../types';
 
 export const parsePersonalStatsSubgraphAvalanche = (
-    account: string,
     stats_avax: any
 ): IPersonalStatsAvalanche => {
     try {
         if (stats_avax.users.length === 0)
-            return NO_AVAX_USER(Status.ok);
+            return emptyAvaxUser(Status.ok);
 
         const md_avax = stats_avax.masterDatas[0];
         const totals_avax = stats_avax.users[0].totals;
@@ -72,7 +74,7 @@ export const parsePersonalStatsSubgraphAvalanche = (
 
         const result = {
             'status': md_avax.status as Status,
-            'network_id': md_avax.networkId.toString(),
+            'network_id': md_avax.networkId as NetworkId,
             'launch_timestamp': md_avax.launchTimestamp as string,
             'amount_added': {
                 'groDAI.e_vault': totals_avax.value_added_groDAI_e_v1_0 as string,
@@ -166,7 +168,7 @@ export const parsePersonalStatsSubgraphAvalanche = (
             'personalStatsSubgraphParserAvax.ts->parsePersonalStatsSubgraphAvalanche()',
             `${err}`,
         );
-        return NO_AVAX_USER(Status.error);
+        return emptyAvaxUser(Status.error);
     }
 }
 

@@ -5,12 +5,13 @@ import { ITransferTx } from '../interfaces/ITransferTx';
 import { IApprovalTx } from '../interfaces/IApprovalTx';
 import { IPersonalStatsEthereum } from '../interfaces/IPersonalStats';
 import {
-    NO_ETH_USER,
+    emptyEthUser,
     NO_POOL_DATA,
 } from './personalStatsEmpty';
 import { 
     Status,
-    NetworkName
+    NetworkId,
+    NetworkName,
 } from '../types';
 
 
@@ -21,10 +22,10 @@ export const parsePersonalStatsSubgraphEthereum = (
     try {
         const currentTimestamp = stats_eth._meta.block.timestamp;
         if (stats_eth.users.length === 0)
-            return NO_ETH_USER(
+            return emptyEthUser(
                 currentTimestamp,
                 account,
-                Status.ok
+                Status.ok,
             );
 
         const md_eth = stats_eth.masterDatas[0];
@@ -44,7 +45,7 @@ export const parsePersonalStatsSubgraphEthereum = (
 
         const result = {
             "status": md_eth.status as Status,
-            "network_id": md_eth.networkId as string,
+            "network_id": md_eth.networkId as NetworkId,
             "network": md_eth.networkName as NetworkName,
             "launch_timestamp": md_eth.launchTimestamp as string,
             "current_timestamp": currentTimestamp as string,
@@ -135,10 +136,10 @@ export const parsePersonalStatsSubgraphEthereum = (
         return result;
     } catch (err) {
         showError('parser/personalStatsEth.ts->parsePersonalStatsSubgraphEthereum()', err);
-        return NO_ETH_USER(
+        return emptyEthUser(
             moment().unix().toString(),
             account,
-            Status.error
+            Status.error,
         );
     }
 }

@@ -38,5 +38,6 @@ export const getPersonalStats = async (
         }
     } catch (err) {
         showError('personalStatsHandlers.ts->getPersonalStats()', err);
+        return null;
     }
 }

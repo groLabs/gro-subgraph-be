@@ -1,8 +1,10 @@
+import moment from 'moment';
 import { getPersonalStats } from '../handler/personalStatsHandler';
 import { parsePersonalStatsSubgraphEthereum } from '../parser/personalStatsEth';
 import { parsePersonalStatsSubgraphAvalanche } from '../parser/personalStatsAvax';
 import { personalStatsSubgraphParserTotals } from '../parser/personalStatsTotals';
 import { personalStatsError } from '../parser/personalStatsError';
+import { IPersonalStatsTotals } from '../interfaces/IPersonalStats';
 import { Subgraph } from '../types';
 import { getUrl } from '../utils/utils';
 import {
@@ -17,7 +19,7 @@ export const etlPersonalStatsSubgraph = async (
     _account: string,
     skip: number,
     result: any
-) => {
+): Promise<IPersonalStatsTotals> => {
     try {
         const account = _account.toLowerCase(); // Subgraphs store addresses in lowercase
         const url = getUrl(subgraph);
@@ -44,7 +46,6 @@ export const etlPersonalStatsSubgraph = async (
                 resultEth
             );
             const resultAvaxParsed = parsePersonalStatsSubgraphAvalanche(
-                account,
                 resultAvax
             );
             const resultTotals = personalStatsSubgraphParserTotals(
@@ -56,10 +57,19 @@ export const etlPersonalStatsSubgraph = async (
             //     console.dir(resultTotals, { depth: null });
             return resultTotals;
         } else {
-            return personalStatsError;
+            const address = (resultEth.users.length > 0)
+                ? resultEth.users[0].address
+                : 'N/A';
+            return personalStatsError(
+                moment().unix().toString(),
+                address,
+            );
         }
     } catch (err) {
         showError('etlSubgraph.ts->etlPersonalStatsSubgraph()', err);
-        return personalStatsError;
+        return personalStatsError(
+            moment().unix().toString(),
+            'N/A',
+        );
     }
 }

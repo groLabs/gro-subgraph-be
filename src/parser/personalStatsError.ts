@@ -3,8 +3,8 @@ import {
     NetworkName
 } from '../types';
 import { 
-    NO_ETH_USER, 
-    NO_AVAX_USER
+    emptyEthUser, 
+    emptyAvaxUser
 } from './personalStatsEmpty';
 import { IPersonalStatsTotals} from '../interfaces/IPersonalStats';
 
@@ -32,8 +32,8 @@ export const personalStatsError = (
                 'current_balance': emptyTotals,
                 'net_returns': emptyTotals
             },
-            'ethereum': NO_ETH_USER(currentTimestamp, address, Status.error),
-            'avalanche': NO_AVAX_USER(Status.error)
+            'ethereum': emptyEthUser(currentTimestamp, address, Status.error),
+            'avalanche': emptyAvaxUser(Status.error)
         }
     }
 }

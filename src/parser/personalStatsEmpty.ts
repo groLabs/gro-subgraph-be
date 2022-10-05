@@ -1,113 +1,27 @@
-import { 
+import {
     IPersonalStatsEthereum,
     IPersonalStatsAvalanche,
 } from '../interfaces/IPersonalStats';
-import { 
+import {
     Status,
-    NetworkName
+    NetworkId,
+    NetworkName,
 } from '../types';
+import {
+    LAUNCH_TIMESTAMP_ETH,
+    LAUNCH_TIMESTAMP_AVAX,
+} from '../constants';
 
 
-export const NO_AVAX_USER = (status: Status): IPersonalStatsAvalanche => ({
-    'status': status,
-    'network_id': '43114',
-    'launch_timestamp': '1638483222',
-    'amount_added': {
-        'groDAI.e_vault': '0',
-        'groUSDC.e_vault': '0',
-        'groUSDT.e_vault': '0',
-        'groDAI.e_vault_v1_7': '0',
-        'groUSDC.e_vault_v1_7': '0',
-        'groUSDT.e_vault_v1_7': '0',
-        'total': '0'
-    },
-    'amount_removed': {
-        'groDAI.e_vault': '0',
-        'groUSDC.e_vault': '0',
-        'groUSDT.e_vault': '0',
-        'groDAI.e_vault_v1_7': '0',
-        'groUSDC.e_vault_v1_7': '0',
-        'groUSDT.e_vault_v1_7': '0',
-        'total': '0'
-    },
-    'net_amount_added': {
-        'groDAI.e_vault': '0',
-        'groUSDC.e_vault': '0',
-        'groUSDT.e_vault': '0',
-        'groDAI.e_vault_v1_7': '0',
-        'groUSDC.e_vault_v1_7': '0',
-        'groUSDT.e_vault_v1_7': '0',
-        'total': '0'
-    },
-    'current_balance': {
-        'groDAI.e_vault': '0',
-        'groUSDC.e_vault': '0',
-        'groUSDT.e_vault': '0',
-        'groDAI.e_vault_v1_7': '0',
-        'groUSDC.e_vault_v1_7': '0',
-        'groUSDT.e_vault_v1_7': '0',
-        'total': '0'
-    },
-    'net_returns': {
-        'groDAI.e_vault': '0',
-        'groUSDC.e_vault': '0',
-        'groUSDT.e_vault': '0',
-        'groDAI.e_vault_v1_7': '0',
-        'groUSDC.e_vault_v1_7': '0',
-        'groUSDT.e_vault_v1_7': '0',
-        'total': '0'
-    },
-    'transaction': {
-        'deposits': [],
-        'withdrawals': [],
-        'transfers_in': [],
-        'transfers_out': [],
-        'approvals': [],
-        'failures': []
-    },
-    'gro_gate': {
-        'status': Status.ok,
-        'total_claimable_allowance': 'N/A',
-        'total_remaining_allowance': 'N/A',
-        'snapshot_ts': 'N/A',
-        'gro_balance_at_snapshot': 'N/A',
-        'gro_gate_at_snapshot': 'N/A',
-        'proofs': [],
-        'root': 'N/A',
-        'root_matched': 'N/A',
-        'groDAI.e_vault': {
-            'claimable_allowance': 'N/A',
-            'remaining_allowance': 'N/A',
-            'claimable': 'N/A',
-            'base_allowance': 'N/A',
-            'base_allowance_claimed': 'N/A'
-        },
-        'groUSDC.e_vault': {
-            'claimable_allowance': 'N/A',
-            'remaining_allowance': 'N/A',
-            'claimable': 'N/A',
-            'base_allowance': 'N/A',
-            'base_allowance_claimed': 'N/A'
-        },
-        'groUSDT.e_vault': {
-            'claimable_allowance': 'N/A',
-            'remaining_allowance': 'N/A',
-            'claimable': 'N/A',
-            'base_allowance': 'N/A',
-            'base_allowance_claimed': 'N/A'
-        }
-    }
-});
-
-export const NO_ETH_USER = (
+export const emptyEthUser = (
     currentTimestamp: string,
     address: string,
     status: Status
 ): IPersonalStatsEthereum => ({
     'status': status,
-    'network_id': '1',
+    'network_id': NetworkId.mainnet,
     'network': NetworkName.mainnet,
-    'launch_timestamp': '1638483222',
+    'launch_timestamp': LAUNCH_TIMESTAMP_ETH,
     'current_timestamp': currentTimestamp,
     'address': address,
     'airdrops': [],
@@ -240,6 +154,99 @@ export const NO_ETH_USER = (
         'claimed_amount': 'N/A',
         'claimable_amount': 'N/A',
         'proofs': []
+    }
+});
+
+export const emptyAvaxUser = (
+    status: Status
+): IPersonalStatsAvalanche => ({
+    'status': status,
+    'network_id': NetworkId.avalanche,
+    'launch_timestamp': LAUNCH_TIMESTAMP_AVAX,
+    'amount_added': {
+        'groDAI.e_vault': '0',
+        'groUSDC.e_vault': '0',
+        'groUSDT.e_vault': '0',
+        'groDAI.e_vault_v1_7': '0',
+        'groUSDC.e_vault_v1_7': '0',
+        'groUSDT.e_vault_v1_7': '0',
+        'total': '0'
+    },
+    'amount_removed': {
+        'groDAI.e_vault': '0',
+        'groUSDC.e_vault': '0',
+        'groUSDT.e_vault': '0',
+        'groDAI.e_vault_v1_7': '0',
+        'groUSDC.e_vault_v1_7': '0',
+        'groUSDT.e_vault_v1_7': '0',
+        'total': '0'
+    },
+    'net_amount_added': {
+        'groDAI.e_vault': '0',
+        'groUSDC.e_vault': '0',
+        'groUSDT.e_vault': '0',
+        'groDAI.e_vault_v1_7': '0',
+        'groUSDC.e_vault_v1_7': '0',
+        'groUSDT.e_vault_v1_7': '0',
+        'total': '0'
+    },
+    'current_balance': {
+        'groDAI.e_vault': '0',
+        'groUSDC.e_vault': '0',
+        'groUSDT.e_vault': '0',
+        'groDAI.e_vault_v1_7': '0',
+        'groUSDC.e_vault_v1_7': '0',
+        'groUSDT.e_vault_v1_7': '0',
+        'total': '0'
+    },
+    'net_returns': {
+        'groDAI.e_vault': '0',
+        'groUSDC.e_vault': '0',
+        'groUSDT.e_vault': '0',
+        'groDAI.e_vault_v1_7': '0',
+        'groUSDC.e_vault_v1_7': '0',
+        'groUSDT.e_vault_v1_7': '0',
+        'total': '0'
+    },
+    'transaction': {
+        'deposits': [],
+        'withdrawals': [],
+        'transfers_in': [],
+        'transfers_out': [],
+        'approvals': [],
+        'failures': []
+    },
+    'gro_gate': {
+        'status': status,
+        'total_claimable_allowance': 'N/A',
+        'total_remaining_allowance': 'N/A',
+        'snapshot_ts': 'N/A',
+        'gro_balance_at_snapshot': 'N/A',
+        'gro_gate_at_snapshot': 'N/A',
+        'proofs': [],
+        'root': 'N/A',
+        'root_matched': 'N/A',
+        'groDAI.e_vault': {
+            'claimable_allowance': 'N/A',
+            'remaining_allowance': 'N/A',
+            'claimable': 'N/A',
+            'base_allowance': 'N/A',
+            'base_allowance_claimed': 'N/A'
+        },
+        'groUSDC.e_vault': {
+            'claimable_allowance': 'N/A',
+            'remaining_allowance': 'N/A',
+            'claimable': 'N/A',
+            'base_allowance': 'N/A',
+            'base_allowance_claimed': 'N/A'
+        },
+        'groUSDT.e_vault': {
+            'claimable_allowance': 'N/A',
+            'remaining_allowance': 'N/A',
+            'claimable': 'N/A',
+            'base_allowance': 'N/A',
+            'base_allowance_claimed': 'N/A'
+        }
     }
 });
 
