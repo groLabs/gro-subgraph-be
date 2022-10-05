@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "start:prod": "NODE_ENV=prod PORT=3015 ts-node ./src/bin/www.ts",
-    "start:dev": "NODE_ENV=dev PORT=3015 ts-node ./src/bin/www.ts"
+    "start:dev": "NODE_ENV=dev PORT=3015 nodemon ./src/bin/www.ts"
   },
   "dependencies": {
     "@types/config": "^3.3.0",
