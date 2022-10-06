@@ -57,6 +57,7 @@ export const queryPersonalStatsEth = (
                 usd_amount : usdAmount
                 coin_amount : coinAmount
                 block_number : block
+                type
             }
             approvals (
                 orderBy: timestamp

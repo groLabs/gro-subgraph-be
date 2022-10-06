@@ -81,7 +81,6 @@ export const queryPersonalStatsAvax = (
                 usd_amount : usdAmount
                 coin_amount : coinAmount
                 block_number : block
-                type
             }
         }
     }`
