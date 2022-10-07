@@ -20,6 +20,16 @@ export const queryPersonalStatsEth = (
         prices {
             gvt
             gro
+            uniswap_gvt_gro
+            uniswap_gro_usdc
+            balancer_gro_weth
+            curve_pwrd3crv
+        }
+        poolDatas {
+            poolId
+            reserve0
+            reserve1
+            total_supply
         }
         factors {
             pwrd

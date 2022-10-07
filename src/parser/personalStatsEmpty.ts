@@ -2,6 +2,7 @@ import {
     IPersonalStatsEthereum,
     IPersonalStatsAvalanche,
 } from '../interfaces/IPersonalStats';
+import { IPoolData } from '../interfaces/IPoolData';
 import {
     Status,
     NetworkId,
@@ -264,4 +265,13 @@ export const NO_POOL_DATA = {
         'claim_now': 'N/A',
         'vest_all': 'N/A'
     }
+}
+
+// TBC: to be renamed
+// not used yet; perhaps to be deleted
+export const EMPTY_POOL_DATA : IPoolData = {
+    'poolId': 0,
+    'reserve0': 0,
+    'reserve1': 0,
+    'totalSupply': 0
 }
