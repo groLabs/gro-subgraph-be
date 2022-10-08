@@ -1,6 +1,6 @@
 import moment from 'moment';
 import express, { Request, Response, NextFunction } from 'express';
-import { query } from 'express-validator';
+import { query, validationResult } from 'express-validator';
 import { validate } from '../common/validate';
 import { showError } from '../handler/logHandler';
 import { etlPersonalStatsSubgraph } from '../etl/etlSubgraph';
@@ -34,6 +34,11 @@ router.get(
     ]),
     wrapAsync(async (req: Request, res: Response) => {
         try {
+            // if errors during validation, response has been already sent, so just exit
+            const errors = validationResult(req);
+            if (!errors.isEmpty())
+                return;
+
             const { subgraph, address } = req.query;
             if ((<any>Object).values(Subgraph).includes(subgraph)) {
                 // address & subgraph fields are correct
@@ -59,7 +64,7 @@ router.get(
                 moment().unix().toString(),
                 'N/A',
                 err as string,
-            ))
+            ));
         }
     })
 );
