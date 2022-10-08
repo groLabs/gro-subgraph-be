@@ -1,4 +1,5 @@
 import { IPool } from './IPool';
+import { IPrice } from './IPrice';
 import { IGroGate } from './IGroGate';
 import { ITransferTx } from './ITransferTx';
 import { IApprovalTx } from './IApprovalTx';
@@ -37,6 +38,7 @@ interface ITotalsSummary {
 export interface IPersonalStatsEthereum {
     'status': Status,
     'network_id': NetworkId,
+    'prices': IPrice,
     'airdrops': [],
     'transaction': {
         'deposits': ITransferTx[],

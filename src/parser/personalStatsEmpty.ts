@@ -27,6 +27,15 @@ export const emptyEthUser = (
         'launch_timestamp': LAUNCH_TIMESTAMP_ETH,
         'current_timestamp': currentTimestamp,
         'address': address,
+        'prices': {
+            'gvt': 0,
+            'gro': 0,
+            'weth': 0,
+            'balancer_gro_weth': 0,
+            'uniswap_gvt_gro': 0,
+            'uniswap_gro_usdc': 0,
+            'curve_pwrd3crv': 0,
+        },
         'airdrops': [],
         'transaction': {
             'deposits': [],

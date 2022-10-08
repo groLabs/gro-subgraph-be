@@ -23,7 +23,7 @@ export const parsePersonalStatsSubgraphEthereum = (
 ): IPersonalStatsEthereum => {
     try {
         const currentTimestamp = stats_eth._meta.block.timestamp;
-        if (stats_eth.users.length === 0)
+        if (stats_eth.users.length === 0 || stats_eth.prices.length === 0)
             return emptyEthUser(
                 currentTimestamp,
                 account,
@@ -53,6 +53,7 @@ export const parsePersonalStatsSubgraphEthereum = (
             "launch_timestamp": md_eth.launchTimestamp.toString(),
             "current_timestamp": currentTimestamp.toString(),
             "address": stats_eth.users[0].address as string,
+            "prices": stats_eth.prices[0],
             "airdrops": [] as [],
             "amount_added": {
                 "pwrd": totals_eth.value_added_pwrd as string,
@@ -159,23 +160,22 @@ const getPool = (poolId: number, stats_eth: any, _poolInfo: IPoolData[]): IPool 
             const balance = parseFloat(pool[0].balance);
             switch (poolId) {
                 case 0:
-                    pricePerShare = parseFloat(stats_eth.prices[0].gro);
+                    pricePerShare = parseFloat(price.gro);
                     break;
                 case 1:
-                    // const poolInfo = getPoolInfo(_poolInfo, poolId);
-                    // const gvtAmount = (balance * poolInfo.totalSupply) * poolInfo.reserve0;
-                    // const groAmount = (balance * poolInfo.totalSupply) * poolInfo.reserve1;
-                    // pricePerShare = gvtAmount * price.gvt;
+                    pricePerShare = parseFloat(price.uniswap_gvt_gro);
                     break;
                 case 2:
+                    pricePerShare = parseFloat(price.uniswap_gro_usdc);
                     break;
                 case 3:
-                    pricePerShare = parseFloat(stats_eth.prices[0].gvt);
+                    pricePerShare = parseFloat(price.gvt);
                     break;
                 case 4:
-                    pricePerShare = parseFloat(stats_eth.prices[0].curve_pwrd3crv);
+                    pricePerShare = parseFloat(price.curve_pwrd3crv);
                     break;
                 case 5:
+                    pricePerShare = parseFloat(price.balancer_gro_weth);
                     break;
                 case 6:
                     pricePerShare = 1;
@@ -184,7 +184,7 @@ const getPool = (poolId: number, stats_eth: any, _poolInfo: IPoolData[]): IPool 
                     showError('parser/personalStatsEth.ts->getPool()', `Pool <${poolId} not found`);
                     break;
             }
-            console.log('pool', poolId, 'pricePerShare:', pricePerShare, 'balance', (parseFloat(pool[0].balance)));
+            // console.log('pool', poolId, 'pricePerShare:', pricePerShare, 'balance', (parseFloat(pool[0].balance)));
             return {
                 'net_reward': pool[0].net_reward,
                 'balance': (balance * pricePerShare).toString(),
@@ -206,8 +206,12 @@ const getAllPools = (stats_eth: any, _poolInfo: IPoolData[]): IPool => {
     let balance = 0;
     for (let i = 0; i <= 6; i += 1) {
         const pool = getPool(i, stats_eth, _poolInfo);
-        net_reward += parseFloat(pool.net_reward);
-        balance += parseFloat(pool.balance);
+        net_reward += pool.net_reward === 'N/A'
+            ? 0
+            : parseFloat(pool.net_reward);
+        balance += pool.balance === 'N/A'
+            ? 0
+            : parseFloat(pool.balance);
     }
     return {
         'net_reward': net_reward.toString(),

@@ -20,6 +20,7 @@ export const queryPersonalStatsEth = (
         prices {
             gvt
             gro
+            weth
             uniswap_gvt_gro
             uniswap_gro_usdc
             balancer_gro_weth
