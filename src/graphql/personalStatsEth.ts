@@ -16,21 +16,35 @@ export const queryPersonalStatsEth = (
             networkId
             networkName
             launchTimestamp
+            gro_per_block
+            total_alloc
         }
         prices {
             gvt
             gro
             weth
+            dai
+            usdc
+            usdt
+            curve_pwrd3crv
             uniswap_gvt_gro
             uniswap_gro_usdc
             balancer_gro_weth
-            curve_pwrd3crv
         }
         poolDatas {
             poolId
             reserve0
             reserve1
             total_supply
+        }
+        stakerDatas {
+            id
+            lp_supply
+            acc_gro_per_share
+            alloc_point
+            pool_share
+            block_number
+            block_timestamp
         }
         factors {
             pwrd
@@ -85,30 +99,37 @@ export const queryPersonalStatsEth = (
             pool_0: pools(where: {poolId: 0}) {
                 net_reward
                 balance
+                reward_debt
               }
             pool_1: pools(where: {poolId: 1}) {
                 net_reward
                 balance
+                reward_debt
             }
             pool_2: pools(where: {poolId: 2}) {
                 net_reward
                 balance
+                reward_debt
             }
             pool_3: pools(where: {poolId: 3}) {
                 net_reward
                 balance
+                reward_debt
             }
             pool_4: pools(where: {poolId: 4}) {
                 net_reward
                 balance
+                reward_debt
             }
             pool_5: pools(where: {poolId: 5}) {
                 net_reward
                 balance
+                reward_debt
             }
             pool_6: pools(where: {poolId: 6}) {
                 net_reward
                 balance
+                reward_debt
             }
         }
     }`

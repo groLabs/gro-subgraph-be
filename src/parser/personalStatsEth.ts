@@ -1,20 +1,22 @@
 import moment from 'moment';
 import { showError } from '../handler/logHandler';
-import { IPool } from '../interfaces/IPool';
 import { ITransferTx } from '../interfaces/ITransferTx';
 import { IApprovalTx } from '../interfaces/IApprovalTx';
 import { IPersonalStatsEthereum } from '../interfaces/IPersonalStats';
-import { IPoolData } from '../interfaces/IPoolData';
+
 import {
     emptyEthUser,
-    EMPTY_POOL_DATA, // TODO: to be renewed
-    NO_POOL_DATA,
 } from './personalStatsEmpty';
 import {
     Status,
     NetworkId,
     NetworkName,
 } from '../types';
+import {
+    getPool,
+    getAllPools,
+} from '../utils/staker';
+import { IPool } from '../interfaces/IPool';
 
 
 export const parsePersonalStatsSubgraphEthereum = (
@@ -34,7 +36,6 @@ export const parsePersonalStatsSubgraphEthereum = (
         const totals_eth = stats_eth.users[0].totals;
         const transfers_eth: ITransferTx[] = stats_eth.users[0].transfers;
         const approvals_eth: IApprovalTx[] = stats_eth.users[0].approvals;
-        const poolInfo: IPoolData[] = stats_eth.poolDatas;
 
         // Pre-calculations
         const currentBalancePwrd = parseFloat(totals_eth.net_based_amount_pwrd) / parseFloat(stats_eth.factors[0].pwrd);
@@ -43,6 +44,15 @@ export const parsePersonalStatsSubgraphEthereum = (
         const netReturnsPwrd = currentBalancePwrd - parseFloat(totals_eth.net_value_pwrd);
         const netReturnsGvt = currentBalanceGvt - parseFloat(totals_eth.net_value_gvt);
         const netReturnsTotal = netReturnsPwrd + netReturnsGvt;
+        let pools: IPool[] = [];
+        pools[0] = getPool(0, stats_eth);
+        pools[1] = getPool(1, stats_eth);
+        pools[2] = getPool(2, stats_eth);
+        pools[3] = getPool(3, stats_eth);
+        pools[4] = getPool(4, stats_eth);
+        pools[5] = getPool(5, stats_eth);
+        pools[6] = getPool(6, stats_eth);
+        const allPools: IPool = getAllPools(pools);
 
         const onlyGtoken = (item: string) => ['gvt', 'pwrd'].includes(item) ? true : false;
 
@@ -116,14 +126,14 @@ export const parsePersonalStatsSubgraphEthereum = (
                 }
             },
             "pools": {
-                "all": getAllPools(stats_eth, poolInfo),
-                "single_staking_100_gro_0": getPool(0, stats_eth, poolInfo),
-                "uniswap_v2_5050_gro_gvt_1": getPool(1, stats_eth, poolInfo),
-                "uniswap_v2_5050_gro_usdc_2": getPool(2, stats_eth, poolInfo),
-                "single_staking_100_gvt_3": getPool(3, stats_eth, poolInfo),
-                "curve_meta_pwrd_3crv_4": getPool(4, stats_eth, poolInfo),
-                "balancer_v2_8020_gro_weth_5": getPool(5, stats_eth, poolInfo),
-                "single_staking_100_pwrd_6": getPool(6, stats_eth, poolInfo)
+                "all": allPools,
+                "single_staking_100_gro_0": pools[0],
+                "uniswap_v2_5050_gro_gvt_1": pools[1],
+                "uniswap_v2_5050_gro_usdc_2": pools[2],
+                "single_staking_100_gvt_3": pools[3],
+                "curve_meta_pwrd_3crv_4": pools[4],
+                "balancer_v2_8020_gro_weth_5": pools[5],
+                "single_staking_100_pwrd_6": pools[6]
             },
             "gro_balance_combined": 'N/A',
             "vesting_airdrop": {
@@ -146,90 +156,4 @@ export const parsePersonalStatsSubgraphEthereum = (
             Status.ERROR,
         );
     }
-}
-
-// TODO: No cal passar _poolInfo, ja està inclòs en stats_eth
-const getPool = (poolId: number, stats_eth: any, _poolInfo: IPoolData[]): IPool => {
-    try {
-        let pricePerShare = -1;
-        const pool = stats_eth.users[0][`pool_${poolId}`];
-        const price = stats_eth.prices[0];
-        if (pool.length === 0) {
-            return NO_POOL_DATA;
-        } else {
-            const balance = parseFloat(pool[0].balance);
-            switch (poolId) {
-                case 0:
-                    pricePerShare = parseFloat(price.gro);
-                    break;
-                case 1:
-                    pricePerShare = parseFloat(price.uniswap_gvt_gro);
-                    break;
-                case 2:
-                    pricePerShare = parseFloat(price.uniswap_gro_usdc);
-                    break;
-                case 3:
-                    pricePerShare = parseFloat(price.gvt);
-                    break;
-                case 4:
-                    pricePerShare = parseFloat(price.curve_pwrd3crv);
-                    break;
-                case 5:
-                    pricePerShare = parseFloat(price.balancer_gro_weth);
-                    break;
-                case 6:
-                    pricePerShare = 1;
-                    break;
-                default:
-                    showError('parser/personalStatsEth.ts->getPool()', `Pool <${poolId} not found`);
-                    break;
-            }
-            // console.log('pool', poolId, 'pricePerShare:', pricePerShare, 'balance', (parseFloat(pool[0].balance)));
-            return {
-                'net_reward': pool[0].net_reward,
-                'balance': (balance * pricePerShare).toString(),
-                'coinBalance': pool[0].balance,
-                'rewards': {
-                    'claim_now': 'N/A',
-                    'vest_all': 'N/A'
-                }
-            }
-        }
-    } catch (err) {
-        showError('parser/personalStatsEth.ts->getPool()', err);
-        return NO_POOL_DATA;
-    }
-}
-
-const getAllPools = (stats_eth: any, _poolInfo: IPoolData[]): IPool => {
-    let net_reward = 0;
-    let balance = 0;
-    for (let i = 0; i <= 6; i += 1) {
-        const pool = getPool(i, stats_eth, _poolInfo);
-        net_reward += pool.net_reward === 'N/A'
-            ? 0
-            : parseFloat(pool.net_reward);
-        balance += pool.balance === 'N/A'
-            ? 0
-            : parseFloat(pool.balance);
-    }
-    return {
-        'net_reward': net_reward.toString(),
-        'balance': balance.toString(),
-        'coinBalance': '--',
-        'rewards': {
-            'claim_now': 'N/A',
-            'vest_all': 'N/A'
-        }
-    }
-}
-
-// TODO: to be renamed
-// TODO: handle exception if not found
-const getPoolInfo = (
-    _poolMD: IPoolData[],
-    _poolId: number
-): IPoolData => {
-    const result = _poolMD[_poolId];
-    return _poolMD[_poolId];
 }

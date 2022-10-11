@@ -266,7 +266,7 @@ export const emptyAvaxUser = (
     }
 }
 
-export const NO_POOL_DATA = {
+export const NO_POOL = {
     'net_reward': 'N/A',
     'balance': 'N/A',
     'coinBalance': 'N/A',
@@ -276,11 +276,12 @@ export const NO_POOL_DATA = {
     }
 }
 
-// TBC: to be renamed
-// not used yet; perhaps to be deleted
-export const EMPTY_POOL_DATA : IPoolData = {
-    'poolId': 0,
-    'reserve0': 0,
-    'reserve1': 0,
-    'totalSupply': 0
+export const EMPTY_POOL = {
+    'net_reward': '0',
+    'balance': '0',
+    'coinBalance': '0',
+    'rewards': {
+        'claim_now': '0',
+        'vest_all': '0'
+    }
 }
