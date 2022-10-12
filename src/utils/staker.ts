@@ -113,7 +113,6 @@ export const calcRewards = (
         const currentBlock = stats_eth._meta.block.number;
         const blockNumber = staker[0].block_number;
         const poolShare = parseFloat(staker[0].pool_share);
-        // const accGroPerShare = parseFloat(staker[0].acc_gro_per_share) * 1000000; //TODO: fix it in subgraph
         const accGroPerShare = parseFloat(staker[0].acc_gro_per_share); //TODO: fix it in subgraph
         const lpSupply = parseFloat(staker[0].lp_supply);
         const reward = balance * (accGroPerShare + ((currentBlock - blockNumber) * groPerBlock * poolShare) / lpSupply) - rewardDebt;
