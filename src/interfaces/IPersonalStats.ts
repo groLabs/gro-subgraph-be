@@ -5,6 +5,7 @@ import { ITransferTx } from './ITransferTx';
 import { IApprovalTx } from './IApprovalTx';
 import { IVestingBonus } from './IVestingBonus';
 import { IVestingAirdrop } from './IVestingAirdrop';
+import { IGroBalanceCombinedDetail } from './IGroBalanceCombined';
 import {
     Status,
     NetworkId,
@@ -70,6 +71,7 @@ export interface IPersonalStatsEthereum {
     },
     'address': string,
     'gro_balance_combined': string,
+    'gro_balance_combined_detail': IGroBalanceCombinedDetail,
     'vesting_airdrop': IVestingAirdrop
 }
 

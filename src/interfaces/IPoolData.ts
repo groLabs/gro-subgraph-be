@@ -1,6 +1,6 @@
 export interface IPoolData {
     'poolId': number
-    'reserve0': number,
-    'reserve1': number,
-    'totalSupply': number
+    'reserve0': string,
+    'reserve1': string,
+    'total_supply': string
 }

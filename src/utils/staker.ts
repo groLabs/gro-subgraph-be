@@ -1,10 +1,13 @@
 import { IPool } from '../interfaces/IPool';
-import { showError } from '../handler/logHandler';
+import { IPoolData } from '../interfaces/IPoolData';
 import { IStakerData } from '../interfaces/IStakerData';
+import { IGroBalanceCombined } from '../interfaces/IGroBalanceCombined';
+import { showError } from '../handler/logHandler';
 import {
     NO_POOL,
     EMPTY_POOL,
 } from '../parser/personalStatsEmpty';
+import { NA } from '../constants';
 import { Env } from '../types';
 
 
@@ -73,16 +76,16 @@ export const getAllPools = (pools: IPool[]): IPool => {
     let vest_all = 0;
     for (let i = 0; i <= 6; i += 1) {
         const pool = pools[i];
-        net_reward += pool.net_reward === 'N/A'
+        net_reward += pool.net_reward === NA
             ? 0
             : parseFloat(pool.net_reward);
-        balance += pool.balance === 'N/A'
+        balance += pool.balance === NA
             ? 0
             : parseFloat(pool.balance);
-        claim_now += pool.rewards.claim_now === 'N/A'
+        claim_now += pool.rewards.claim_now === NA
             ? 0
             : parseFloat(pool.rewards.claim_now);
-        vest_all += pool.rewards.vest_all === 'N/A'
+        vest_all += pool.rewards.vest_all === NA
             ? 0
             : parseFloat(pool.rewards.vest_all);
     }
@@ -102,7 +105,7 @@ export const calcRewards = (
     _balance: string,
     _rewardDebt: string,
     stats_eth: any
-) : number => {
+): number => {
     const staker = stats_eth.stakerDatas.filter(
         (item: IStakerData) => item.id == poolId.toString()
     );
@@ -153,6 +156,58 @@ const showCalcRewards = (
     console.log(`blockNumber: ${blockNumber} poolShare: ${poolShare} accGroPerShare: ${accGroPerShare}`);
     console.log(`rewardDebt: ${rewardDebt} lpSupply: ${lpSupply} => reward: ${reward}`);
 }
+
+export const getGroBalanceCombined = (
+    pool0GroAmount: number,
+    vestingAmount: number,
+    teamAmount: number,
+    pools: IPool[],
+    poolDatas: IPoolData[],
+): IGroBalanceCombined => {
+    // Gro-related pools (not single-sided): 1,2 & 5
+    const pool1LPAmount = parseFloat(pools[1].coinBalance);
+    const pool2LPAmount = parseFloat(pools[2].coinBalance);
+    const pool5LPAmount = parseFloat(pools[5].coinBalance);
+    const pool1Data = poolDatas.filter((item: IPoolData) => item.poolId == 1)[0];
+    const pool2Data = poolDatas.filter((item: IPoolData) => item.poolId == 2)[0];
+    const pool5Data = poolDatas.filter((item: IPoolData) => item.poolId == 5)[0];
+    const pool1TotalSupply = parseFloat(pool1Data.total_supply);
+    const pool2TotalSupply = parseFloat(pool2Data.total_supply);
+    const pool5TotalSupply = parseFloat(pool5Data.total_supply);
+    const pool1GroReserve = parseFloat(pool1Data.reserve1);
+    const pool2GroReserve = parseFloat(pool1Data.reserve0);
+    const pool5GroReserve = parseFloat(pool1Data.reserve0);
+
+    const pool1GroAmount = (pool1TotalSupply !== 0)
+        ? (pool1LPAmount * pool1GroReserve) / pool1TotalSupply
+        : 0;
+    const pool2GroAmount = (pool2TotalSupply !== 0)
+        ? (pool2LPAmount * pool2GroReserve) / pool2TotalSupply
+        : 0;
+    const pool5GroAmount = (pool5TotalSupply != 0)
+        ? (pool5LPAmount * pool5GroReserve) / pool5TotalSupply
+        : 0;
+
+    return {
+        'total': (
+            pool0GroAmount
+            + pool1GroAmount
+            + pool2GroAmount
+            + pool5GroAmount
+            + vestingAmount
+            + teamAmount
+        ).toFixed(7).toString(),
+        'detail': {
+            'unstaked/pool0': pool0GroAmount.toString(),
+            'pool1': pool1GroAmount.toString(),
+            'pool2': pool2GroAmount.toString(),
+            'pool5': pool5GroAmount.toString(),
+            'vesting': vestingAmount.toString(),
+            'team': teamAmount.toString(),
+        }
+    }
+}
+
 
 /*
 _user_lp

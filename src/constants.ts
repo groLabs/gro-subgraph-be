@@ -1,3 +1,4 @@
+export const NA = 'N/A';
 export const PORT = 3015;
 export const TX_ITERATION = 800; // # of records retrieved per subgraph call (limited to 1000 per call)
 export const LAUNCH_TIMESTAMP_ETH = '1622204347';

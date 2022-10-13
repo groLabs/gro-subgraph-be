@@ -1,12 +1,10 @@
 import moment from 'moment';
 import { showError } from '../handler/logHandler';
+import { IPool } from '../interfaces/IPool';
 import { ITransferTx } from '../interfaces/ITransferTx';
 import { IApprovalTx } from '../interfaces/IApprovalTx';
 import { IPersonalStatsEthereum } from '../interfaces/IPersonalStats';
-
-import {
-    emptyEthUser,
-} from './personalStatsEmpty';
+import { emptyEthUser } from './personalStatsEmpty';
 import {
     Status,
     NetworkId,
@@ -15,8 +13,9 @@ import {
 import {
     getPool,
     getAllPools,
+    getGroBalanceCombined,
 } from '../utils/staker';
-import { IPool } from '../interfaces/IPool';
+import { NA } from '../constants';
 
 
 export const parsePersonalStatsSubgraphEthereum = (
@@ -24,6 +23,7 @@ export const parsePersonalStatsSubgraphEthereum = (
     stats_eth: any
 ): IPersonalStatsEthereum => {
     try {
+        // console.dir(stats_eth, { depth: null });
         const currentTimestamp = stats_eth._meta.block.timestamp;
         if (stats_eth.users.length === 0 || stats_eth.prices.length === 0)
             return emptyEthUser(
@@ -53,6 +53,13 @@ export const parsePersonalStatsSubgraphEthereum = (
         pools[5] = getPool(5, stats_eth);
         pools[6] = getPool(6, stats_eth);
         const allPools: IPool = getAllPools(pools);
+        const groBalanceCombined = getGroBalanceCombined(
+            parseFloat(totals_eth.amount_total_gro),
+            parseFloat(stats_eth.users[0].vestingBonus.vesting_gro),
+            parseFloat(totals_eth.amount_total_gro_team),
+            pools,
+            stats_eth.poolDatas,
+        );
 
         const onlyGtoken = (item: string) => ['gvt', 'pwrd'].includes(item) ? true : false;
 
@@ -91,9 +98,9 @@ export const parsePersonalStatsSubgraphEthereum = (
                 "total": netReturnsTotal.toString(),
             },
             "net_returns_ratio": {
-                "pwrd": 'N/A',
-                "gvt": 'N/A',
-                "total": 'N/A'
+                "pwrd": NA,
+                "gvt": NA,
+                "total": NA
             },
             "transaction": {
                 "deposits": transfers_eth.filter((item: ITransferTx) => (
@@ -118,11 +125,11 @@ export const parsePersonalStatsSubgraphEthereum = (
                 "failures": [] as []
             },
             "vest_bonus": {
-                "locked_gro": 'N/A',
-                "net_reward": 'N/A',
+                "locked_gro": NA,
+                "net_reward": NA,
                 "rewards": {
-                    "claim_now": 'N/A',
-                    "vest_all": 'N/A'
+                    "claim_now": NA,
+                    "vest_all": NA
                 }
             },
             "pools": {
@@ -135,14 +142,15 @@ export const parsePersonalStatsSubgraphEthereum = (
                 "balancer_v2_8020_gro_weth_5": pools[5],
                 "single_staking_100_pwrd_6": pools[6]
             },
-            "gro_balance_combined": 'N/A',
+            "gro_balance_combined": groBalanceCombined.total,
+            "gro_balance_combined_detail": groBalanceCombined.detail,
             "vesting_airdrop": {
-                "name": 'N/A',
-                "token": 'N/A',
-                "amount": 'N/A',
-                "claim_initialized": 'N/A',
-                "claimed_amount": 'N/A',
-                "claimable_amount": 'N/A',
+                "name": NA,
+                "token": NA,
+                "amount": NA,
+                "claim_initialized": NA,
+                "claimed_amount": NA,
+                "claimable_amount": NA,
                 "proofs": [] as []
             }
         }

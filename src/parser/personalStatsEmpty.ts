@@ -9,6 +9,7 @@ import {
     NetworkName,
 } from '../types';
 import {
+    NA,
     LAUNCH_TIMESTAMP_ETH,
     LAUNCH_TIMESTAMP_AVAX,
 } from '../constants';
@@ -19,7 +20,7 @@ export const emptyEthUser = (
     address: string,
     status: Status
 ): IPersonalStatsEthereum => {
-    const value = (status === Status.OK) ? '0' : 'N/A';
+    const value = (status === Status.OK) ? '0' : NA;
     return {
         'status': status,
         'network_id': NetworkId.MAINNET,
@@ -71,100 +72,108 @@ export const emptyEthUser = (
             'total': value
         },
         'net_returns_ratio': {
-            'pwrd': 'N/A',
-            'gvt': 'N/A',
-            'total': 'N/A'
+            'pwrd': NA,
+            'gvt': NA,
+            'total': NA
         },
         'vest_bonus': {
-            'locked_gro': 'N/A',
-            'net_reward': 'N/A',
+            'locked_gro': NA,
+            'net_reward': NA,
             'rewards': {
-                'claim_now': 'N/A',
-                'vest_all': 'N/A'
+                'claim_now': NA,
+                'vest_all': NA
             }
         },
         'pools': {
             'all': {
-                'net_reward': 'N/A',
-                'balance': 'N/A',
-                'coinBalance': 'N/A',
+                'net_reward': NA,
+                'balance': NA,
+                'coinBalance': NA,
                 'rewards': {
-                    'claim_now': 'N/A',
-                    'vest_all': 'N/A'
+                    'claim_now': NA,
+                    'vest_all': NA
                 }
             },
             'single_staking_100_gro_0': {
-                'net_reward': 'N/A',
-                'balance': 'N/A',
-                'coinBalance': 'N/A',
+                'net_reward': NA,
+                'balance': NA,
+                'coinBalance': NA,
                 'rewards': {
-                    'claim_now': 'N/A',
-                    'vest_all': 'N/A'
+                    'claim_now': NA,
+                    'vest_all': NA
                 }
             },
             'uniswap_v2_5050_gro_gvt_1': {
-                'net_reward': 'N/A',
-                'balance': 'N/A',
-                'coinBalance': 'N/A',
+                'net_reward': NA,
+                'balance': NA,
+                'coinBalance': NA,
                 'rewards': {
-                    'claim_now': 'N/A',
-                    'vest_all': 'N/A'
+                    'claim_now': NA,
+                    'vest_all': NA
                 }
             },
             'uniswap_v2_5050_gro_usdc_2': {
-                'net_reward': 'N/A',
-                'balance': 'N/A',
-                'coinBalance': 'N/A',
+                'net_reward': NA,
+                'balance': NA,
+                'coinBalance': NA,
                 'rewards': {
-                    'claim_now': 'N/A',
-                    'vest_all': 'N/A'
+                    'claim_now': NA,
+                    'vest_all': NA
                 }
             },
             'single_staking_100_gvt_3': {
-                'net_reward': 'N/A',
-                'balance': 'N/A',
-                'coinBalance': 'N/A',
+                'net_reward': NA,
+                'balance': NA,
+                'coinBalance': NA,
                 'rewards': {
-                    'claim_now': 'N/A',
-                    'vest_all': 'N/A'
+                    'claim_now': NA,
+                    'vest_all': NA
                 }
             },
             'curve_meta_pwrd_3crv_4': {
-                'net_reward': 'N/A',
-                'balance': 'N/A',
-                'coinBalance': 'N/A',
+                'net_reward': NA,
+                'balance': NA,
+                'coinBalance': NA,
                 'rewards': {
-                    'claim_now': 'N/A',
-                    'vest_all': 'N/A'
+                    'claim_now': NA,
+                    'vest_all': NA
                 }
             },
             'balancer_v2_8020_gro_weth_5': {
-                'net_reward': 'N/A',
-                'balance': 'N/A',
-                'coinBalance': 'N/A',
+                'net_reward': NA,
+                'balance': NA,
+                'coinBalance': NA,
                 'rewards': {
-                    'claim_now': 'N/A',
-                    'vest_all': 'N/A'
+                    'claim_now': NA,
+                    'vest_all': NA
                 }
             },
             'single_staking_100_pwrd_6': {
-                'net_reward': 'N/A',
-                'balance': 'N/A',
-                'coinBalance': 'N/A',
+                'net_reward': NA,
+                'balance': NA,
+                'coinBalance': NA,
                 'rewards': {
-                    'claim_now': 'N/A',
-                    'vest_all': 'N/A'
+                    'claim_now': NA,
+                    'vest_all': NA
                 }
             }
         },
-        'gro_balance_combined': 'N/A',
+        'gro_balance_combined': NA,
+        'gro_balance_combined_detail': {
+            'unstaked/pool0': NA,
+            'pool1': NA,
+            'pool2': NA,
+            'pool5': NA,
+            'vesting': NA,
+            'team': NA,
+        },
         'vesting_airdrop': {
-            'name': 'N/A',
-            'token': 'N/A',
-            'amount': 'N/A',
-            'claim_initialized': 'N/A',
-            'claimed_amount': 'N/A',
-            'claimable_amount': 'N/A',
+            'name': NA,
+            'token': NA,
+            'amount': NA,
+            'claim_initialized': NA,
+            'claimed_amount': NA,
+            'claimable_amount': NA,
             'proofs': []
         }
     }
@@ -173,7 +182,7 @@ export const emptyEthUser = (
 export const emptyAvaxUser = (
     status: Status
 ): IPersonalStatsAvalanche => {
-    const value = (status === Status.OK) ? '0' : 'N/A';
+    const value = (status === Status.OK) ? '0' : NA;
     return {
         'status': status,
         'network_id': NetworkId.AVALANCHE,
@@ -233,46 +242,46 @@ export const emptyAvaxUser = (
         },
         'gro_gate': {
             'status': status,
-            'total_claimable_allowance': 'N/A',
-            'total_remaining_allowance': 'N/A',
-            'snapshot_ts': 'N/A',
-            'gro_balance_at_snapshot': 'N/A',
-            'gro_gate_at_snapshot': 'N/A',
+            'total_claimable_allowance': NA,
+            'total_remaining_allowance': NA,
+            'snapshot_ts': NA,
+            'gro_balance_at_snapshot': NA,
+            'gro_gate_at_snapshot': NA,
             'proofs': [],
-            'root': 'N/A',
-            'root_matched': 'N/A',
+            'root': NA,
+            'root_matched': NA,
             'groDAI.e_vault': {
-                'claimable_allowance': 'N/A',
-                'remaining_allowance': 'N/A',
-                'claimable': 'N/A',
-                'base_allowance': 'N/A',
-                'base_allowance_claimed': 'N/A'
+                'claimable_allowance': NA,
+                'remaining_allowance': NA,
+                'claimable': NA,
+                'base_allowance': NA,
+                'base_allowance_claimed': NA
             },
             'groUSDC.e_vault': {
-                'claimable_allowance': 'N/A',
-                'remaining_allowance': 'N/A',
-                'claimable': 'N/A',
-                'base_allowance': 'N/A',
-                'base_allowance_claimed': 'N/A'
+                'claimable_allowance': NA,
+                'remaining_allowance': NA,
+                'claimable': NA,
+                'base_allowance': NA,
+                'base_allowance_claimed': NA
             },
             'groUSDT.e_vault': {
-                'claimable_allowance': 'N/A',
-                'remaining_allowance': 'N/A',
-                'claimable': 'N/A',
-                'base_allowance': 'N/A',
-                'base_allowance_claimed': 'N/A'
+                'claimable_allowance': NA,
+                'remaining_allowance': NA,
+                'claimable': NA,
+                'base_allowance': NA,
+                'base_allowance_claimed': NA
             }
         }
     }
 }
 
 export const NO_POOL = {
-    'net_reward': 'N/A',
-    'balance': 'N/A',
-    'coinBalance': 'N/A',
+    'net_reward': NA,
+    'balance': NA,
+    'coinBalance': NA,
     'rewards': {
-        'claim_now': 'N/A',
-        'vest_all': 'N/A'
+        'claim_now': NA,
+        'vest_all': NA
     }
 }
 

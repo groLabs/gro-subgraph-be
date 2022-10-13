@@ -3,10 +3,11 @@ import { ITransferTx } from '../interfaces/ITransferTx';
 import { IApprovalTx } from '../interfaces/IApprovalTx';
 import { emptyAvaxUser } from './personalStatsEmpty';
 import { IPersonalStatsAvalanche } from '../interfaces/IPersonalStats';
-import { 
+import {
     Status,
     NetworkId,
 } from '../types';
+import { NA } from '../constants';
 
 
 export const parsePersonalStatsSubgraphAvalanche = (
@@ -132,34 +133,34 @@ export const parsePersonalStatsSubgraphAvalanche = (
             },
             'gro_gate': {
                 'status': Status.OK,
-                'total_claimable_allowance': 'N/A',
-                'total_remaining_allowance': 'N/A',
-                'snapshot_ts': 'N/A',
-                'gro_balance_at_snapshot': 'N/A',
-                'gro_gate_at_snapshot': 'N/A',
-                'proofs': []  as [],
-                'root': 'N/A',
-                'root_matched': 'N/A',
+                'total_claimable_allowance': NA,
+                'total_remaining_allowance': NA,
+                'snapshot_ts': NA,
+                'gro_balance_at_snapshot': NA,
+                'gro_gate_at_snapshot': NA,
+                'proofs': [] as [],
+                'root': NA,
+                'root_matched': NA,
                 'groDAI.e_vault': {
-                    'claimable_allowance': 'N/A',
-                    'remaining_allowance': 'N/A',
-                    'claimable': 'N/A',
-                    'base_allowance': 'N/A',
-                    'base_allowance_claimed': 'N/A'
+                    'claimable_allowance': NA,
+                    'remaining_allowance': NA,
+                    'claimable': NA,
+                    'base_allowance': NA,
+                    'base_allowance_claimed': NA
                 },
                 'groUSDC.e_vault': {
-                    'claimable_allowance': 'N/A',
-                    'remaining_allowance': 'N/A',
-                    'claimable': 'N/A',
-                    'base_allowance': 'N/A',
-                    'base_allowance_claimed': 'N/A'
+                    'claimable_allowance': NA,
+                    'remaining_allowance': NA,
+                    'claimable': NA,
+                    'base_allowance': NA,
+                    'base_allowance_claimed': NA
                 },
                 'groUSDT.e_vault': {
-                    'claimable_allowance': 'N/A',
-                    'remaining_allowance': 'N/A',
-                    'claimable': 'N/A',
-                    'base_allowance': 'N/A',
-                    'base_allowance_claimed': 'N/A'
+                    'claimable_allowance': NA,
+                    'remaining_allowance': NA,
+                    'claimable': NA,
+                    'base_allowance': NA,
+                    'base_allowance_claimed': NA
                 }
             }
         }
