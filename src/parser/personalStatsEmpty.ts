@@ -2,7 +2,6 @@ import {
     IPersonalStatsEthereum,
     IPersonalStatsAvalanche,
 } from '../interfaces/IPersonalStats';
-import { IPoolData } from '../interfaces/IPoolData';
 import {
     Status,
     NetworkId,
@@ -13,6 +12,7 @@ import {
     LAUNCH_TIMESTAMP_ETH,
     LAUNCH_TIMESTAMP_AVAX,
 } from '../constants';
+import { toStr } from '../utils/utils';
 
 
 export const emptyEthUser = (
@@ -20,7 +20,7 @@ export const emptyEthUser = (
     address: string,
     status: Status
 ): IPersonalStatsEthereum => {
-    const value = (status === Status.OK) ? '0' : NA;
+    const value = (status === Status.OK) ? toStr(0) : NA;
     return {
         'status': status,
         'network_id': NetworkId.MAINNET,
@@ -182,7 +182,7 @@ export const emptyEthUser = (
 export const emptyAvaxUser = (
     status: Status
 ): IPersonalStatsAvalanche => {
-    const value = (status === Status.OK) ? '0' : NA;
+    const value = (status === Status.OK) ? toStr(0) : NA;
     return {
         'status': status,
         'network_id': NetworkId.AVALANCHE,
@@ -286,11 +286,11 @@ export const NO_POOL = {
 }
 
 export const EMPTY_POOL = {
-    'net_reward': '0',
-    'balance': '0',
-    'coinBalance': '0',
+    'net_reward': toStr(0),
+    'balance': toStr(0),
+    'coinBalance': toStr(0),
     'rewards': {
-        'claim_now': '0',
-        'vest_all': '0'
+        'claim_now': toStr(0),
+        'vest_all': toStr(0)
     }
 }

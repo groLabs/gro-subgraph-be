@@ -1,8 +1,7 @@
-import moment from 'moment';
 import { Request, Response, NextFunction } from 'express';
 import { ValidationChain, validationResult } from 'express-validator';
 import { personalStatsError } from '../parser/personalStatsError';
-
+import { now } from '../utils/utils';
 
 //TODO: change to ES6
 const validate = function validate(validations: ValidationChain[]) {
@@ -13,7 +12,7 @@ const validate = function validate(validations: ValidationChain[]) {
             return next();
         }
         res.status(400).json(personalStatsError(
-            moment().unix().toString(),
+            now(),
             'N/A',
             JSON.stringify(errors)
         ));

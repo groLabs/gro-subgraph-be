@@ -1,4 +1,3 @@
-import moment from 'moment';
 import { getPersonalStats } from '../handler/personalStatsHandler';
 import { parsePersonalStatsSubgraphEthereum } from '../parser/personalStatsEth';
 import { parsePersonalStatsSubgraphAvalanche } from '../parser/personalStatsAvax';
@@ -6,12 +5,14 @@ import { personalStatsSubgraphParserTotals } from '../parser/personalStatsTotals
 import { personalStatsError } from '../parser/personalStatsError';
 import { IPersonalStatsTotals } from '../interfaces/IPersonalStats';
 import { Subgraph } from '../types';
-import { getUrl } from '../utils/utils';
+import {
+    now,
+    getUrl,
+} from '../utils/utils';
 import {
     showInfo,
-    showError
+    showError,
 } from '../handler/logHandler';
-import { Env } from '../types';
 
 
 export const etlPersonalStatsSubgraph = async (
@@ -42,13 +43,13 @@ export const etlPersonalStatsSubgraph = async (
         ]);
         if (resultEth.errors) {
             return personalStatsError(
-                moment().unix().toString(),
+                now(),
                 _account,
                 resultEth.errors.map((item: any) => item)
             );
         } else if (resultAvax.errors) {
             return personalStatsError(
-                moment().unix().toString(),
+                now(),
                 _account,
                 resultAvax.errors.map((item: any) => item)
             );
@@ -70,7 +71,7 @@ export const etlPersonalStatsSubgraph = async (
             return resultTotals;
         } else {
             return personalStatsError(
-                moment().unix().toString(),
+                now(),
                 _account,
                 'Unknown error in /etl/etlSubgraph->etlPersonalStatsSubgraph()'
             );
@@ -79,7 +80,7 @@ export const etlPersonalStatsSubgraph = async (
         console.log('** 4');
         showError('etl/etlSubgraph.ts->etlPersonalStatsSubgraph()', err);
         return personalStatsError(
-            moment().unix().toString(),
+            now(),
             _account,
             err as string
         );

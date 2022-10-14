@@ -1,5 +1,7 @@
+import moment from 'moment';
 import { Subgraph as sg } from '../types';
 import { SUBGRAPH_URL as URL } from '../constants';
+
 
 export const getUrl = (subgraph: sg) => {
     switch (subgraph) {
@@ -38,6 +40,13 @@ export const isAvaxSubgraph = (url: string): boolean => {
         : false;
 }
 
+// @dev: some values from graphql output come as type <any> although they are string
 export const toStr = (value: number): string => {
-    return value.toFixed(7).toString();
+    return (typeof value === 'string')
+        ? parseFloat(value).toFixed(7).toString()
+        : value.toFixed(7).toString();
+}
+
+export const now = (): string => {
+    return moment().unix().toString();
 }

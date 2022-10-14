@@ -1,4 +1,3 @@
-import moment from 'moment';
 import express, { Request, Response, NextFunction } from 'express';
 import { query, validationResult } from 'express-validator';
 import { validate } from '../common/validate';
@@ -6,6 +5,7 @@ import { showError } from '../handler/logHandler';
 import { etlPersonalStatsSubgraph } from '../etl/etlSubgraph';
 import { personalStatsError } from '../parser/personalStatsError';
 import { Subgraph } from '../types';
+import { now } from '../utils/utils';
 
 
 const router = express.Router();
@@ -53,7 +53,7 @@ router.get(
                 const err_msg = `unknown target subgraph <${subgraph}>`;
                 showError('routes->subgraph.ts on /gro_personal_position_mc', err_msg);
                 res.json(personalStatsError(
-                    moment().unix().toString(),
+                    now(),
                     address?.toString() || 'N/A',
                     err_msg
                 ));
@@ -61,7 +61,7 @@ router.get(
         } catch (err) {
             showError('routes/subgraph.ts->gro_personal_position_mc', err);
             res.json(personalStatsError(
-                moment().unix().toString(),
+                now(),
                 'N/A',
                 err as string,
             ));

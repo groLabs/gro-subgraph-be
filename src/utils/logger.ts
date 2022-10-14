@@ -1,7 +1,5 @@
 import 'winston-daily-rotate-file';
 import { createLogger, transports, format } from 'winston';
-import { Env } from '../types';
-
 const { combine, timestamp, printf, errors } = format;
 const logFolder = './';
 

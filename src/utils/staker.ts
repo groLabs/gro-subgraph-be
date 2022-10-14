@@ -194,13 +194,13 @@ export const getGroBalanceCombined = (
         : 0;
 
     return {
-        'total': (
+        'total': toStr(
             pool0GroAmount
             + pool1GroAmount
             + pool2GroAmount
             + pool5GroAmount
             + vestingAmount
-        ).toFixed(7).toString(),
+        ),
         'detail': {
             'unstaked/pool0': toStr(pool0GroAmount),
             'pool1': toStr(pool1GroAmount),

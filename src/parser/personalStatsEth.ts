@@ -1,4 +1,3 @@
-import moment from 'moment';
 import { showError } from '../handler/logHandler';
 import { IPool } from '../interfaces/IPool';
 import { ITransferTx } from '../interfaces/ITransferTx';
@@ -16,6 +15,10 @@ import {
     getGroBalanceCombined,
 } from '../utils/staker';
 import { NA } from '../constants';
+import {
+    now,
+    toStr
+} from '../utils/utils';
 
 
 export const parsePersonalStatsSubgraphEthereum = (
@@ -73,29 +76,29 @@ export const parsePersonalStatsSubgraphEthereum = (
             "prices": stats_eth.prices[0],
             "airdrops": [] as [],
             "amount_added": {
-                "pwrd": totals_eth.value_added_pwrd as string,
-                "gvt": totals_eth.value_added_gvt as string,
+                "pwrd": toStr(parseFloat(totals_eth.value_added_pwrd)),
+                "gvt": toStr(parseFloat(totals_eth.value_added_gvt)),
                 "total": totals_eth.value_added_total as string,
             },
             "amount_removed": {
-                "pwrd": totals_eth.value_removed_pwrd as string,
-                "gvt": totals_eth.value_removed_gvt as string,
-                "total": totals_eth.value_removed_total as string,
+                "pwrd": toStr(totals_eth.value_removed_pwrd),
+                "gvt": toStr(totals_eth.value_removed_gvt),
+                "total": toStr(totals_eth.value_removed_total),
             },
             "net_amount_added": {
-                "pwrd": totals_eth.net_value_pwrd as string,
-                "gvt": totals_eth.net_value_gvt as string,
-                "total": totals_eth.net_value_total as string,
+                "pwrd": toStr(totals_eth.net_value_pwrd),
+                "gvt": toStr(totals_eth.net_value_gvt),
+                "total": toStr(totals_eth.net_value_total),
             },
             "current_balance": {
-                "pwrd": currentBalancePwrd.toString(),
-                "gvt": currentBalanceGvt.toString(),
-                "total": currentBalanceTotal.toString(),
+                "pwrd": toStr(currentBalancePwrd),
+                "gvt": toStr(currentBalanceGvt),
+                "total": toStr(currentBalanceTotal),
             },
             "net_returns": {
-                "pwrd": netReturnsPwrd.toString(),
-                "gvt": netReturnsGvt.toString(),
-                "total": netReturnsTotal.toString(),
+                "pwrd": toStr(netReturnsPwrd),
+                "gvt": toStr(netReturnsGvt),
+                "total": toStr(netReturnsTotal),
             },
             "net_returns_ratio": {
                 "pwrd": NA,
@@ -159,7 +162,7 @@ export const parsePersonalStatsSubgraphEthereum = (
     } catch (err) {
         showError('parser/personalStatsEth.ts->parsePersonalStatsSubgraphEthereum()', err);
         return emptyEthUser(
-            moment().unix().toString(),
+            now(),
             account,
             Status.ERROR,
         );
