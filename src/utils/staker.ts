@@ -9,6 +9,7 @@ import {
 } from '../parser/personalStatsEmpty';
 import { NA } from '../constants';
 import { Env } from '../types';
+import { toStr } from './utils';
 
 
 export const getPool = (poolId: number, stats_eth: any): IPool => {
@@ -55,11 +56,11 @@ export const getPool = (poolId: number, stats_eth: any): IPool => {
             );
             return {
                 'net_reward': pool[0].net_reward,
-                'balance': (balance * pricePerShare).toString(),
+                'balance': toStr(balance * pricePerShare),
                 'coinBalance': pool[0].balance,
                 'rewards': {
-                    'claim_now': (reward * 0.3).toString(),
-                    'vest_all': reward.toString()
+                    'claim_now': toStr(reward * 0.3),
+                    'vest_all': toStr(reward)
                 }
             }
         }
@@ -90,12 +91,12 @@ export const getAllPools = (pools: IPool[]): IPool => {
             : parseFloat(pool.rewards.vest_all);
     }
     return {
-        'net_reward': net_reward.toString(),
-        'balance': balance.toString(),
+        'net_reward': toStr(net_reward),
+        'balance': toStr(balance),
         'coinBalance': '--',
         'rewards': {
-            'claim_now': claim_now.toString(),
-            'vest_all': vest_all.toString(),
+            'claim_now': toStr(claim_now),
+            'vest_all': toStr(vest_all),
         }
     }
 }
@@ -116,9 +117,13 @@ export const calcRewards = (
         const currentBlock = stats_eth._meta.block.number;
         const blockNumber = staker[0].block_number;
         const poolShare = parseFloat(staker[0].pool_share);
-        const accGroPerShare = parseFloat(staker[0].acc_gro_per_share); //TODO: fix it in subgraph
+        const accGroPerShare = parseFloat(staker[0].acc_gro_per_share);
         const lpSupply = parseFloat(staker[0].lp_supply);
-        const reward = balance * (accGroPerShare + ((currentBlock - blockNumber) * groPerBlock * poolShare) / lpSupply) - rewardDebt;
+        const reward =
+            balance * (
+                accGroPerShare
+                + ((currentBlock - blockNumber) * groPerBlock * poolShare) / lpSupply
+            ) - rewardDebt;
         if (process.env.NODE_ENV === Env.DEV) {
             showCalcRewards(
                 poolId,
@@ -175,8 +180,8 @@ export const getGroBalanceCombined = (
     const pool2TotalSupply = parseFloat(pool2Data.total_supply);
     const pool5TotalSupply = parseFloat(pool5Data.total_supply);
     const pool1GroReserve = parseFloat(pool1Data.reserve1);
-    const pool2GroReserve = parseFloat(pool1Data.reserve0);
-    const pool5GroReserve = parseFloat(pool1Data.reserve0);
+    const pool2GroReserve = parseFloat(pool2Data.reserve0);
+    const pool5GroReserve = parseFloat(pool5Data.reserve0);
 
     const pool1GroAmount = (pool1TotalSupply !== 0)
         ? (pool1LPAmount * pool1GroReserve) / pool1TotalSupply
@@ -195,15 +200,14 @@ export const getGroBalanceCombined = (
             + pool2GroAmount
             + pool5GroAmount
             + vestingAmount
-            + teamAmount
         ).toFixed(7).toString(),
         'detail': {
-            'unstaked/pool0': pool0GroAmount.toString(),
-            'pool1': pool1GroAmount.toString(),
-            'pool2': pool2GroAmount.toString(),
-            'pool5': pool5GroAmount.toString(),
-            'vesting': vestingAmount.toString(),
-            'team': teamAmount.toString(),
+            'unstaked/pool0': toStr(pool0GroAmount),
+            'pool1': toStr(pool1GroAmount),
+            'pool2': toStr(pool2GroAmount),
+            'pool5': toStr(pool5GroAmount),
+            'vesting': toStr(vestingAmount),
+            'team': toStr(teamAmount),
         }
     }
 }

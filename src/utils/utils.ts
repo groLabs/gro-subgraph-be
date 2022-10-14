@@ -37,3 +37,7 @@ export const isAvaxSubgraph = (url: string): boolean => {
         ? true
         : false;
 }
+
+export const toStr = (value: number): string => {
+    return value.toFixed(7).toString();
+}
