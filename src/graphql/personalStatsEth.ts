@@ -21,6 +21,7 @@ export const queryPersonalStatsEth = (
             total_locked_amount
             total_bonus
             global_start_time
+            init_unlocked_percent
         }
         prices {
             gvt

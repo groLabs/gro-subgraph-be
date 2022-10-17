@@ -145,6 +145,7 @@ export const parsePersonalStatsSubgraphEthereum = (
                 md_eth.total_locked_amount,
                 md_eth.total_bonus,
                 md_eth.global_start_time,
+                parseFloat(md_eth.init_unlocked_percent),
             ),
             "pools": {
                 "all": allPools,
