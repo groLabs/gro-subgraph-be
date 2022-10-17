@@ -14,6 +14,7 @@ import {
     getAllPools,
     getGroBalanceCombined,
 } from '../utils/staker';
+import { getVestingBonus } from '../utils/vesting';
 import { NA } from '../constants';
 import {
     now,
@@ -56,9 +57,12 @@ export const parsePersonalStatsSubgraphEthereum = (
         pools[5] = getPool(5, stats_eth);
         pools[6] = getPool(6, stats_eth);
         const allPools: IPool = getAllPools(pools);
+        const totalGro = stats_eth.users[0].vestingBonus.vesting_gro
+        const netReward =  stats_eth.users[0].vestingBonus.net_reward;
+        const latestStartTime = stats_eth.users[0].vestingBonus.latest_start_time
         const groBalanceCombined = getGroBalanceCombined(
             parseFloat(totals_eth.amount_total_gro),
-            parseFloat(stats_eth.users[0].vestingBonus.vesting_gro),
+            parseFloat(totalGro),
             parseFloat(totals_eth.amount_total_gro_team),
             pools,
             stats_eth.poolDatas,
@@ -78,7 +82,7 @@ export const parsePersonalStatsSubgraphEthereum = (
             "amount_added": {
                 "pwrd": toStr(parseFloat(totals_eth.value_added_pwrd)),
                 "gvt": toStr(parseFloat(totals_eth.value_added_gvt)),
-                "total": totals_eth.value_added_total as string,
+                "total": toStr(totals_eth.value_added_total),
             },
             "amount_removed": {
                 "pwrd": toStr(totals_eth.value_removed_pwrd),
@@ -106,35 +110,42 @@ export const parsePersonalStatsSubgraphEthereum = (
                 "total": NA
             },
             "transaction": {
-                "deposits": transfers_eth.filter((item: ITransferTx) => (
-                    item.type === 'core_deposit'
-                    && onlyGtoken(item.token)
-                )),
-                "withdrawals": transfers_eth.filter((item: ITransferTx) => (
-                    item.type === 'core_withdrawal'
-                    && onlyGtoken(item.token)
-                )),
-                "transfers_in": transfers_eth.filter((item: ITransferTx) => (
-                    item.type === 'transfer_in'
-                    && onlyGtoken(item.token)
-                )),
-                "transfers_out": transfers_eth.filter((item: ITransferTx) => (
-                    item.type === 'transfer_out'
-                    && onlyGtoken(item.token)
-                )),
-                "approvals": approvals_eth.filter((item: IApprovalTx) =>
-                    onlyGtoken(item.token)
-                ),
+                "deposits": transfers_eth
+                    .filter((item: ITransferTx) => (
+                        item.type === 'core_deposit'
+                        && onlyGtoken(item.token)
+                    )),
+                "withdrawals": transfers_eth
+                    .filter((item: ITransferTx) => (
+                        item.type === 'core_withdrawal'
+                        && onlyGtoken(item.token)
+                    )),
+                "transfers_in": transfers_eth
+                    .filter((item: ITransferTx) => (
+                        item.type === 'transfer_in'
+                        && onlyGtoken(item.token)
+                    )),
+                "transfers_out": transfers_eth
+                    .filter((item: ITransferTx) => (
+                        item.type === 'transfer_out'
+                        && onlyGtoken(item.token)
+                    )),
+                "approvals": approvals_eth
+                    .filter((item: IApprovalTx) =>
+                        onlyGtoken(item.token)
+                    ),
                 "failures": [] as []
             },
-            "vest_bonus": {
-                "locked_gro": NA,
-                "net_reward": NA,
-                "rewards": {
-                    "claim_now": NA,
-                    "vest_all": NA
-                }
-            },
+            "vest_bonus": getVestingBonus(
+                parseFloat(totalGro),
+                parseFloat(netReward),
+                parseFloat(groBalanceCombined.total),
+                currentTimestamp,
+                latestStartTime,
+                md_eth.total_locked_amount,
+                md_eth.total_bonus,
+                md_eth.global_start_time,
+            ),
             "pools": {
                 "all": allPools,
                 "single_staking_100_gro_0": pools[0],

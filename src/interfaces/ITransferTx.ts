@@ -6,8 +6,8 @@ import {
 export interface ITransferTx {
     // id: string
     // contractAddress: string
-    block: number
-    timestamp: number
+    block: string
+    timestamp: string
     hash: string
     type: TxType
     token: Token

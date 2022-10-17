@@ -18,6 +18,9 @@ export const queryPersonalStatsEth = (
             launchTimestamp
             gro_per_block
             total_alloc
+            total_locked_amount
+            total_bonus
+            global_start_time
         }
         prices {
             gvt
@@ -78,6 +81,7 @@ export const queryPersonalStatsEth = (
                 claim_now
                 vest_all
                 vesting_gro
+                latest_start_time
             }
             transfers (
                 first: ${first}
