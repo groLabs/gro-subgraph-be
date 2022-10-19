@@ -3,7 +3,7 @@ import { parsePersonalStatsSubgraphEthereum } from '../parser/personalStatsEth';
 import { parsePersonalStatsSubgraphAvalanche } from '../parser/personalStatsAvax';
 import { personalStatsSubgraphParserTotals } from '../parser/personalStatsTotals';
 import { personalStatsError } from '../parser/personalStatsError';
-import { IPersonalStatsTotals } from '../interfaces/IPersonalStats';
+import { IPersonalStatsTotals } from '../interfaces/personalStats/IPersonalStats';
 import { Subgraph } from '../types';
 import {
     now,
@@ -15,7 +15,7 @@ import {
 } from '../handler/logHandler';
 
 
-export const etlPersonalStatsSubgraph = async (
+export const etlPersonalStats = async (
     subgraph: Subgraph,
     _account: string,
     skip: number,
@@ -73,12 +73,12 @@ export const etlPersonalStatsSubgraph = async (
             return personalStatsError(
                 now(),
                 _account,
-                'Unknown error in /etl/etlSubgraph->etlPersonalStatsSubgraph()'
+                'Unknown error in /etl/etlSubgraph->etlPersonalStats()'
             );
         }
     } catch (err) {
         console.log('** 4');
-        showError('etl/etlSubgraph.ts->etlPersonalStatsSubgraph()', err);
+        showError('etl/etlSubgraph.ts->etlPersonalStats()', err);
         return personalStatsError(
             now(),
             _account,
