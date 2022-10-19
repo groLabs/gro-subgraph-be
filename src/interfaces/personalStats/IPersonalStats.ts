@@ -10,7 +10,7 @@ import {
     Status,
     NetworkId,
     NetworkName,
-} from '../types';
+} from '../../types';
 
 
 interface ITotalsEthereum {

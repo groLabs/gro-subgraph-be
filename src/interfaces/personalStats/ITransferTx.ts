@@ -1,7 +1,7 @@
 import {
     Token,
     TxType,
-} from '../types';
+} from '../../types';
 
 export interface ITransferTx {
     // id: string
