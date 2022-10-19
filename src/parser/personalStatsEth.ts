@@ -1,8 +1,8 @@
 import { showError } from '../handler/logHandler';
-import { IPool } from '../interfaces/IPool';
-import { ITransferTx } from '../interfaces/ITransferTx';
-import { IApprovalTx } from '../interfaces/IApprovalTx';
-import { IPersonalStatsEthereum } from '../interfaces/IPersonalStats';
+import { IPool } from '../interfaces/personalStats/IPool';
+import { ITransferTx } from '../interfaces/personalStats/ITransferTx';
+import { IApprovalTx } from '../interfaces/personalStats/IApprovalTx';
+import { IPersonalStatsEthereum } from '../interfaces/personalStats/IPersonalStats';
 import { emptyEthUser } from './personalStatsEmpty';
 import {
     Status,

@@ -3,7 +3,7 @@ import {
     IPersonalStatsEthereum,
     IPersonalStatsAvalanche,
     IPersonalStatsTotals,
-} from '../interfaces/IPersonalStats';
+} from '../interfaces/personalStats/IPersonalStats';
 import { Status } from '../types';
 import { personalStatsError } from './personalStatsError';
 import {

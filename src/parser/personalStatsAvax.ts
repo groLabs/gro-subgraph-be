@@ -1,8 +1,8 @@
 import { showError } from '../handler/logHandler';
-import { ITransferTx } from '../interfaces/ITransferTx';
-import { IApprovalTx } from '../interfaces/IApprovalTx';
+import { ITransferTx } from '../interfaces/personalStats/ITransferTx';
+import { IApprovalTx } from '../interfaces/personalStats/IApprovalTx';
 import { emptyAvaxUser } from './personalStatsEmpty';
-import { IPersonalStatsAvalanche } from '../interfaces/IPersonalStats';
+import { IPersonalStatsAvalanche } from '../interfaces/personalStats/IPersonalStats';
 import {
     Status,
     NetworkId,

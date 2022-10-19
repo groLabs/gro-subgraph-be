@@ -1,4 +1,4 @@
-import { etlPersonalStatsSubgraph } from './etl/etlSubgraph';
+import { etlPersonalStats } from './etl/etlPersonalStats';
 import { Subgraph } from './types';
 
 
@@ -14,7 +14,7 @@ import { Subgraph } from './types';
                     // Example avax:    0x2ce1a66f22a2dc6e410d9021d57aeb8d13d6bfef
                     if (params.length === 3) {
                         if ((<any>Object).values(Subgraph).includes(params[1])) {
-                            await etlPersonalStatsSubgraph(
+                            await etlPersonalStats(
                                 params[1] as Subgraph,
                                 params[2],
                                 0,

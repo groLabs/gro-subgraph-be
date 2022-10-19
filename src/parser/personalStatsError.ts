@@ -6,7 +6,7 @@ import {
     emptyEthUser, 
     emptyAvaxUser
 } from './personalStatsEmpty';
-import { IPersonalStatsTotals} from '../interfaces/IPersonalStats';
+import { IPersonalStatsTotals} from '../interfaces/personalStats/IPersonalStats';
 
 
 const emptyTotals = {

@@ -1,7 +1,7 @@
 import {
     IPersonalStatsEthereum,
     IPersonalStatsAvalanche,
-} from '../interfaces/IPersonalStats';
+} from '../interfaces/personalStats/IPersonalStats';
 import {
     Status,
     NetworkId,

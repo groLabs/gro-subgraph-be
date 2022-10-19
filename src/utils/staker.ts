@@ -1,7 +1,7 @@
-import { IPool } from '../interfaces/IPool';
-import { IPoolData } from '../interfaces/IPoolData';
-import { IStakerData } from '../interfaces/IStakerData';
-import { IGroBalanceCombined } from '../interfaces/IGroBalanceCombined';
+import { IPool } from '../interfaces/personalStats/IPool';
+import { IPoolData } from '../interfaces/personalStats/IPoolData';
+import { IStakerData } from '../interfaces/personalStats/IStakerData';
+import { IGroBalanceCombined } from '../interfaces/personalStats/IGroBalanceCombined';
 import { showError } from '../handler/logHandler';
 import {
     NO_POOL,

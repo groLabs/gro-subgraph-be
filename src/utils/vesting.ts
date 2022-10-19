@@ -1,5 +1,5 @@
 import { MAX_VEST_TIME } from '../constants';
-import { IVestingBonus } from '../interfaces/IVestingBonus';
+import { IVestingBonus } from '../interfaces/personalStats/IVestingBonus';
 import { toStr } from './utils';
 
 
