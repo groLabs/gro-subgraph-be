@@ -37,7 +37,7 @@ export const getPersonalStats = async (
                 );
         }
     } catch (err) {
-        showError('handler/personalStatsHandlers.ts->getPersonalStats()', err);
+        showError('handler/personalStatsHandler.ts->getPersonalStats()', err);
         return null;
     }
 }

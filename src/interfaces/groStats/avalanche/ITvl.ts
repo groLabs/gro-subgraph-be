@@ -1,0 +1,15 @@
+export interface ITvl {
+    'groDAI.e_vault': string,
+    'groUSDC.e_vault': string,
+    'groUSDT.e_vault': string,
+    'groDAI.e_vault_v1_5': string,
+    'groUSDC.e_vault_v1_5': string,
+    'groUSDT.e_vault_v1_5': string,
+    'groDAI.e_vault_v1_6': string,
+    'groUSDC.e_vault_v1_6': string,
+    'groUSDT.e_vault_v1_6': string,
+    'groDAI.e_vault_v1_7': string,
+    'groUSDC.e_vault_v1_7': string,
+    'groUSDT.e_vault_v1_7': string,
+    'total': string,
+}
