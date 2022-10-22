@@ -37,7 +37,6 @@ router.get(
                 // address & subgraph fields are correct
                 const personalStats = await etlGroStats(
                     subgraph as Subgraph,
-                    '',
                     0,
                     []);
                 res.json(personalStats);

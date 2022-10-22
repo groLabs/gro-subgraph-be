@@ -1,6 +1,7 @@
-import { callSubgraph } from '../caller/subgraphCaller';
-import { showError } from '../handler/logHandler';
 import { TX_ITERATION } from '../constants';
+import { Route } from '../types'; '../types';
+import { showError } from '../handler/logHandler';
+import { callSubgraph } from '../caller/subgraphCaller';
 
 
 export const getPersonalStats = async (
@@ -14,7 +15,8 @@ export const getPersonalStats = async (
             url,
             account,
             TX_ITERATION,
-            skip
+            skip,
+            Route.PERSONAL_STATS,
         );
         if (call.errors) {
             return call;

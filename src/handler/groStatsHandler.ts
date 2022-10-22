@@ -1,6 +1,7 @@
-import { callSubgraph } from '../caller/subgraphCaller';
-import { showError } from '../handler/logHandler';
 import { TX_ITERATION } from '../constants';
+import { Route } from '../types'; '../types';
+import { showError } from '../handler/logHandler';
+import { callSubgraph } from '../caller/subgraphCaller';
 
 
 //TODO: review where to apply recursivity (probably in Vault/Strategies)
@@ -14,20 +15,20 @@ export const getGroStats = async (
             url,
             '',
             TX_ITERATION,
-            skip
+            skip,
+            Route.GRO_STATS,
         );
         if (call.errors) {
             return call;
-        } else if (call.data.users.length === 0) {
-            return call.data;
         } else {
             if (skip === 0) {
                 result = call.data;
             } else {
-                const transfers = result.users[0].transfers.concat(call.data.users[0].transfers);
-                result.users[0].transfers = transfers;
+                // todo
+                // const transfers = result.users[0].transfers.concat(call.data.users[0].transfers);
+                // result.users[0].transfers = transfers;
             }
-            return (call.data.users[0].transfers.length < TX_ITERATION)
+            return (/*call.data.users[0].transfers.length < TX_ITERATION*/ 1 === 1)
                 ? result
                 : getGroStats(
                     url,

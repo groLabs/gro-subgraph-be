@@ -20,8 +20,8 @@ export const personalStatsSubgraphParserTotals = (
         const personalStats = {
             "gro_personal_position_mc": {
                 "status": (
-                    stats_eth.status === 'ok'
-                    && stats_avax.status === 'ok')
+                    stats_eth.status === Status.OK
+                    && stats_avax.status === Status.OK)
                     ? Status.OK
                     : Status.ERROR,
                 "error_msg": '',

@@ -1,10 +1,10 @@
-import { getPersonalStats } from '../handler/personalStatsHandler';
-import { parsePersonalStatsSubgraphEthereum } from '../parser/personalStatsEth';
-import { parsePersonalStatsSubgraphAvalanche } from '../parser/personalStatsAvax';
-import { personalStatsSubgraphParserTotals } from '../parser/personalStatsTotals';
-import { personalStatsError } from '../parser/personalStatsError';
-import { IPersonalStatsTotals } from '../interfaces/personalStats/IPersonalStats';
 import { Subgraph } from '../types';
+import { getGroStats } from '../handler/groStatsHandler';
+import { groStatsParserEthereum } from '../parser/groStatsEth';
+import { groStatsParserAvalanche } from '../parser/groStatsAvax';
+import { groStatsParser } from '../parser/groStats';
+import { groStatsError } from '../parser/groStatsError';
+import { IGroStats } from '../interfaces/groStats/IGroStats';
 import {
     now,
     getUrl,
@@ -17,72 +17,62 @@ import {
 
 export const etlGroStats = async (
     subgraph: Subgraph,
-    _account: string,
     skip: number,
     result: any
-): Promise<IPersonalStatsTotals> => {
+): Promise<IGroStats> => {
     try {
-        const account = _account.toLowerCase(); // Subgraphs store addresses in lowercase
         const url = getUrl(subgraph);
         const [
             resultEth,
             resultAvax,
         ] = await Promise.all([
-            getPersonalStats(
+            getGroStats(
                 url.ETH,
-                account,
                 skip,
                 result
             ),
-            getPersonalStats(
+            getGroStats(
                 url.AVAX,
-                account,
                 skip,
                 result
             )
         ]);
         if (resultEth.errors) {
-            return personalStatsError(
+            return groStatsError(
                 now(),
-                _account,
                 resultEth.errors.map((item: any) => item)
             );
         } else if (resultAvax.errors) {
-            return personalStatsError(
+            return groStatsError(
                 now(),
-                _account,
                 resultAvax.errors.map((item: any) => item)
             );
         } else if (resultEth && resultAvax) {
-            const resultEthParsed = parsePersonalStatsSubgraphEthereum(
-                account,
+            const resultEthParsed = groStatsParserEthereum(
                 resultEth
             );
-            const resultAvaxParsed = parsePersonalStatsSubgraphAvalanche(
+            const resultAvaxParsed = groStatsParserAvalanche(
                 resultAvax
             );
-            const resultTotals = personalStatsSubgraphParserTotals(
+            const resultTotals = groStatsParser(
                 resultEthParsed,
                 resultAvaxParsed
             );
-            showInfo(`Personal stats requested for user ${account}`);
+            showInfo(`Gro stats requested`);
             // if (process.env.NODE_ENV === Env.DEV)
             //     console.dir(resultTotals, { depth: null });
             return resultTotals;
         } else {
-            return personalStatsError(
+            return groStatsError(
                 now(),
-                _account,
-                'Unknown error in /etl/etlSubgraph->etlGroStats()'
+                'Unknown error in /etl/etlGroStats.ts->etlGroStats()',
             );
         }
     } catch (err) {
-        console.log('** 4');
-        showError('etl/etlSubgraph.ts->etlGroStats()', err);
-        return personalStatsError(
+        showError('etl/etlGroStats.ts->etlGroStats()', err);
+        return groStatsError(
             now(),
-            _account,
-            err as string
+            err as string,
         );
     }
 }

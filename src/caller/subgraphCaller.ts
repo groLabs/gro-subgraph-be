@@ -2,31 +2,62 @@ import axios from 'axios';
 import { showError } from '../handler/logHandler';
 import { queryPersonalStatsEth } from '../graphql/personalStatsEth';
 import { queryPersonalStatsAvax } from '../graphql/personalStatsAvax';
+import { queryGroStatsEth } from '../graphql/groStatsEth';
+import { queryGroStatsAvax } from '../graphql/groStatsAvax';
 import {
     isEthSubgraph,
     isAvaxSubgraph
 } from '../utils/utils';
+import { Route } from '../types';
 
 
 export const callSubgraph = async (
     url: string,
     account: string,
     first: number,
-    skip: number
+    skip: number,
+    route: Route,
 ): Promise<any> => {
     let q;
     if (isEthSubgraph(url)) {
-        q = queryPersonalStatsEth(
-            account,
-            first,
-            skip
-        );
+        if (route === Route.PERSONAL_STATS) {
+            q = queryPersonalStatsEth(
+                account,
+                first,
+                skip
+            );
+        } else if (route === Route.GRO_STATS) {
+            q = queryGroStatsEth(
+                first,
+                skip
+            );
+        } else {
+            showError(
+                'caller/subgraphCaller.ts->callSubgraph()',
+                `unknown route ${route}}`,
+            );
+            return null;
+        }
     } else if (isAvaxSubgraph(url)) {
-        q = queryPersonalStatsAvax(
-            account,
-            first,
-            skip
-        );
+        if (route === Route.PERSONAL_STATS) {
+            q = queryPersonalStatsAvax(
+                account,
+                first,
+                skip
+            );
+        } else if (route === Route.GRO_STATS) {
+            q = queryGroStatsAvax(
+                first,
+                skip
+            );
+        } else {
+            showError(
+                'caller/subgraphCaller.ts->callSubgraph()',
+                `unknown route ${route}}`,
+            );
+            return null;
+        }
+
     } else {
         showError(
             'caller/subgraphCaller.ts->callSubgraph()',

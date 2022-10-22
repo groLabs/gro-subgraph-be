@@ -56,3 +56,8 @@ export enum NetworkId {
   MAINNET = '1',
   AVALANCHE = '43114',
 }
+
+export enum Route {
+  GRO_STATS = 'gro_stats',
+  PERSONAL_STATS = 'personal_stats',
+}
