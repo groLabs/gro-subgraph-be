@@ -15,6 +15,7 @@ export const queryGroStatsEth = (
             networkId
         }
         prices {
+            pwrd
             gvt
             gro
             weth

@@ -13,13 +13,16 @@ import { IGroStatsEthereum } from '../interfaces/groStats/IGroStats';
 export const groStatsParserEthereum = (
     stats_eth: any
 ): IGroStatsEthereum => {
-    let value = '0'; //TODO: temp
+    let value = '0';
     const md = stats_eth.masterDatas[0];
     const price = stats_eth.prices[0];
     const core = stats_eth.coreDatas[0];
     const factor = stats_eth.factors[0];
-
     const currentTimestamp = stats_eth._meta.block.timestamp;
+    // calcs
+    const pwrdTvl = parseFloat(core.total_supply_pwrd_based) / parseFloat(factor.pwrd);
+    const gvtTvl = parseFloat(core.total_supply_gvt) * parseFloat(price.gvt);
+    const totalTvl = pwrdTvl + gvtTvl;
 
     const result = {
         'status': md.status as Status,
@@ -58,9 +61,9 @@ export const groStatsParserEthereum = (
             'hodl_bonus': value,
         },
         'tvl': {
-            "pwrd": toStr(parseFloat(core.total_supply_pwrd_based) / parseFloat(factor.pwrd)),
-            "gvt": toStr(parseFloat(core.total_supply_gvt) * parseFloat(price.gvt)),
-            "total": value,
+            "pwrd": toStr(pwrdTvl),
+            "gvt": toStr(gvtTvl),
+            "total": toStr(totalTvl),
             "util_ratio": value,
             "util_ratio_limit_PD": value,
             "util_ratio_limit_GW": value,
@@ -100,9 +103,9 @@ export const groStatsParserEthereum = (
             'protocols': [],
         },
         'token_price_usd': {
-            "pwrd": NA,
-            "gvt": NA,
-            "gro": NA,
+            "pwrd": toStr(price.pwrd),
+            "gvt": toStr(price.gvt),
+            "gro": toStr(price.gro),
         },
         'pools': [],
         'pwrdBoost': {
