@@ -1,3 +1,6 @@
+import { Token } from './types';
+
+
 export const NA = 'N/A';
 export const PORT = 3015;
 export const TX_ITERATION = 800; // # of records retrieved per subgraph call (limited to 1000 per call)
@@ -27,3 +30,8 @@ export const SUBGRAPH_URL = {
     }
     // (1): To be updated when Avalanche network goes decentralised
 }
+export const STABLECOINS = [
+    Token.DAI,
+    Token.USDC,
+    Token.USDT,
+];

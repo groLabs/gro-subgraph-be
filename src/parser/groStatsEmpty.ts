@@ -1,3 +1,6 @@
+import { toStr } from '../utils/utils';
+import { IVault } from '../interfaces/groStats/ethereum/IVault';
+import { IStrategy } from '../interfaces/groStats/ethereum/IStrategy';
 import {
     Status,
     NetworkName,
@@ -7,7 +10,6 @@ import {
     LAUNCH_TIMESTAMP_ETH,
     LAUNCH_TIMESTAMP_AVAX,
 } from '../constants';
-import { toStr } from '../utils/utils';
 import {
     IGroStats,
     IGroStatsEthereum,
@@ -166,4 +168,28 @@ export const emptyGroStatsAvax = (
     }
 }
 
+export const EMPTY_STRATEGY: IStrategy = {
+    'name': NA,
+    'display_name': NA,
+    'address': '0x',
+    'amount': toStr(0),
+    'last3d_apy': toStr(0),
+    'share': toStr(0),
+    'last_update': 0,
+}
 
+export const EMPTY_VAULT: IVault = {
+    "amount": "0",
+    "display_name": NA,
+    "last3d_apy": "0",
+    "name": NA,
+    "reserves": {
+        "amount": "0",
+        "display_name": NA,
+        "last3d_apy": "0",
+        "name": NA,
+        "share": "0"
+    },
+    "share": "0.4961491517610466",
+    "strategies": [EMPTY_STRATEGY],
+}

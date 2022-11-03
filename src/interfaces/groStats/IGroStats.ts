@@ -26,11 +26,11 @@ export interface IGroStatsEthereum {
         'total_amount': string,
         'last3d_apy': string,
         'lifeguard': ILifeguard,
-        'vault': IVaultEth[],
+        'vault': IVaultEth[] | null,
     },
     'exposure': IExposure,
     'token_price_usd': ITokenPriceUsd,
-    'pools': IPool[],
+    'pools': IPool[] | null,
     'pwrdBoost': IBoost,
     'gvtBoost': IBoost,
 }
@@ -43,7 +43,7 @@ export interface IGroStatsAvalanche {
     'token_price_usd': {
         'avax': string,
     },
-    'labs_vault': IVaultAvax[],
+    'labs_vault': IVaultAvax[] | null,
 }
 
 export interface IGroStats {

@@ -1,3 +1,6 @@
+import { toStr } from '../utils/utils';
+import { getVaults } from '../utils/strategies';
+import { IGroStatsEthereum } from '../interfaces/groStats/IGroStats';
 import {
     Status,
     NetworkName,
@@ -6,8 +9,6 @@ import {
     NA,
     LAUNCH_TIMESTAMP_ETH,
 } from '../constants';
-import { toStr } from '../utils/utils';
-import { IGroStatsEthereum } from '../interfaces/groStats/IGroStats';
 
 
 export const groStatsParserEthereum = (
@@ -18,6 +19,7 @@ export const groStatsParserEthereum = (
     const price = stats_eth.prices[0];
     const core = stats_eth.coreDatas[0];
     const factor = stats_eth.factors[0];
+    const strategies = stats_eth.strategies;
     const currentTimestamp = stats_eth._meta.block.timestamp;
     // calcs
     const pwrdTvl = parseFloat(core.total_supply_pwrd_based) / parseFloat(factor.pwrd);
@@ -96,7 +98,7 @@ export const groStatsParserEthereum = (
                 "share": value,
                 "last3d_apy": value,
             },
-            'vault': [],
+            'vault': getVaults(strategies),
         },
         'exposure': {
             'stablecoins': [],
