@@ -72,17 +72,17 @@ const updateShares = (
     for (let i = 0; i < vaults.length; i++) {
         let vault = vaults[i];
         const vaultAmount = parseFloat(vault.amount);
-        vault.share = (vaultAmount > 0)
+        vault.share = (totalAmount > 0)
             ? toStr((vaultAmount / totalAmount))
             : toStr(0);
         const reservesAmount = parseFloat(vault.reserves.amount);
-        vault.reserves.share = (reservesAmount > 0)
+        vault.reserves.share = (totalAmount > 0)
             ? toStr((reservesAmount / totalAmount))
             : toStr(0);
         for (let x = 0; x < vault.strategies.length; x++) {
             let strat = vault.strategies[x];
             const stratAmount = parseFloat(strat.amount);
-            strat.share = (stratAmount > 0)
+            strat.share = (totalAmount > 0)
                 ? toStr((stratAmount / totalAmount))
                 : toStr(0);
         }
