@@ -1,6 +1,12 @@
 import { Token } from '../types';
-import { toStr } from '../utils/utils';
-import { STABLECOINS } from '../constants';
+import { toStr, now as _now } from '../utils/utils';
+import {
+    TS_1D,
+    TS_7D,
+    TS_15D,
+    STABLECOINS,
+    DEFAULT_STRATEGY_APY
+} from '../constants';
 import { EMPTY_VAULT } from '../parser/groStatsEmpty';
 import { IVault } from '../interfaces/groStats/ethereum/IVault';
 import { IStrategy } from '../interfaces/groStats/ethereum/IStrategy';
@@ -37,7 +43,7 @@ const calcVaultData = (
                 'display_name': str.strat_display_name,
                 'address': str.id,
                 'amount': str.total_assets_strategy,
-                'last3d_apy': '0',
+                'last3d_apy': calcStratAPY(parseFloat(str.total_assets_strategy), str.harvests, str.id),
                 'share': '0',
                 'last_update': maxTimestamp,
             }
@@ -65,6 +71,7 @@ const calcVaultData = (
     }
 }
 
+// Update shares on vaults based on strategy shares
 const updateShares = (
     vaults: IVault[],
     totalAmount: number
@@ -99,4 +106,44 @@ export const getVaults = (strats: any[]): IVault[] | null => {
     const totalAmount = result.reduce((val, item) => val + parseFloat(item.amount), 0);
     result = updateShares(result, totalAmount);
     return (result.length > 0) ? result : null;
+}
+
+export const calcStratAPY = (
+    totalAmount: number,
+    harvests: any[],
+    strategyAddress: string,
+): string => {
+    let netProfit = 0;
+    let latestTS = 0;
+    let latestTS_7d15d = 0;
+    let now = parseInt(_now());
+    for (let i = 0; i < harvests.length; i++) {
+        let harvest = harvests[i];
+        if (harvest.strategyAddress.id === strategyAddress) {
+            if (harvest.timestamp >= now - TS_7D) {
+                netProfit += harvest.gain - harvest.loss;
+                if (harvest.timestamp > latestTS)
+                    latestTS = harvest.timestamp;
+            }
+            if ((harvest.timestamp < now - TS_7D)
+                && (harvest.timestamp >= now - TS_15D)
+                && (harvest.timestamp > latestTS_7d15d)
+            ) {
+                console.log('in! harvest.timestamp', harvest.timestamp, 'now - TS_7D', now - TS_7D, 'now - TS_15D', now - TS_15D);
+                latestTS_7d15d = harvest.timestamp;
+            }
+        }
+    }
+
+    if (latestTS_7d15d > 0) {
+        const days = (latestTS - latestTS_7d15d) / TS_1D;
+        const apy = (netProfit / totalAmount) * (365 / days);
+        console.log('strat', strategyAddress, 'netProfit', netProfit, 'totalAmount', totalAmount, 'now', now, '7d', now - TS_7D, '15d', now - TS_7D)
+        console.log('latestTS', latestTS, 'latestTS_7d15d', latestTS_7d15d, 'days', (latestTS - latestTS_7d15d) / TS_1D, 'apy', apy);
+        return toStr(apy);
+    } else {
+        const apy = DEFAULT_STRATEGY_APY.get(strategyAddress);
+        return apy ? toStr(apy) : '0';
+    }
+
 }
