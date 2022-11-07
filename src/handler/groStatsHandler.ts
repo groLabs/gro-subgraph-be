@@ -8,7 +8,8 @@ import { callSubgraph } from '../caller/subgraphCaller';
 export const getGroStats = async (
     url: string,
     skip: number,
-    result: any
+    result: any,
+    timestamp: number,
 ): Promise<any> => {
     try {
         const call = await callSubgraph(
@@ -17,6 +18,7 @@ export const getGroStats = async (
             TX_ITERATION,
             skip,
             Route.GRO_STATS,
+            timestamp,
         );
         if (call.errors) {
             return call;
@@ -33,7 +35,8 @@ export const getGroStats = async (
                 : getGroStats(
                     url,
                     skip + TX_ITERATION,
-                    result
+                    result,
+                    timestamp,
                 );
         }
     } catch (err) {

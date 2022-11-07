@@ -17,6 +17,7 @@ export const getPersonalStats = async (
             TX_ITERATION,
             skip,
             Route.PERSONAL_STATS,
+            0,
         );
         if (call.errors) {
             return call;

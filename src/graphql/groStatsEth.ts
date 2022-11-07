@@ -1,6 +1,7 @@
 export const queryGroStatsEth = (
     first: number,
-    skip: number
+    skip: number,
+    timestamp: number,
 ) => (
     `{
         _meta {
@@ -39,6 +40,16 @@ export const queryGroStatsEth = (
             strategy_debt
             block_strategy_reported
             block_hourly_update
+            harvests(orderBy: timestamp, orderDirection: desc, where: {
+                timestamp_gt: ${timestamp}
+            }) {
+              timestamp
+              gain
+              loss
+              strategyAddress {
+                id
+              }
+            }
         }
     }`
 );

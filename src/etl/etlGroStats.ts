@@ -1,10 +1,11 @@
 import { Subgraph } from '../types';
-import { getGroStats } from '../handler/groStatsHandler';
-import { groStatsParserEthereum } from '../parser/groStatsEth';
-import { groStatsParserAvalanche } from '../parser/groStatsAvax';
 import { groStatsParser } from '../parser/groStats';
 import { groStatsError } from '../parser/groStatsError';
+import { getGroStats } from '../handler/groStatsHandler';
 import { IGroStats } from '../interfaces/groStats/IGroStats';
+import { groStatsParserEthereum } from '../parser/groStatsEth';
+import { groStatsParserAvalanche } from '../parser/groStatsAvax';
+import { TS_15D } from '../constants';
 import {
     now,
     getUrl,
@@ -15,6 +16,7 @@ import {
 } from '../handler/logHandler';
 
 
+// @dev: get strategy harvests from the last 15d
 export const etlGroStats = async (
     subgraph: Subgraph,
     skip: number,
@@ -29,12 +31,14 @@ export const etlGroStats = async (
             getGroStats(
                 url.ETH,
                 skip,
-                result
+                result,
+                parseInt(now()) - TS_15D,
             ),
             getGroStats(
                 url.AVAX,
                 skip,
-                result
+                result,
+                parseInt(now()) - TS_15D,
             )
         ]);
         if (resultEth.errors) {

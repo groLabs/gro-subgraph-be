@@ -1,6 +1,7 @@
 export const queryGroStatsAvax = (
     first: number,
-    skip: number
+    skip: number,
+    timestamp: number,
 ) => (
     `{
         _meta {

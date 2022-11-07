@@ -1,14 +1,14 @@
 import axios from 'axios';
+import { Route } from '../types';
 import { showError } from '../handler/logHandler';
-import { queryPersonalStatsEth } from '../graphql/personalStatsEth';
-import { queryPersonalStatsAvax } from '../graphql/personalStatsAvax';
 import { queryGroStatsEth } from '../graphql/groStatsEth';
 import { queryGroStatsAvax } from '../graphql/groStatsAvax';
+import { queryPersonalStatsEth } from '../graphql/personalStatsEth';
+import { queryPersonalStatsAvax } from '../graphql/personalStatsAvax';
 import {
     isEthSubgraph,
     isAvaxSubgraph
 } from '../utils/utils';
-import { Route } from '../types';
 
 
 export const callSubgraph = async (
@@ -17,6 +17,7 @@ export const callSubgraph = async (
     first: number,
     skip: number,
     route: Route,
+    timestamp: number,
 ): Promise<any> => {
     let q;
     if (isEthSubgraph(url)) {
@@ -29,7 +30,8 @@ export const callSubgraph = async (
         } else if (route === Route.GRO_STATS) {
             q = queryGroStatsEth(
                 first,
-                skip
+                skip,
+                timestamp
             );
         } else {
             showError(
@@ -48,7 +50,8 @@ export const callSubgraph = async (
         } else if (route === Route.GRO_STATS) {
             q = queryGroStatsAvax(
                 first,
-                skip
+                skip,
+                timestamp,
             );
         } else {
             showError(
