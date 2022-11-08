@@ -11,7 +11,7 @@ import { EMPTY_VAULT } from '../parser/groStatsEmpty';
 import { IVault } from '../interfaces/groStats/ethereum/IVault';
 import { IStrategy } from '../interfaces/groStats/ethereum/IStrategy';
 
-
+// @dev: calc vault & strategies data per vault stablecoin
 const calcVaultData = (
     _strats: any[],
     coin: Token,
@@ -61,7 +61,7 @@ const calcVaultData = (
                 'name': vaultName,
                 'display_name': vaultName,
                 'amount': toStr(totalAssets - totalDebt),
-                'last3d_apy': '--',
+                'last3d_apy': toStr(0),
                 'share': '--',
             },
             'strategies': strats,
@@ -72,27 +72,36 @@ const calcVaultData = (
 }
 
 // Update shares on vaults based on strategy shares
+// totalAmount: sum of all vault amounts
 const updateShares = (
     vaults: IVault[],
     totalAmount: number
 ): IVault[] => {
     for (let i = 0; i < vaults.length; i++) {
         let vault = vaults[i];
+        let apy = 0;
+        // update vault share
         const vaultAmount = parseFloat(vault.amount);
         vault.share = (totalAmount > 0)
             ? toStr((vaultAmount / totalAmount))
             : toStr(0);
+        // update reserves share
         const reservesAmount = parseFloat(vault.reserves.amount);
         vault.reserves.share = (totalAmount > 0)
             ? toStr((reservesAmount / totalAmount))
             : toStr(0);
         for (let x = 0; x < vault.strategies.length; x++) {
+            // update strategy shares
             let strat = vault.strategies[x];
             const stratAmount = parseFloat(strat.amount);
             strat.share = (totalAmount > 0)
                 ? toStr((stratAmount / totalAmount))
                 : toStr(0);
+            apy += parseFloat(strat.last3d_apy) * parseFloat(strat.share);
         }
+        // update vault apy
+        const vaultShare =  parseFloat(vault.share);
+        vault.last3d_apy = (vaultShare > 0) ? toStr(apy / vaultShare) : '0';
     }
     return vaults;
 }
@@ -100,14 +109,19 @@ const updateShares = (
 export const getVaults = (strats: any[]): IVault[] | null => {
     let result: IVault[] = [];
     for (let i = 0; i < STABLECOINS.length; i++) {
-        const vaults = calcVaultData(strats, STABLECOINS[i]);
-        result.push(vaults);
+        const vault = calcVaultData(strats, STABLECOINS[i]);
+        result.push(vault);
     }
+    // sum all vault amounts
     const totalAmount = result.reduce((val, item) => val + parseFloat(item.amount), 0);
     result = updateShares(result, totalAmount);
     return (result.length > 0) ? result : null;
 }
 
+//@dev: apy = ( net profit / total assets ) * ( 365 / n ) , where:
+//      net profit = gain - loss of harvests in the last 7d
+//      total assets = current strategy total assets
+//      n = diff in days between latest harvest timestamp and latest harvest timestamp between last 7d & 15d
 export const calcStratAPY = (
     totalAmount: number,
     harvests: any[],
@@ -129,21 +143,16 @@ export const calcStratAPY = (
                 && (harvest.timestamp >= now - TS_15D)
                 && (harvest.timestamp > latestTS_7d15d)
             ) {
-                console.log('in! harvest.timestamp', harvest.timestamp, 'now - TS_7D', now - TS_7D, 'now - TS_15D', now - TS_15D);
                 latestTS_7d15d = harvest.timestamp;
             }
         }
     }
-
     if (latestTS_7d15d > 0) {
         const days = (latestTS - latestTS_7d15d) / TS_1D;
         const apy = (netProfit / totalAmount) * (365 / days);
-        console.log('strat', strategyAddress, 'netProfit', netProfit, 'totalAmount', totalAmount, 'now', now, '7d', now - TS_7D, '15d', now - TS_7D)
-        console.log('latestTS', latestTS, 'latestTS_7d15d', latestTS_7d15d, 'days', (latestTS - latestTS_7d15d) / TS_1D, 'apy', apy);
         return toStr(apy);
     } else {
         const apy = DEFAULT_STRATEGY_APY.get(strategyAddress);
         return apy ? toStr(apy) : '0';
     }
-
 }
