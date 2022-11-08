@@ -75,28 +75,8 @@ export const groStatsParserEthereum = (
             'total_amount': value,
             'last3d_apy': value,
             'lifeguard': {
-                "stablecoins": [
-                    {
-                        "name": "DAI",
-                        "display_name": "DAI",
-                        "amount": value,
-                    },
-                    {
-                        "name": "USDC",
-                        "display_name": "USDC",
-                        "amount": value,
-                    },
-                    {
-                        "name": "USDT",
-                        "display_name": "USDT",
-                        "amount": value,
-                    }
-                ],
-                "name": NA,
-                "display_name": NA,
                 "amount": value,
                 "share": value,
-                "last3d_apy": value,
             },
             'vault': getVaults(strategies),
         },
