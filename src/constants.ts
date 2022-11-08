@@ -32,10 +32,10 @@ export const STABLECOINS = [
 
 export const DEFAULT_STRATEGY_APY = new Map<string, number>([
     ['0xdea436e15b40e7b707a7002a749f416dfe5b383f', 0.05],   // FRAX
-    ['0x4d5b5376cbcc001bb4f8930208828ab87d121da8', 0.05],   // mUSD
+    ['0x4d5b5376cbcc001bb4f8930208828ab87d121da8', 0.04],   // mUSD->TUSD
     ['0xd370998b2e7941151e7bb9f6e337a12f337d0682', 0.023],  // gUSD
     ['0x8b335d3e266389ae08a2f22b01d33813d40ed8fd', 0.09],   // alUSD
-    ['0xde5a25415c637b52d59ef980b29a5fda8dc3c70b', 0.04],   // TUSD
+    ['0xde5a25415c637b52d59ef980b29a5fda8dc3c70b', 0.06],   // TUSD->oUSD
 ]);
 
 export const NA = 'N/A';
