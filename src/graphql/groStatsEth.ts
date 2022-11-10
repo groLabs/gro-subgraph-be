@@ -19,6 +19,9 @@ export const queryGroStatsEth = (
             pwrd
             gvt
             gro
+            dai
+            usdc
+            usdt
             weth
         }
         factors {

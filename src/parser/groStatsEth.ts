@@ -37,6 +37,7 @@ export const groStatsParserEthereum = (
         pwrdTvl,
         parseFloat(system.last3d_apy)
     );
+    const utilRatio = (gvtTvl > 0) ? pwrdTvl / gvtTvl : 0;
 
     const result = {
         'status': md.status as Status,
@@ -75,9 +76,9 @@ export const groStatsParserEthereum = (
             "pwrd": toStr(pwrdTvl),
             "gvt": toStr(gvtTvl),
             "total": toStr(totalTvl),
-            "util_ratio": value,
-            "util_ratio_limit_PD": value,
-            "util_ratio_limit_GW": value,
+            "util_ratio": toStr(utilRatio),
+            "util_ratio_limit_PD": NA,
+            "util_ratio_limit_GW": NA,
         },
         'system': system,
         'exposure': exposure,
@@ -85,16 +86,11 @@ export const groStatsParserEthereum = (
             "pwrd": toStr(price.pwrd),
             "gvt": toStr(price.gvt),
             "gro": toStr(price.gro),
+            "dai": toStr(price.dai),
+            "usdc": toStr(price.usdc),
+            "usdt": toStr(price.usdt),
         },
         'pools': [],
-        'pwrdBoost': {
-            "upperBoostApy": value,
-            "lowerBoostApy": value,
-        },
-        'gvtBoost': {
-            "upperBoostApy": value,
-            "lowerBoostApy": value,
-        },
     }
     return result;
 }

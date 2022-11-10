@@ -1,6 +1,5 @@
 import { IApy } from './ethereum/IApy';
 import { IPool } from './ethereum/IPool';
-import { IBoost } from './ethereum/IBoost';
 import { IExposure } from './ethereum/IExposure';
 import { ITvl as ITvlEth } from './ethereum/ITvl';
 import { ITvl as ITvlAvax } from './avalanche/ITvl';
@@ -30,8 +29,6 @@ export interface IGroStatsEthereum {
     'exposure': IExposure,
     'token_price_usd': ITokenPriceUsd,
     'pools': IPool[] | null,
-    'pwrdBoost': IBoost,
-    'gvtBoost': IBoost,
 }
 
 export interface IGroStatsAvalanche {

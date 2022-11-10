@@ -25,13 +25,13 @@ export const emptyGroStats = (
     const value = (status === Status.OK) ? toStr(0) : NA;
     return {
         'status': Status.ERROR,
-        "current_timestamp": currentTimestamp,
-        "network": NetworkName.MAINNET,
-        "mc_totals": {
-            "tvl": {
-                "mainnet": value,
-                "avalanche": value,
-                "total": value,
+        'current_timestamp': currentTimestamp,
+        'network': NetworkName.MAINNET,
+        'mc_totals': {
+            'tvl': {
+                'mainnet': value,
+                'avalanche': value,
+                'total': value,
             }
         },
         'mainnet': emptyGroStatsEth(currentTimestamp, status),
@@ -81,19 +81,19 @@ export const emptyGroStatsEth = (
             'hodl_bonus': value,
         },
         'tvl': {
-            "pwrd": value,
-            "gvt": value,
-            "total": value,
-            "util_ratio": value,
-            "util_ratio_limit_PD": value,
-            "util_ratio_limit_GW": value,
+            'pwrd': value,
+            'gvt': value,
+            'total': value,
+            'util_ratio': value,
+            'util_ratio_limit_PD': value,
+            'util_ratio_limit_GW': value,
         },
         'system': {
             'amount': value,
             'last3d_apy': value,
             'lifeguard': {
-                "amount": value,
-                "share": value,
+                'amount': value,
+                'share': value,
             },
             'vault': [],
         },
@@ -102,19 +102,14 @@ export const emptyGroStatsEth = (
             'protocols': [],
         },
         'token_price_usd': {
-            "pwrd": NA,
-            "gvt": NA,
-            "gro": NA,
+            'pwrd': NA,
+            'gvt': NA,
+            'gro': NA,
+            'dai': NA,
+            'usdc': NA,
+            'usdt': NA,
         },
         'pools': [],
-        'pwrdBoost': {
-            "upperBoostApy": value,
-            "lowerBoostApy": value,
-        },
-        'gvtBoost': {
-            "upperBoostApy": value,
-            "lowerBoostApy": value,
-        },
     }
 }
 
@@ -127,19 +122,19 @@ export const emptyGroStatsAvax = (
         'network': NetworkName.AVALANCHE,
         'launch_timestamp': LAUNCH_TIMESTAMP_AVAX,
         'tvl': {
-            "groDAI.e_vault": value,
-            "groUSDC.e_vault": value,
-            "groUSDT.e_vault": value,
-            "groDAI.e_vault_v1_5": value,
-            "groUSDC.e_vault_v1_5": value,
-            "groUSDT.e_vault_v1_5": value,
-            "groDAI.e_vault_v1_6": value,
-            "groUSDC.e_vault_v1_6": value,
-            "groUSDT.e_vault_v1_6": value,
-            "groDAI.e_vault_v1_7": value,
-            "groUSDC.e_vault_v1_7": value,
-            "groUSDT.e_vault_v1_7": value,
-            "total": value,
+            'groDAI.e_vault': value,
+            'groUSDC.e_vault': value,
+            'groUSDT.e_vault': value,
+            'groDAI.e_vault_v1_5': value,
+            'groUSDC.e_vault_v1_5': value,
+            'groUSDT.e_vault_v1_5': value,
+            'groDAI.e_vault_v1_6': value,
+            'groUSDC.e_vault_v1_6': value,
+            'groUSDT.e_vault_v1_6': value,
+            'groDAI.e_vault_v1_7': value,
+            'groUSDC.e_vault_v1_7': value,
+            'groUSDT.e_vault_v1_7': value,
+            'total': value,
         },
         'token_price_usd': {
             'avax': value,
@@ -161,19 +156,19 @@ export const EMPTY_STRATEGY: IStrategy = {
 }
 
 export const EMPTY_VAULT: IVault = {
-    "amount": "0",
-    "display_name": NA,
-    "last3d_apy": "0",
-    "name": NA,
-    "reserves": {
-        "amount": "0",
-        "display_name": NA,
-        "last3d_apy": "0",
-        "name": NA,
-        "share": "0"
+    'amount': '0',
+    'display_name': NA,
+    'last3d_apy': '0',
+    'name': NA,
+    'reserves': {
+        'amount': '0',
+        'display_name': NA,
+        'last3d_apy': '0',
+        'name': NA,
+        'share': '0'
     },
-    "share": "0.4961491517610466",
-    "strategies": [EMPTY_STRATEGY],
+    'share': '0.4961491517610466',
+    'strategies': [EMPTY_STRATEGY],
 }
 
 export const EMPTY_EXPOSURE: IExposure = {
