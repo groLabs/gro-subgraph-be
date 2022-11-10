@@ -1,4 +1,5 @@
 import { toStr } from '../utils/utils';
+import { getCoreApy } from '../utils/apy';
 import { getSystem } from '../utils/strategies';
 import { getExposures } from '../utils/exposure';
 import { LAUNCH_TIMESTAMP_ETH } from '../constants';
@@ -25,7 +26,14 @@ export const groStatsParserEthereum = (
     const gvtTvl = parseFloat(core.total_supply_gvt) * parseFloat(price.gvt);
     const totalTvl = pwrdTvl + gvtTvl;
     const system = getSystem(strategies);
-    const exposure = (system.vault) ? getExposures(system.vault) : EMPTY_EXPOSURE;
+    const exposure = (system.vault)
+        ? getExposures(system.vault)
+        : EMPTY_EXPOSURE;
+    const currentApy = getCoreApy(
+        gvtTvl,
+        pwrdTvl,
+        parseFloat(system.last3d_apy)
+    );
 
     const result = {
         'status': md.status as Status,
@@ -57,10 +65,7 @@ export const groStatsParserEthereum = (
                 'pwrd': value,
                 'gvt': value,
             },
-            'current': {
-                'pwrd': value,
-                'gvt': value,
-            },
+            'current': currentApy,
             'hodl_bonus': value,
         },
         'tvl': {
