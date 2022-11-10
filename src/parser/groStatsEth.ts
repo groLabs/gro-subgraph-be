@@ -1,30 +1,31 @@
 import { toStr } from '../utils/utils';
-import { getVaults } from '../utils/strategies';
+import { getSystem } from '../utils/strategies';
+import { getExposures } from '../utils/exposure';
+import { LAUNCH_TIMESTAMP_ETH } from '../constants';
 import { IGroStatsEthereum } from '../interfaces/groStats/IGroStats';
+import { EMPTY_EXPOSURE } from './groStatsEmpty';
 import {
     Status,
     NetworkName,
 } from '../types';
-import {
-    NA,
-    LAUNCH_TIMESTAMP_ETH,
-} from '../constants';
 
 
 export const groStatsParserEthereum = (
     stats_eth: any
 ): IGroStatsEthereum => {
-    let value = '0';
+    let value = toStr(0);
     const md = stats_eth.masterDatas[0];
     const price = stats_eth.prices[0];
     const core = stats_eth.coreDatas[0];
     const factor = stats_eth.factors[0];
     const strategies = stats_eth.strategies;
     const currentTimestamp = stats_eth._meta.block.timestamp;
-    // calcs
+    // pre-calcs
     const pwrdTvl = parseFloat(core.total_supply_pwrd_based) / parseFloat(factor.pwrd);
     const gvtTvl = parseFloat(core.total_supply_gvt) * parseFloat(price.gvt);
     const totalTvl = pwrdTvl + gvtTvl;
+    const system = getSystem(strategies);
+    const exposure = (system.vault) ? getExposures(system.vault) : EMPTY_EXPOSURE;
 
     const result = {
         'status': md.status as Status,
@@ -70,20 +71,8 @@ export const groStatsParserEthereum = (
             "util_ratio_limit_PD": value,
             "util_ratio_limit_GW": value,
         },
-        'system': {
-            'total_share': value,
-            'total_amount': value,
-            'last3d_apy': value,
-            'lifeguard': {
-                "amount": value,
-                "share": value,
-            },
-            'vault': getVaults(strategies),
-        },
-        'exposure': {
-            'stablecoins': [],
-            'protocols': [],
-        },
+        'system': system,
+        'exposure': exposure,
         'token_price_usd': {
             "pwrd": toStr(price.pwrd),
             "gvt": toStr(price.gvt),

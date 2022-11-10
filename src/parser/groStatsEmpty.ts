@@ -1,6 +1,7 @@
 import { toStr } from '../utils/utils';
 import { IVault } from '../interfaces/groStats/ethereum/IVault';
 import { IStrategy } from '../interfaces/groStats/ethereum/IStrategy';
+import { IExposure } from '../interfaces/groStats/ethereum/IExposure';
 import {
     Status,
     NetworkName,
@@ -88,8 +89,7 @@ export const emptyGroStatsEth = (
             "util_ratio_limit_GW": value,
         },
         'system': {
-            'total_share': value,
-            'total_amount': value,
+            'amount': value,
             'last3d_apy': value,
             'lifeguard': {
                 "amount": value,
@@ -151,6 +151,8 @@ export const emptyGroStatsAvax = (
 export const EMPTY_STRATEGY: IStrategy = {
     'name': NA,
     'display_name': NA,
+    'metacoin': NA,
+    'protocol': NA,
     'address': '0x',
     'amount': toStr(0),
     'last3d_apy': toStr(0),
@@ -172,4 +174,9 @@ export const EMPTY_VAULT: IVault = {
     },
     "share": "0.4961491517610466",
     "strategies": [EMPTY_STRATEGY],
+}
+
+export const EMPTY_EXPOSURE: IExposure = {
+    'stablecoins': [],
+    'protocols': [],
 }

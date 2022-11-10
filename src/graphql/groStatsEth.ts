@@ -31,6 +31,8 @@ export const queryGroStatsEth = (
         strategies {
             id
             coin
+            metacoin
+            protocol
             strat_name
             strat_display_name
             vault_name

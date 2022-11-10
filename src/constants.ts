@@ -28,6 +28,11 @@ export const STABLECOINS = [
     Token.DAI,
     Token.USDC,
     Token.USDT,
+    Token.TUSD,
+    Token.FRAX,
+    Token.OUSD,
+    Token.ALUSD,
+    Token.GUSD,
 ];
 
 export const DEFAULT_STRATEGY_APY = new Map<string, number>([

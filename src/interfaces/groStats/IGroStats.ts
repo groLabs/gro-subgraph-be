@@ -22,8 +22,7 @@ export interface IGroStatsEthereum {
     'apy': IApy,
     'tvl': ITvlEth,
     'system': {
-        'total_share': string,
-        'total_amount': string,
+        'amount': string,
         'last3d_apy': string,
         'lifeguard': ILifeguard,
         'vault': IVaultEth[] | null,
