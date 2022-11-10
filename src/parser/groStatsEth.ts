@@ -2,13 +2,16 @@ import { toStr } from '../utils/utils';
 import { getCoreApy } from '../utils/apy';
 import { getSystem } from '../utils/strategies';
 import { getExposures } from '../utils/exposure';
-import { LAUNCH_TIMESTAMP_ETH } from '../constants';
 import { IGroStatsEthereum } from '../interfaces/groStats/IGroStats';
 import { EMPTY_EXPOSURE } from './groStatsEmpty';
 import {
     Status,
     NetworkName,
 } from '../types';
+import {
+    NA,
+    LAUNCH_TIMESTAMP_ETH
+} from '../constants';
 
 
 export const groStatsParserEthereum = (
@@ -41,32 +44,32 @@ export const groStatsParserEthereum = (
         'launch_timestamp': LAUNCH_TIMESTAMP_ETH,
         'network': NetworkName.MAINNET,
         'apy': {
-            'last24h': {
-                'pwrd': value,
-                'gvt': value,
-            },
-            'last7d': {
-                'pwrd': value,
-                'gvt': value,
-            },
-            'daily': {
-                'pwrd': value,
-                'gvt': value,
-            },
-            'weekly': {
-                'pwrd': value,
-                'gvt': value,
-            },
-            'monthly': {
-                'pwrd': value,
-                'gvt': value,
-            },
-            'all_time': {
-                'pwrd': value,
-                'gvt': value,
-            },
+            // 'last24h': {
+            //     'pwrd': value,
+            //     'gvt': value,
+            // },
+            // 'last7d': {
+            //     'pwrd': value,
+            //     'gvt': value,
+            // },
+            // 'daily': {
+            //     'pwrd': value,
+            //     'gvt': value,
+            // },
+            // 'weekly': {
+            //     'pwrd': value,
+            //     'gvt': value,
+            // },
+            // 'monthly': {
+            //     'pwrd': value,
+            //     'gvt': value,
+            // },
+            // 'all_time': {
+            //     'pwrd': value,
+            //     'gvt': value,
+            // },
             'current': currentApy,
-            'hodl_bonus': value,
+            'hodl_bonus': NA,
         },
         'tvl': {
             "pwrd": toStr(pwrdTvl),
