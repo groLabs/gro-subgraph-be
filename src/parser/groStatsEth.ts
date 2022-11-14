@@ -1,5 +1,6 @@
 import { toStr } from '../utils/utils';
 import { getCoreApy } from '../utils/apy';
+import { getPools } from '../utils/pools';
 import { getSystem } from '../utils/strategies';
 import { getExposures } from '../utils/exposure';
 import { IGroStatsEthereum } from '../interfaces/groStats/IGroStats';
@@ -17,7 +18,6 @@ import {
 export const groStatsParserEthereum = (
     stats_eth: any
 ): IGroStatsEthereum => {
-    let value = toStr(0);
     const md = stats_eth.masterDatas[0];
     const price = stats_eth.prices[0];
     const core = stats_eth.coreDatas[0];
@@ -38,6 +38,13 @@ export const groStatsParserEthereum = (
         parseFloat(system.last3d_apy)
     );
     const utilRatio = (gvtTvl > 0) ? pwrdTvl / gvtTvl : 0;
+    const poolsData = stats_eth.stakerDatas;
+    const pools = getPools(
+        poolsData,
+        price,
+        // pwrdTvl,
+        // parseFloat(core.total_supply_gvt)
+    );
 
     const result = {
         'status': md.status as Status,
@@ -45,30 +52,6 @@ export const groStatsParserEthereum = (
         'launch_timestamp': LAUNCH_TIMESTAMP_ETH,
         'network': NetworkName.MAINNET,
         'apy': {
-            // 'last24h': {
-            //     'pwrd': value,
-            //     'gvt': value,
-            // },
-            // 'last7d': {
-            //     'pwrd': value,
-            //     'gvt': value,
-            // },
-            // 'daily': {
-            //     'pwrd': value,
-            //     'gvt': value,
-            // },
-            // 'weekly': {
-            //     'pwrd': value,
-            //     'gvt': value,
-            // },
-            // 'monthly': {
-            //     'pwrd': value,
-            //     'gvt': value,
-            // },
-            // 'all_time': {
-            //     'pwrd': value,
-            //     'gvt': value,
-            // },
             'current': currentApy,
             'hodl_bonus': NA,
         },
@@ -89,8 +72,12 @@ export const groStatsParserEthereum = (
             "dai": toStr(price.dai),
             "usdc": toStr(price.usdc),
             "usdt": toStr(price.usdt),
+            'uniswap_gvt_gro': toStr(price.uniswap_gvt_gro),
+            'uniswap_gro_usdc': toStr(price.uniswap_gro_usdc),
+            'balancer_gro_weth': toStr(price.balancer_gro_weth),
+            'curve_pwrd3crv': toStr(price.curve_pwrd3crv),
         },
-        'pools': [],
+        'pools': pools,
     }
     return result;
 }

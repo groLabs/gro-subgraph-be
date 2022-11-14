@@ -25,6 +25,8 @@ export enum Token {
   OUSD = 'ousd',
   ALUSD = 'alusd',
   GUSD = 'gusd',
+  WETH = 'weth',
+  AVAX = 'avax',
   BALANCER_GRO_WETH = 'balancer_gro_weth',
   UNISWAP_GVT_GRO = 'uniswap_gvt_gro',
   UNISWAP_GRO_USDC = 'uniswap_gro_usdc',

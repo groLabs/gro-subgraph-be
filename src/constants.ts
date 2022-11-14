@@ -52,3 +52,4 @@ export const LAUNCH_TIMESTAMP_AVAX = '1638483222';
 export const TS_1D = 86400;             // One day
 export const TS_7D = 604800;            // Seven days
 export const TS_15D = 1296000;          // Fifteen days
+export const DECIMALS = 7;

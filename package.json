@@ -16,6 +16,7 @@
     "@types/http-errors": "^1.8.2",
     "@types/node": "^18.7.23",
     "axios": "^0.27.2",
+    "bignumber.js": "^9.1.0",
     "config": "^3.3.8",
     "cors": "^2.8.5",
     "dotenv": "^16.0.2",

@@ -108,6 +108,10 @@ export const emptyGroStatsEth = (
             'dai': NA,
             'usdc': NA,
             'usdt': NA,
+            'uniswap_gvt_gro': NA,
+            'uniswap_gro_usdc': NA,
+            'balancer_gro_weth': NA,
+            'curve_pwrd3crv': NA,
         },
         'pools': [],
     }
