@@ -5,7 +5,6 @@ import { getGroStats } from '../handler/groStatsHandler';
 import { IGroStats } from '../interfaces/groStats/IGroStats';
 import { groStatsParserEthereum } from '../parser/groStatsEth';
 import { groStatsParserAvalanche } from '../parser/groStatsAvax';
-import { TS_15D } from '../constants';
 import {
     now,
     getUrl,
@@ -23,6 +22,7 @@ export const etlGroStats = async (
     result: any
 ): Promise<IGroStats> => {
     try {
+        const tsNow = parseInt(now());
         const url = getUrl(subgraph);
         const [
             resultEth,
@@ -32,28 +32,29 @@ export const etlGroStats = async (
                 url.ETH,
                 skip,
                 result,
-                parseInt(now()) - TS_15D,
+                tsNow,
             ),
             getGroStats(
                 url.AVAX,
                 skip,
                 result,
-                parseInt(now()) - TS_15D,
+                tsNow,
             )
         ]);
         if (resultEth.errors) {
             return groStatsError(
-                now(),
+                tsNow.toString(),
                 resultEth.errors.map((item: any) => item)
             );
         } else if (resultAvax.errors) {
             return groStatsError(
-                now(),
+                tsNow.toString(),
                 resultAvax.errors.map((item: any) => item)
             );
         } else if (resultEth && resultAvax) {
             const resultEthParsed = groStatsParserEthereum(
-                resultEth
+                resultEth,
+                tsNow,
             );
             const resultAvaxParsed = groStatsParserAvalanche(
                 resultAvax

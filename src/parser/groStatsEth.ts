@@ -16,7 +16,8 @@ import {
 
 
 export const groStatsParserEthereum = (
-    stats_eth: any
+    stats_eth: any,
+    nowTS: number,
 ): IGroStatsEthereum => {
     const md = stats_eth.masterDatas[0];
     const price = stats_eth.prices[0];
@@ -38,10 +39,15 @@ export const groStatsParserEthereum = (
         parseFloat(system.last3d_apy)
     );
     const utilRatio = (gvtTvl > 0) ? pwrdTvl / gvtTvl : 0;
-    const poolsData = stats_eth.stakerDatas;
+    const poolData = stats_eth.poolDatas;
+    const stakerData = stats_eth.stakerDatas;
+    const poolSwaps = stats_eth.poolSwaps;
     const pools = getPools(
-        poolsData,
+        poolData,
+        stakerData,
         price,
+        poolSwaps,
+        nowTS,
         // pwrdTvl,
         // parseFloat(core.total_supply_gvt)
     );

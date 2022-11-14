@@ -9,7 +9,7 @@ import {
     isEthSubgraph,
     isAvaxSubgraph
 } from '../utils/utils';
-
+import { TS_15D } from '../constants';
 
 export const callSubgraph = async (
     url: string,
@@ -17,7 +17,7 @@ export const callSubgraph = async (
     first: number,
     skip: number,
     route: Route,
-    timestamp: number,
+    tsNow: number,
 ): Promise<any> => {
     let q;
     if (isEthSubgraph(url)) {
@@ -31,7 +31,8 @@ export const callSubgraph = async (
             q = queryGroStatsEth(
                 first,
                 skip,
-                timestamp
+                tsNow,
+                tsNow - TS_15D,
             );
         } else {
             showError(
@@ -51,7 +52,8 @@ export const callSubgraph = async (
             q = queryGroStatsAvax(
                 first,
                 skip,
-                timestamp,
+                tsNow,
+                tsNow - TS_15D,
             );
         } else {
             showError(

@@ -265,57 +265,124 @@ const getTvl = (
     }
 }
 
+const getFees = (
+    poolId: number,
+    swaps: any[],
+    poolData: any,
+    nowTS: number,
+): string => {
+    if (poolId === 0) {
+        return toStr(0);
+    } else if (poolId === 1) {
+        if (poolData.length > 0) {
+            const reserve1 = parseFloat(poolData[0].reserve1);
+            const _swaps = swaps.reduce(
+                (prev, current) =>
+                    ((parseInt(current.poolId) === 1) && (parseInt(current.block_timestamp) >= nowTS - 86400))
+                        ? prev + parseFloat(current.amount1_in) + parseFloat(current.amount1_out)
+                        : prev + 0
+                , 0);
+            const apy_1d_pool1 = (reserve1 > 0) ? (_swaps * 3 / 1000) / (reserve1 * 2) : 0;
+            return toStr(apy_1d_pool1 * 365);
+        } else {
+            return toStr(0);
+        }
+    } else if (poolId === 2) {
+        if (poolData.length > 0) {
+            const reserve0 = parseFloat(poolData[0].reserve0);
+            const _swaps = swaps.reduce(
+                (prev, current) =>
+                    ((parseInt(current.poolId) === 2) && (parseInt(current.block_timestamp) >= nowTS - 86400))
+                        ? prev + parseFloat(current.amount0_in) + parseFloat(current.amount0_out)
+                        : prev + 0
+                , 0);
+            const apy_1d_pool2 = (reserve0 > 0) ? (_swaps * 3 / 1000) / (reserve0 * 2) : 0;
+            return toStr(apy_1d_pool2 * 365);
+        } else {
+            return toStr(0);
+        }
+    } else if (poolId === 3) {
+        return toStr(0);
+    } else if (poolId === 4) {
+        const _swaps = swaps.filter(item => item.poolId === 4);
+        if (_swaps.length > 0) {
+            let maxSwap = _swaps.reduce((prev, curr) =>
+                (prev.block_timestamp > curr.block_timestamp)
+                    ? prev
+                    : curr);
+            let minSwap = _swaps.reduce((prev, curr) =>
+                (prev.block_timestamp < curr.block_timestamp)
+                    ? prev
+                    : curr);
+            let apy_1d_pool4 = maxSwap.virtual_price - minSwap.virtual_price;
+            return toStr(apy_1d_pool4 * 365);
+        } else {
+            return toStr(0);
+        }
+    } else if (poolId === 5) {
+        const _swaps = swaps.filter(item => item.poolId === 5);
+        if (_swaps.length > 0) {
+            let maxSwap = _swaps.reduce((prev, curr) =>
+                (prev.block_timestamp > curr.block_timestamp)
+                    ? prev
+                    : curr);
+            let minSwap = _swaps.reduce((prev, curr) =>
+                (prev.block_timestamp < curr.block_timestamp)
+                    ? prev
+                    : curr);
+            let apy_1d_pool5 = maxSwap.virtual_price - minSwap.virtual_price;
+            return toStr(apy_1d_pool5 * 365);
+        } else {
+            return toStr(0);
+        }
+    } else if (poolId === 6) {
+        return toStr(0);
+    } else {
+        return toStr(0);
+    }
+}
+
 export const getPools = (
-    pools: any[],
+    poolData: any[],
+    stakerData: any[],
     prices: ITokenPriceUsd,
+    swaps: any[],
+    nowTS: number,
 ) => {
     let result: IPool[] = [];
-    for (let i = 0; i < poolData.length; i++) {
-        let pool = poolData[i];
+    for (let i = 0; i < stakerData.length; i++) {
+        let pool = stakerData[i];
         const price = getPrice(i, prices);
         const staked = bnToDecimal(
-            pools[i].lp_supply,
+            stakerData[i].lp_supply,
             18,
             DECIMALS
         );
-        const stakedBN = new BN(pools[i].lp_supply);
+        const stakedBN = new BN(stakerData[i].lp_supply);
         pool.lp_usd_price = toStr(price);
-        pool.staked = pools[i].lp_supply;
+        pool.staked = stakerData[i].lp_supply;
         pool.unstaked = 'used?';
         pool.tvl_staked = toStr(staked * price);
-        pool.tvl = 'used?'
-        result.push(poolData[i]);
+        pool.tvl = 'used?';
+        const _poolData = poolData.filter(item => item.id === i.toString());
+        const apyFees = getFees(
+            i,
+            swaps,
+            _poolData,
+            nowTS,
+        );
+        pool.apy = {
+            "current": {
+                "total": "0.0101",
+                "token": "0.0000",
+                "pool_fees": apyFees,
+                "reward": "0.0101"
+            }
+        }
+        result.push(pool);
     }
     return result;
 }
-
-const getFees = (
-    pool: number,
-): number => {
-    switch (pool) {
-        case 0:
-            return 0;
-        case 1:
-            // do something
-            return 0;
-        case 2:
-            // do something
-            return 0;
-        case 3:
-            return 0;
-        case 4:
-            // do something
-            return 0;
-        case 5:
-            // do something
-            return 0;
-        case 6:
-            return 0;
-        default:
-            return 0;
-    }
-}
-
 
 // const getUnstakedAmount = (
 //     pool: number,

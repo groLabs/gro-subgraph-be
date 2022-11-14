@@ -1,7 +1,8 @@
 export const queryGroStatsEth = (
     first: number,
     skip: number,
-    timestamp: number,
+    tsNow: number,
+    ts15d: number,
 ) => (
     `{
         _meta {
@@ -35,10 +36,26 @@ export const queryGroStatsEth = (
             total_supply_gvt
             total_supply_pwrd_based
         }
+        poolDatas {
+            id
+            reserve0
+            reserve1
+        }
         stakerDatas (orderBy: id, orderDirection: asc) {
             id
             lp_supply
             pool_share
+        }
+        poolSwaps (orderBy: block_timestamp, orderDirection: desc, where: {
+            block_timestamp_gte: ${tsNow - 86400 * 2.1}
+        }) {
+            poolId
+            amount0_in
+            amount1_in
+            amount0_out
+            amount1_out
+            block_timestamp
+            virtual_price
         }
         strategies {
             id
@@ -55,7 +72,7 @@ export const queryGroStatsEth = (
             block_strategy_reported
             block_hourly_update
             harvests (orderBy: timestamp, orderDirection: desc, where: {
-                timestamp_gt: ${timestamp}
+                timestamp_gt: ${ts15d}
             }) {
               timestamp
               gain
