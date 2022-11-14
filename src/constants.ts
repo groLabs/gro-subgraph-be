@@ -45,7 +45,7 @@ export const DEFAULT_STRATEGY_APY = new Map<string, number>([
 
 export const NA = 'N/A';
 export const PORT = 3015;
-export const TX_ITERATION = 800; // # of records retrieved per subgraph call (limited to 1000 per call)
+export const TX_ITERATION = 999; // # of records retrieved per subgraph call (limited to 1000 per call)
 export const MAX_VEST_TIME = 31556952;
 export const LAUNCH_TIMESTAMP_ETH = '1622204347';
 export const LAUNCH_TIMESTAMP_AVAX = '1638483222';
