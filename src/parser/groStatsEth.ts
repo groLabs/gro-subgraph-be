@@ -1,6 +1,6 @@
 import { toStr } from '../utils/utils';
-import { getCoreApy } from '../utils/apy';
 import { getPools } from '../utils/pools';
+import { getCoreApy } from '../utils/apy';
 import { getSystem } from '../utils/strategies';
 import { getExposures } from '../utils/exposure';
 import { IGroStatsEthereum } from '../interfaces/groStats/IGroStats';
@@ -25,9 +25,18 @@ export const groStatsParserEthereum = (
     const factor = stats_eth.factors[0];
     const strategies = stats_eth.strategies;
     const currentTimestamp = stats_eth._meta.block.timestamp;
+    const poolData = stats_eth.poolDatas;
+    const stakerData = stats_eth.stakerDatas;
+    const poolSwaps = stats_eth.poolSwaps;
     // pre-calcs
-    const pwrdTvl = parseFloat(core.total_supply_pwrd_based) / parseFloat(factor.pwrd);
+    const pwrdFactor = parseFloat(factor.pwrd);
+    const pwrdTvl = (pwrdFactor > 0)
+        ? parseFloat(core.total_supply_pwrd_based) / pwrdFactor
+        : 0;
     const gvtTvl = parseFloat(core.total_supply_gvt) * parseFloat(price.gvt);
+    const utilRatio = (gvtTvl > 0)
+        ? pwrdTvl / gvtTvl
+        : 0;
     const totalTvl = pwrdTvl + gvtTvl;
     const system = getSystem(strategies);
     const exposure = (system.vault)
@@ -36,24 +45,18 @@ export const groStatsParserEthereum = (
     const currentApy = getCoreApy(
         gvtTvl,
         pwrdTvl,
-        parseFloat(system.last3d_apy)
+        parseFloat(system.last3d_apy),
     );
-    const utilRatio = (gvtTvl > 0) ? pwrdTvl / gvtTvl : 0;
-    const poolData = stats_eth.poolDatas;
-    const stakerData = stats_eth.stakerDatas;
-    const poolSwaps = stats_eth.poolSwaps;
     const pools = getPools(
         poolData,
         stakerData,
+        md,
         price,
         poolSwaps,
         nowTS,
         parseFloat(currentApy.pwrd),
         parseFloat(currentApy.gvt),
-        // pwrdTvl,
-        // parseFloat(core.total_supply_gvt)
     );
-
     const result = {
         'status': md.status as Status,
         'current_timestamp': currentTimestamp.toString(),

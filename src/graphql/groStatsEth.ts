@@ -15,6 +15,8 @@ export const queryGroStatsEth = (
         masterDatas {
             status
             networkId
+            gro_per_block
+            total_alloc
         }
         prices {
             pwrd
@@ -45,6 +47,8 @@ export const queryGroStatsEth = (
             id
             lp_supply
             pool_share
+            alloc_point
+            acc_gro_per_share
         }
         poolSwaps (orderBy: block_timestamp, orderDirection: desc, where: {
             block_timestamp_gte: ${tsNow - 86400 * 2.1}
