@@ -265,7 +265,7 @@ const getTvl = (
     }
 }
 
-const getFees = (
+const getApyPoolFees = (
     poolId: number,
     swaps: any[],
     poolData: any,
@@ -342,12 +342,38 @@ const getFees = (
     }
 }
 
+const getApyToken = (
+    poolId: number,
+    pwrdApy: number,
+    gvtApy: number,
+): number => {
+    switch (poolId) {
+        // gvt-gro
+        case 1:
+            return gvtApy * 0.5;
+        // gvt
+        case 3:
+            return gvtApy;
+        // curve metapool
+        case 4:
+            return pwrdApy * 0.5;
+        // ss-pwrd
+        case 6:
+            return pwrdApy;
+        // others
+        default:
+            return 0;
+    }
+}
+
 export const getPools = (
     poolData: any[],
     stakerData: any[],
     prices: ITokenPriceUsd,
     swaps: any[],
     nowTS: number,
+    pwrdApy: number,
+    gvtApy: number,
 ) => {
     let result: IPool[] = [];
     for (let i = 0; i < stakerData.length; i++) {
@@ -365,17 +391,22 @@ export const getPools = (
         pool.tvl_staked = toStr(staked * price);
         pool.tvl = 'used?';
         const _poolData = poolData.filter(item => item.id === i.toString());
-        const apyFees = getFees(
+        const apyFee = getApyPoolFees(
             i,
             swaps,
             _poolData,
             nowTS,
         );
+        const apyToken = getApyToken(
+            i,
+            pwrdApy,
+            gvtApy,
+        );
         pool.apy = {
             "current": {
                 "total": "0.0101",
-                "token": "0.0000",
-                "pool_fees": apyFees,
+                "token": toStr(apyToken),
+                "pool_fees": apyFee,
                 "reward": "0.0101"
             }
         }

@@ -48,6 +48,8 @@ export const groStatsParserEthereum = (
         price,
         poolSwaps,
         nowTS,
+        parseFloat(currentApy.pwrd),
+        parseFloat(currentApy.gvt),
         // pwrdTvl,
         // parseFloat(core.total_supply_gvt)
     );
