@@ -37,6 +37,11 @@ export const queryGroStatsEth = (
         coreDatas {
             total_supply_gvt
             total_supply_pwrd_based
+            total_supply_gro
+            total_supply_uniswap_gvt_gro
+            total_supply_uniswap_gro_usdc
+            total_supply_curve_pwrd3crv
+            total_supply_balancer_gro_weth
         }
         poolDatas {
             id

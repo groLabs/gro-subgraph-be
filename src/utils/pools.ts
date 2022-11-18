@@ -1,14 +1,6 @@
-import {
-    toStr,
-    bnToDecimal,
-} from './utils';
-import {
-    NA,
-    DECIMALS,
-    BLOCKS_PER_YEAR,
-} from '../constants';
+import { toStr } from './utils';
 import { pools } from '../data/pools';
-import { BigNumber as BN } from "bignumber.js";
+import { BLOCKS_PER_YEAR } from '../constants';
 import { IPool } from '../interfaces/groStats/ethereum/IPool';
 import { ITokenPriceUsd } from '../interfaces/groStats/ethereum/ITokenPriceUsd';
 
@@ -32,29 +24,6 @@ const getPrice = (
             return parseFloat(price.balancer_gro_weth);
         case 6:
             return parseFloat(price.pwrd);
-        default:
-            return 0;
-    }
-}
-
-const getTvl = (
-    pool: number,
-): number => {
-    switch (pool) {
-        case 0:
-            return parseFloat('0');
-        case 1:
-            return parseFloat('0');
-        case 2:
-            return parseFloat('0');
-        case 3:
-            return parseFloat('0');
-        case 4:
-            return parseFloat('0');
-        case 5:
-            return parseFloat('0');
-        case 6:
-            return parseFloat('0');
         default:
             return 0;
     }
@@ -163,7 +132,6 @@ const getApyRewards = (
     totalAllocPoint: number,
     stakedTvl: number,
 ): number => {
-    console.log('groUsdPrice', groUsdPrice, 'groPerBlock', groPerBlock, 'poolAllocPoint', poolAllocPoint, 'totalAllocPoint', totalAllocPoint, 'stakedTvl', stakedTvl);
     if (stakedTvl > 0 && totalAllocPoint > 0) {
         const allocShare = poolAllocPoint / totalAllocPoint;
         return (groPerBlock * groUsdPrice * BLOCKS_PER_YEAR * allocShare) / stakedTvl;
@@ -172,10 +140,77 @@ const getApyRewards = (
     }
 }
 
+const getUnstaked = (
+    poolId: number,
+    coreData: any,
+    stakedSupply: number,
+): string => {
+    let totalSupply = '0';
+    switch (poolId) {
+        case 0:
+            totalSupply = coreData.total_supply_gro;
+            break;
+        case 1:
+            totalSupply = coreData.total_supply_uniswap_gvt_gro;
+            break;
+        case 2:
+            totalSupply = coreData.total_supply_uniswap_gro_usdc;
+            break;
+        case 3:
+            totalSupply = coreData.total_supply_gvt;
+            break;
+        case 4:
+            totalSupply = coreData.total_supply_curve_pwrd3crv;
+            break;
+        case 5:
+            totalSupply = coreData.total_supply_balancer_gro_weth;
+            break;
+        case 6:
+            totalSupply = coreData.total_supply_pwrd_based;
+            break;
+    }
+    const result = toStr((parseFloat(totalSupply) - stakedSupply) * 1e18);
+    return result;
+}
+
+const getTvl = (
+    poolId: number,
+    coreData: any,
+    price: ITokenPriceUsd,
+    staked: number,
+): string => {
+    let totalSupply = 0;
+    switch (poolId) {
+        case 0:
+            totalSupply = staked;
+            break;
+        case 1:
+            totalSupply = parseFloat(coreData.total_supply_uniswap_gvt_gro);
+            break;
+        case 2:
+            totalSupply = parseFloat(coreData.total_supply_uniswap_gro_usdc);
+            break;
+        case 3:
+            totalSupply = staked;
+            break;
+        case 4:
+            totalSupply = parseFloat(coreData.total_supply_curve_pwrd3crv);
+            break;
+        case 5:
+            totalSupply = parseFloat(coreData.total_supply_balancer_gro_weth);
+            break;
+        case 6:
+            totalSupply = staked;
+            break;
+    }
+    return toStr(totalSupply * getPrice(poolId, price));
+}
+
 export const getPools = (
     poolData: any[],
     stakerData: any[],
     masterData: any,
+    coreData: any,
     prices: ITokenPriceUsd,
     swaps: any[],
     nowTS: number,
@@ -186,17 +221,21 @@ export const getPools = (
     for (let i = 0; i < stakerData.length; i++) {
         let pool = pools[i];
         const price = getPrice(i, prices);
-        const staked = bnToDecimal(
-            stakerData[i].lp_supply,
-            18,
-            DECIMALS
-        );
-        const stakedBN = new BN(stakerData[i].lp_supply);
+        const staked = parseFloat(stakerData[i].lp_supply);
         pool.lp_usd_price = toStr(price);
-        pool.staked = stakerData[i].lp_supply;
-        pool.unstaked = 'used?';
+        pool.staked = toStr(parseFloat(stakerData[i].lp_supply) * 1e18);
+        pool.unstaked = getUnstaked(
+            i,
+            coreData,
+            staked,
+        );
         pool.tvl_staked = toStr(staked * price);
-        pool.tvl = 'used?';
+        pool.tvl = getTvl(
+            i,
+            coreData,
+            prices,
+            staked,
+        );
         const _poolData = poolData.filter(item => item.id === i.toString());
         const apyFee = getApyPoolFees(
             i,
@@ -226,28 +265,3 @@ export const getPools = (
     }
     return result;
 }
-
-// const getUnstakedAmount = (
-//     pool: number,
-//     pwrdSupply: number,
-//     gvtSupply: number,
-// ): BN => {
-//     switch (pool) {
-//         case 0:
-//             return new BN(1);
-//         case 1:
-//             return new BN(1);
-//         case 2:
-//             return new BN(1);
-//         case 3:
-//             return new BN(gvtSupply);
-//         case 4:
-//             return new BN(1);
-//         case 5:
-//             return new BN(1);
-//         case 6:
-//             return new BN(pwrdSupply);
-//         default:
-//             return new BN(0);
-//     }
-// }

@@ -12,6 +12,7 @@ export const TS_7D = 604800;            // Seven days
 export const TS_15D = 1296000;          // Fifteen days
 export const DECIMALS = 7;
 export const BLOCKS_PER_YEAR = 2252571;
+export const PWRD_TVL_CORRECTION = 432.5559;  // correction due to rebasing (as of Nov'22)
 export const STABLECOINS = [
     Token.DAI,
     Token.USDC,

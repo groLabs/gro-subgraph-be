@@ -1,6 +1,12 @@
 import { toStr } from './utils';
 
 
+// avoid division/s by 0
+const rekt = {
+    'pwrd': toStr(0),
+    'gvt': toStr(0),
+}
+
 export const getCoreApy = (
     tvlGvt: number,
     tvlPwrd: number,
@@ -22,15 +28,10 @@ export const getCoreApy = (
         pwrd = systemApy * (1 - (0.3 + (u * 3 / 8)));
         gvt = (systemApy * tvlGvt + (tvlPwrd * systemApy * (0.3 + (u * 3 / 8)))) / tvlGvt;
     }
-
     return {
         'pwrd': toStr(pwrd),
         'gvt': toStr(gvt),
     }
 }
 
-// avoid division/s by 0
-const rekt = {
-    'pwrd': toStr(0),
-    'gvt': toStr(0),
-}
+

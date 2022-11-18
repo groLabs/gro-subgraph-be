@@ -11,7 +11,8 @@ import {
 } from '../types';
 import {
     NA,
-    LAUNCH_TIMESTAMP_ETH
+    PWRD_TVL_CORRECTION,
+    LAUNCH_TIMESTAMP_ETH,
 } from '../constants';
 
 
@@ -31,7 +32,7 @@ export const groStatsParserEthereum = (
     // pre-calcs
     const pwrdFactor = parseFloat(factor.pwrd);
     const pwrdTvl = (pwrdFactor > 0)
-        ? parseFloat(core.total_supply_pwrd_based) / pwrdFactor
+        ? (parseFloat(core.total_supply_pwrd_based) / pwrdFactor) - PWRD_TVL_CORRECTION
         : 0;
     const gvtTvl = parseFloat(core.total_supply_gvt) * parseFloat(price.gvt);
     const utilRatio = (gvtTvl > 0)
@@ -51,6 +52,7 @@ export const groStatsParserEthereum = (
         poolData,
         stakerData,
         md,
+        core,
         price,
         poolSwaps,
         nowTS,
