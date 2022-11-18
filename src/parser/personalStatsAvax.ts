@@ -1,14 +1,15 @@
+import { NA } from '../constants';
+import { toStr } from '../utils/utils';
 import { showError } from '../handler/logHandler';
+import { emptyAvaxUser } from './personalStatsEmpty';
 import { ITransferTx } from '../interfaces/personalStats/ITransferTx';
 import { IApprovalTx } from '../interfaces/personalStats/IApprovalTx';
-import { emptyAvaxUser } from './personalStatsEmpty';
 import { IPersonalStatsAvalanche } from '../interfaces/personalStats/IPersonalStats';
 import {
     Status,
     NetworkId,
 } from '../types';
-import { NA } from '../constants';
-import { toStr } from '../utils/utils';
+
 
 
 export const parsePersonalStatsSubgraphAvalanche = (

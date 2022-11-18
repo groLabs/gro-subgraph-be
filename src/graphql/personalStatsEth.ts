@@ -36,7 +36,7 @@ export const queryPersonalStatsEth = (
             balancer_gro_weth
         }
         poolDatas {
-            poolId
+            id
             reserve0
             reserve1
             total_supply

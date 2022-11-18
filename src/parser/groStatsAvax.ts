@@ -1,6 +1,9 @@
-import { Status, NetworkName } from '../types';
 import { LAUNCH_TIMESTAMP_AVAX } from '../constants';
 import { IGroStatsAvalanche } from '../interfaces/groStats/IGroStats';
+import {
+    Status,
+    NetworkName,
+} from '../types';
 
 
 export const groStatsParserAvalanche = (

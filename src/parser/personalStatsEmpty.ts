@@ -1,3 +1,4 @@
+import { toStr } from '../utils/utils';
 import {
     IPersonalStatsEthereum,
     IPersonalStatsAvalanche,
@@ -12,7 +13,6 @@ import {
     LAUNCH_TIMESTAMP_ETH,
     LAUNCH_TIMESTAMP_AVAX,
 } from '../constants';
-import { toStr } from '../utils/utils';
 
 
 export const emptyEthUser = (

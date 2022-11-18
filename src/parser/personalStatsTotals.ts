@@ -1,15 +1,15 @@
-import { showError } from '../handler/logHandler';
-import {
-    IPersonalStatsEthereum,
-    IPersonalStatsAvalanche,
-    IPersonalStatsTotals,
-} from '../interfaces/personalStats/IPersonalStats';
 import { Status } from '../types';
+import { showError } from '../handler/logHandler';
 import { personalStatsError } from './personalStatsError';
 import {
     now,
     toStr
 } from '../utils/utils';
+import {
+    IPersonalStatsEthereum,
+    IPersonalStatsAvalanche,
+    IPersonalStatsTotals,
+} from '../interfaces/personalStats/IPersonalStats';
 
 
 export const personalStatsSubgraphParserTotals = (

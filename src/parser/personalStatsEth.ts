@@ -1,9 +1,15 @@
+import { NA } from '../constants';
 import { showError } from '../handler/logHandler';
+import { getVestingBonus } from '../utils/vesting';
+import { emptyEthUser } from './personalStatsEmpty';
 import { IPool } from '../interfaces/personalStats/IPool';
 import { ITransferTx } from '../interfaces/personalStats/ITransferTx';
 import { IApprovalTx } from '../interfaces/personalStats/IApprovalTx';
 import { IPersonalStatsEthereum } from '../interfaces/personalStats/IPersonalStats';
-import { emptyEthUser } from './personalStatsEmpty';
+import {
+    now,
+    toStr
+} from '../utils/utils';
 import {
     Status,
     NetworkId,
@@ -14,12 +20,6 @@ import {
     getAllPools,
     getGroBalanceCombined,
 } from '../utils/staker';
-import { getVestingBonus } from '../utils/vesting';
-import { NA } from '../constants';
-import {
-    now,
-    toStr
-} from '../utils/utils';
 
 
 export const parsePersonalStatsSubgraphEthereum = (

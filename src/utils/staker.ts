@@ -1,18 +1,21 @@
+import { Env } from '../types';
+import { toStr } from './utils';
+import { NA } from '../constants';
+import { showError } from '../handler/logHandler';
 import { IPool } from '../interfaces/personalStats/IPool';
 import { IPoolData } from '../interfaces/personalStats/IPoolData';
 import { IStakerData } from '../interfaces/personalStats/IStakerData';
 import { IGroBalanceCombined } from '../interfaces/personalStats/IGroBalanceCombined';
-import { showError } from '../handler/logHandler';
 import {
     NO_POOL,
     EMPTY_POOL,
 } from '../parser/personalStatsEmpty';
-import { NA } from '../constants';
-import { Env } from '../types';
-import { toStr } from './utils';
 
 
-export const getPool = (poolId: number, stats_eth: any): IPool => {
+export const getPool = (
+    poolId: number,
+    stats_eth: any
+): IPool => {
     try {
         let pricePerShare = -1;
         const pool = stats_eth.users[0][`pool_${poolId}`];
@@ -173,9 +176,9 @@ export const getGroBalanceCombined = (
     const pool1LPAmount = parseFloat(pools[1].coinBalance);
     const pool2LPAmount = parseFloat(pools[2].coinBalance);
     const pool5LPAmount = parseFloat(pools[5].coinBalance);
-    const pool1Data = poolDatas.filter((item: IPoolData) => item.poolId == 1)[0];
-    const pool2Data = poolDatas.filter((item: IPoolData) => item.poolId == 2)[0];
-    const pool5Data = poolDatas.filter((item: IPoolData) => item.poolId == 5)[0];
+    const pool1Data = poolDatas.filter((item: IPoolData) => item.id == '1')[0];
+    const pool2Data = poolDatas.filter((item: IPoolData) => item.id == '2')[0];
+    const pool5Data = poolDatas.filter((item: IPoolData) => item.id == '5')[0];
     const pool1TotalSupply = parseFloat(pool1Data.total_supply);
     const pool2TotalSupply = parseFloat(pool2Data.total_supply);
     const pool5TotalSupply = parseFloat(pool5Data.total_supply);
@@ -211,27 +214,3 @@ export const getGroBalanceCombined = (
         }
     }
 }
-
-
-/*
-_user_lp
-* (  _acc_gro_per_share
-   +   (  (_current_block - _block_number)
-        * _gro_per_block
-        * _pool_share)
-     / (_lp_supply))
-- _user_debt AS _claimable
-
-
-lp_supply: 43340.95345332 (pool5_pool.balanceOf(staker) or staker_event.LogUpdatePool)
-acc_gro_per_share: 1.933852981389  (poolInfo.accGroPerShare or staker_event.LogUpdatePool)
-alloc_point: 4  (poolInfo.allocPoint or staker_event.LogSetPool)
-totalAlloc: 609 (staker.totalAllocPoint or ev.LogSetPool+ev.LogUpdatePool)
-gro_per_block: 0.40000000 (staker_event.LogGroPerBlock)
-pool_share: 0.00656814449917898194
-user_lp: 72.289497719059   (coinBalance)
-user_claimed: 110.317701782206   (netReward)
-user_debt: 125.153062090580  (rewardDebt)
-block_timestamp: 1665366731
-block_number: 15714536"
-*/
