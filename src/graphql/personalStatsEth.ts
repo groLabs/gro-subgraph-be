@@ -52,6 +52,7 @@ export const queryPersonalStatsEth = (
         }
         factors {
             pwrd
+            gvt
         }
         users(where: {id: "${account}"}) {
             address: id

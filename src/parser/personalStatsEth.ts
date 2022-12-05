@@ -43,7 +43,7 @@ export const parsePersonalStatsSubgraphEthereum = (
 
         // Pre-calculations
         const currentBalancePwrd = parseFloat(totals_eth.net_based_amount_pwrd) / parseFloat(stats_eth.factors[0].pwrd);
-        const currentBalanceGvt = parseFloat(totals_eth.net_amount_gvt) * parseFloat(stats_eth.prices[0].gvt);
+        const currentBalanceGvt = parseFloat(totals_eth.net_amount_gvt) / parseFloat(stats_eth.factors[0].gvt);
         const currentBalanceTotal = currentBalancePwrd + currentBalanceGvt;
         const netReturnsPwrd = currentBalancePwrd - parseFloat(totals_eth.net_value_pwrd);
         const netReturnsGvt = currentBalanceGvt - parseFloat(totals_eth.net_value_gvt);
