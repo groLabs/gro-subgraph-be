@@ -1,30 +1,45 @@
 import moment from 'moment';
 import { Subgraph as sg } from '../types';
 import { BigNumber as BN } from "bignumber.js";
-import { SUBGRAPH_URL as URL } from '../constants';
+import { IUrl } from '../interfaces/url/IUrl';
 
 
-export const getUrl = (subgraph: sg) => {
+export const getUrl = (subgraph: sg): IUrl => {
     switch (subgraph) {
         case sg.PROD_HOSTED:
-            return URL.PROD_HOSTED;
+            return {
+                ETH: process.env.SG_PROD_HOSTED_ETH as string,
+                AVAX: process.env.SG_PROD_HOSTED_AVAX as string,
+            }
         case sg.PROD_STUDIO:
-            return URL.PROD_STUDIO;
+            return {
+                ETH: process.env.SG_PROD_STUDIO_ETH as string,
+                AVAX: process.env.SG_PROD_STUDIO_AVAX as string,
+            };
         case sg.TEST_HOSTED:
-            return URL.TEST_HOSTED;
+            return {
+                ETH: process.env.SG_TEST_HOSTED_ETH as string,
+                AVAX: process.env.SG_TEST_HOSTED_AVAX as string,
+            }
         case sg.TEST_STUDIO:
-            return URL.TEST_STUDIO;
+            return {
+                ETH: process.env.SG_TEST_STUDIO_ETH as string,
+                AVAX: process.env.SG_TEST_STUDIO_AVAX as string,
+            }
         default:
-            return URL.UNKNOWN;
+            return {
+                ETH: 'unknown',
+                AVAX: 'unknown',
+            };
     }
 }
 
 export const isEthSubgraph = (url: string): boolean => {
     return (
-        url === URL.PROD_HOSTED.ETH
-        || url === URL.PROD_STUDIO.ETH
-        || url === URL.TEST_HOSTED.ETH
-        || url === URL.TEST_STUDIO.ETH
+        url === process.env.SG_PROD_HOSTED_ETH
+        || url === process.env.SG_PROD_STUDIO_ETH
+        || url === process.env.SG_TEST_HOSTED_ETH
+        || url === process.env.SG_TEST_STUDIO_ETH
     )
         ? true
         : false;
@@ -32,10 +47,10 @@ export const isEthSubgraph = (url: string): boolean => {
 
 export const isAvaxSubgraph = (url: string): boolean => {
     return (
-        url === URL.PROD_HOSTED.AVAX
-        || url === URL.PROD_STUDIO.AVAX
-        || url === URL.TEST_HOSTED.AVAX
-        || url === URL.TEST_STUDIO.AVAX
+        url === process.env.SG_PROD_HOSTED_AVAX
+        || url === process.env.SG_PROD_STUDIO_AVAX
+        || url === process.env.SG_TEST_HOSTED_AVAX
+        || url === process.env.SG_TEST_STUDIO_AVAX
     )
         ? true
         : false;

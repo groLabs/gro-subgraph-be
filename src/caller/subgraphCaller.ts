@@ -66,7 +66,7 @@ export const callSubgraph = async (
     } else {
         showError(
             'caller/subgraphCaller.ts->callSubgraph()',
-            `unknown subgraph api ${url}}`,
+            `Unknown subgraph api ${url}`,
         );
         return null;
     }
