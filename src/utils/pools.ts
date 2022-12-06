@@ -1,8 +1,11 @@
 import { toStr } from './utils';
 import { pools } from '../data/pools';
-import { BLOCKS_PER_YEAR } from '../constants';
 import { IPool } from '../interfaces/groStats/ethereum/IPool';
 import { ITokenPriceUsd } from '../interfaces/groStats/ethereum/ITokenPriceUsd';
+import {
+    TS_1D,
+    BLOCKS_PER_YEAR,
+} from '../constants';
 
 
 const getPrice = (
@@ -42,7 +45,7 @@ const getApyPoolFees = (
             const reserve1 = parseFloat(poolData[0].reserve1);
             const _swaps = swaps.reduce(
                 (prev, current) =>
-                    ((parseInt(current.poolId) === 1) && (parseInt(current.block_timestamp) >= nowTS - 86400))
+                    ((parseInt(current.poolId) === 1) && (parseInt(current.block_timestamp) >= nowTS - TS_1D))
                         ? prev + parseFloat(current.amount1_in) + parseFloat(current.amount1_out)
                         : prev + 0
                 , 0);
@@ -56,7 +59,7 @@ const getApyPoolFees = (
             const reserve0 = parseFloat(poolData[0].reserve0);
             const _swaps = swaps.reduce(
                 (prev, current) =>
-                    ((parseInt(current.poolId) === 2) && (parseInt(current.block_timestamp) >= nowTS - 86400))
+                    ((parseInt(current.poolId) === 2) && (parseInt(current.block_timestamp) >= nowTS - TS_1D))
                         ? prev + parseFloat(current.amount0_in) + parseFloat(current.amount0_out)
                         : prev + 0
                 , 0);
