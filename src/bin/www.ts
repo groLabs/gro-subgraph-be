@@ -7,15 +7,13 @@ import {
     showInfo,
     showError
 } from '../handler/logHandler';
-import { PORT } from '../constants';
 import * as dotenv from 'dotenv';
 import * as dotenvExpand from 'dotenv-expand';
 let env = dotenv.config();
 dotenvExpand.expand(env);
 
-
 // Get port from environment and store in Express.
-const port = normalizePort(process.env.PORT || PORT);
+const port = normalizePort(process.env.PORT);
 app.set('port', port);
 
 // Create HTTP server.
