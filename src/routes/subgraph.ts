@@ -17,7 +17,7 @@ const wrapAsync = function wrapAsync(fn: any) {
     };
 }
 
-// E.g.: http://localhost:3010/database/gro_stats_mc?subgraph=eth_prod_hosted
+// E.g.: http://localhost:3015/subgraph/gro_stats_mc?subgraph=prod_hosted
 router.get(
     '/gro_stats_mc',
     validate([
@@ -61,7 +61,7 @@ router.get(
     })
 );
 
-// E.g.: http://localhost:3010/database/gro_personal_position_mc?subgraph=eth_prod_hosted&address=0x2ce1a66f22a2dc6e410d9021d57aeb8d13d6bfef
+// E.g.: http://localhost:3015/subgraph/gro_personal_position_mc?address=0x60ff7DcB4a9c1a89B18Fa2D1Bb9444143BbEA9BD&subgraph=prod_studio
 router.get(
     '/gro_personal_position_mc',
     validate([

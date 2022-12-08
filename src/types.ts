@@ -4,6 +4,7 @@ export enum Subgraph {
   PROD_STUDIO = 'prod_studio',
   TEST_HOSTED = 'test_hosted',
   TEST_STUDIO = 'test_studio',
+  G2_INTERNAL = 'g2_internal',
 }
 
 export enum Env {
