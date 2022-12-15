@@ -9,7 +9,7 @@ import {
     isEthSubgraph,
     isAvaxSubgraph
 } from '../utils/utils';
-import { TS_15D } from '../constants';
+import { TS_7D, TS_15D } from '../constants';
 
 export const callSubgraph = async (
     url: string,
@@ -32,7 +32,7 @@ export const callSubgraph = async (
                 first,
                 skip,
                 tsNow,
-                tsNow - TS_15D,
+                tsNow - TS_7D,
             );
         } else {
             showError(

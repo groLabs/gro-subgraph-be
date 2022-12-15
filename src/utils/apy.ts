@@ -15,23 +15,12 @@ export const getCoreApy = (
     const u = (tvlGvt > 0) ? tvlPwrd / tvlGvt : 0;
     if (u === 0)
         return rekt;
-    let gvt = 0;
-    let pwrd = 0;
-
-    if (u > 1) {
-        pwrd = 0;
-        gvt = (systemApy * tvlGvt) / (tvlGvt + tvlPwrd);
-    } else if (u > 0.8) {
-        pwrd = systemApy * (1 - (0.6 + (u - 0.8) * 2));
-        gvt = (systemApy * tvlGvt + (tvlPwrd * systemApy * (0.6 + (u - 0.8) * 2))) / tvlGvt;
-    } else {
-        pwrd = systemApy * (1 - (0.3 + (u * 3 / 8)));
-        gvt = (systemApy * tvlGvt + (tvlPwrd * systemApy * (0.3 + (u * 3 / 8)))) / tvlGvt;
-    }
+    // TODO: PWRD will be a fixed apy. Now is 2%. 
+    let pwrd = 0.02;
+    // Keep pwrd 2% apy, other gain/loss will go to gvt    
+    let gvt = systemApy * (1 + u) - (pwrd * u)
     return {
         'pwrd': toStr(pwrd),
         'gvt': toStr(gvt),
     }
 }
-
-

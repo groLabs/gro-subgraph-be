@@ -39,7 +39,7 @@ export const groStatsParserEthereum = (
         ? pwrdTvl / gvtTvl
         : 0;
     const totalTvl = pwrdTvl + gvtTvl;
-    const system = getSystem(strategies);
+    const system = getSystem(strategies, totalTvl, price.threeCrv);
     const exposure = (system.vault)
         ? getExposures(system.vault)
         : EMPTY_EXPOSURE;

@@ -2,7 +2,7 @@ export const queryGroStatsEth = (
     first: number,
     skip: number,
     tsNow: number,
-    ts15d: number,
+    ts7d: number,
 ) => (
     `{
         _meta {
@@ -30,6 +30,7 @@ export const queryGroStatsEth = (
             uniswap_gro_usdc
             balancer_gro_weth
             curve_pwrd3crv
+            threeCrv
         }
         factors {
             pwrd
@@ -75,17 +76,20 @@ export const queryGroStatsEth = (
             strat_display_name
             vault_name
             vault_display_name
-            total_assets_adapter
+            vault_address
             total_assets_strategy
             strategy_debt
             block_strategy_reported
-            block_hourly_update
+            block_strategy_withdraw
             harvests (orderBy: timestamp, orderDirection: desc, where: {
-                timestamp_gt: ${ts15d}
+                timestamp_gt: ${ts7d}
             }) {
               timestamp
               gain
               loss
+              debtPaid
+              debtAdded
+              lockedProfit
               strategyAddress {
                 id
               }

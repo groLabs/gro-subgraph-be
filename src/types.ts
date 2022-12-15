@@ -32,6 +32,7 @@ export enum Token {
   UNISWAP_GVT_GRO = 'uniswap_gvt_gro',
   UNISWAP_GRO_USDC = 'uniswap_gro_usdc',
   CURVE_PWRD3CRV = 'curve_pwrd3crv',
+  THREE_CRV = '3crv'
 }
 
 // @dev: Should be aligned with subgraph schema
