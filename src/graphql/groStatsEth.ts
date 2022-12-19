@@ -67,7 +67,7 @@ export const queryGroStatsEth = (
             block_timestamp
             virtual_price
         }
-        strategies {
+        gvaultStrategies {
             id
             coin
             metacoin

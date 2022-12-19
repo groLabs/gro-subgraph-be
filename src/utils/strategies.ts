@@ -29,7 +29,7 @@ const calcVaultData = (
     let releaseFactor = 86400 * 7;
     for (let i = 0; i < _strats.length; i++) {
         let str = _strats[i];
-        if (str.coin === coin) {
+        if (str.coin.toLowerCase() === coin) {
             totalDebt += parseFloat(str.strategy_debt);
             const strategyAssetsUsd = parseFloat(str.strategy_debt) * threeCrvPrice;
             strategyAssets += strategyAssetsUsd;
@@ -45,20 +45,22 @@ const calcVaultData = (
                 'last_update': maxTimestamp,
             }
             strats.push(strat);
-
             // Find the latest record of harvest. It contains the latest lockedProfit value
-            for (let i = 0; i < str.harvests.length; i++) {
-                let harvest = str.harvests[i];
-                totalLoss += parseFloat(harvest.loss);
-                if (latestHarvest == undefined || harvest.timestamp > latestHarvest.timestamp) {
-                    latestHarvest = harvest
+            if (str.harvests!= undefined) {
+                for (let i = 0; i < str.harvests.length; i++) {
+                    let harvest = str.harvests[i];
+                    totalLoss += parseFloat(harvest.loss);
+                    if (latestHarvest == undefined || harvest.timestamp > latestHarvest.timestamp) {
+                        latestHarvest = harvest
+                    }
                 }
             }
+
         }
     }
     if (strats.length > 0) {
         // The lockedProfit and totalLoss are in 3crv. Need covert them to USD
-        let netProfitUsd = (latestHarvest.lockedProfit - totalLoss) * threeCrvPrice
+        let netProfitUsd = latestHarvest ? (latestHarvest.lockedProfit - totalLoss) * threeCrvPrice : 0
         let vaultApy = ((netProfitUsd * 365.25 * 86400) / releaseFactor) / tvl
         return {
             'name': vaultName,
@@ -68,7 +70,7 @@ const calcVaultData = (
             'last3d_apy': toStr(vaultApy),
             'reserves': {
                 'name': vaultName,
-                'display_name': vaultName,
+                'display_name': vaultDisplayName,
                 // 'amount': toStr(vaultAssets - totalDebt),
                 'amount': toStr(vaultAssets - strategyAssets),
                 'last3d_apy': toStr(0),

@@ -49,8 +49,8 @@ export const getExposures = (
     strategyList.forEach((value, key) => {
         stablecoins.push({
             "concentration": toStr(value / totalAmount),
-            "display_name": key,
-            "name": key,
+            "display_name": key.toUpperCase(),
+            "name": key.toUpperCase(),
         })
     })
 
