@@ -10,8 +10,7 @@ import {
     NetworkName,
 } from '../types';
 import {
-    NA,
-    PWRD_TVL_CORRECTION,
+    // PWRD_TVL_CORRECTION,
     LAUNCH_TIMESTAMP_ETH,
 } from '../constants';
 
@@ -66,21 +65,21 @@ export const groStatsParserEthereum = (
             'current': currentApy,
         },
         'tvl': {
-            "pwrd": toStr(pwrdTvl),
-            "gvt": toStr(gvtTvl),
-            "total": toStr(totalTvl),
-            "util_ratio": md.util_ratio,
-            "util_ratio_limit": md.util_ratio_limit,
+            'pwrd': toStr(pwrdTvl),
+            'gvt': toStr(gvtTvl),
+            'total': toStr(totalTvl),
+            'util_ratio': md.util_ratio,
+            'util_ratio_limit': md.util_ratio_limit,
         },
         'system': system,
         'exposure': exposure,
         'token_price_usd': {
-            "pwrd": toStr(price.pwrd),
-            "gvt": toStr(price.gvt),
-            "gro": toStr(price.gro),
-            "dai": toStr(price.dai),
-            "usdc": toStr(price.usdc),
-            "usdt": toStr(price.usdt),
+            'pwrd': toStr(price.pwrd),
+            'gvt': toStr(price.gvt),
+            'gro': toStr(price.gro),
+            'dai': toStr(price.dai),
+            'usdc': toStr(price.usdc),
+            'usdt': toStr(price.usdt),
             'uniswap_gvt_gro': toStr(price.uniswap_gvt_gro),
             'uniswap_gro_usdc': toStr(price.uniswap_gro_usdc),
             'balancer_gro_weth': toStr(price.balancer_gro_weth),

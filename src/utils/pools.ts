@@ -259,10 +259,10 @@ export const getPools = (
             parseFloat(pool.tvl_staked),
         );
         pool.apy.current = {
-            "total": toStr(apyFee + apyToken + apyReward),
-            "token": toStr(apyToken),
-            "pool_fees": toStr(apyFee),
-            "reward": toStr(apyReward),
+            'total': toStr(apyFee + apyToken + apyReward),
+            'token': toStr(apyToken),
+            'pool_fees': toStr(apyFee),
+            'reward': toStr(apyReward),
         }
         result.push(pools[i]);
     }

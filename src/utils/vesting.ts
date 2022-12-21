@@ -14,17 +14,17 @@ export const getVestingBonus = (
     globalStartTime: number,
     initUnlockedPercent: number,
 ): IVestingBonus => {
-    console.log('totalGro', totalGro, 'userTotalGro', userTotalGro, 'currentTimeStamp', currentTimeStamp, 'latestStartTime', latestStartTime);
+    // console.log('totalGro', totalGro, 'userTotalGro', userTotalGro, 'currentTimeStamp', currentTimeStamp, 'latestStartTime', latestStartTime);
     const lockedGro = totalGro - totalGro * (currentTimeStamp - latestStartTime) / MAX_VEST_TIME;
     const globalEndTime = globalStartTime + MAX_VEST_TIME;
     const totalGroove = (totalLockedAmount * (1 - initUnlockedPercent)) * (globalEndTime - currentTimeStamp) / MAX_VEST_TIME;
     const vestAll = lockedGro * totalBonus / totalGroove;
     const result = {
-        "locked_gro": toStr(lockedGro),
-        "net_reward": toStr(netReward),
-        "rewards": {
-            "claim_now": toStr(vestAll * 0.3),
-            "vest_all": toStr(vestAll),
+        'locked_gro': toStr(lockedGro),
+        'net_reward': toStr(netReward),
+        'rewards': {
+            'claim_now': toStr(vestAll * 0.3),
+            'vest_all': toStr(vestAll),
         }
     }
     return result;

@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { Subgraph as sg } from '../types';
-import { BigNumber as BN } from "bignumber.js";
+import { BigNumber as BN } from 'bignumber.js';
 import { IUrl } from '../interfaces/url/IUrl';
 
 

@@ -39,33 +39,33 @@ export const getExposures = (
     for (let z = 0; z < stableCoinList.length; z++) {
         const token = stableCoinList[z];
         stablecoins.push({
-            "concentration": toStr(1.0),
-            "display_name": token,
-            "name": token,
+            'concentration': toStr(1.0),
+            'display_name': token,
+            'name': token,
         });
     }
 
     // calc metacoin exposure
     strategyList.forEach((value, key) => {
         stablecoins.push({
-            "concentration": toStr(value / totalAmount),
-            "display_name": key.toUpperCase(),
-            "name": key.toUpperCase(),
+            'concentration': toStr(value / totalAmount),
+            'display_name': key.toUpperCase(),
+            'name': key.toUpperCase(),
         })
     })
 
     // Because all assets expose to 3crv, the curve exposure is 100%
     protocols.push({
-        "concentration": toStr(1.0),
-        "display_name": 'CURVE',
-        "name": 'CURVE',
+        'concentration': toStr(1.0),
+        'display_name': 'CURVE',
+        'name': 'CURVE',
     });
 
     protocolList.forEach((value, key) => {
         protocols.push({
-            "concentration": toStr(value / totalAmount),
-            "display_name": key.toUpperCase(),
-            "name": key.toUpperCase(),
+            'concentration': toStr(value / totalAmount),
+            'display_name': key.toUpperCase(),
+            'name': key.toUpperCase(),
         });
     });
 
