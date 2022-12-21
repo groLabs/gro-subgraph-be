@@ -14,7 +14,7 @@ export const groStatsParserAvalanche = (
 
     const result = {
         'status': md_eth.status as Status,
-        'network': NetworkName.AVALANCHE,
+        'network': NetworkName.MAINNET,
         'launch_timestamp': LAUNCH_TIMESTAMP_AVAX,
         'tvl': {
             'groDAI.e_vault': value,

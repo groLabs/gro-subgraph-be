@@ -41,16 +41,18 @@ export interface IGroStatsAvalanche {
 }
 
 export interface IGroStats {
-    'status': Status,
-    'current_timestamp': string,
-    'network': string,
-    'mc_totals': {
-        'tvl': {
-            'mainnet': string,
-            'avalanche': string,
-            'total': string,
-        }
-    },
-    'mainnet': IGroStatsEthereum,
-    'avalanche': IGroStatsAvalanche,
+    'gro_stats_mc': {
+        'status': Status,
+        'current_timestamp': string,
+        'network': string,
+        'mc_totals': {
+            'tvl': {
+                'mainnet': string,
+                'avalanche': string,
+                'total': string,
+            }
+        },
+        'mainnet': IGroStatsEthereum,
+        'avalanche': IGroStatsAvalanche,
+    }
 }

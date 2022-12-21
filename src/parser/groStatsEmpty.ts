@@ -24,18 +24,20 @@ export const emptyGroStats = (
 ): IGroStats => {
     const value = (status === Status.OK) ? toStr(0) : NA;
     return {
-        'status': Status.ERROR,
-        'current_timestamp': currentTimestamp,
-        'network': NetworkName.MAINNET,
-        'mc_totals': {
-            'tvl': {
-                'mainnet': value,
-                'avalanche': value,
-                'total': value,
-            }
-        },
-        'mainnet': emptyGroStatsEth(currentTimestamp, status),
-        'avalanche': emptyGroStatsAvax(status),
+        'gro_stats_mc': {
+            'status': Status.ERROR,
+            'current_timestamp': currentTimestamp,
+            'network': NetworkName.MAINNET,
+            'mc_totals': {
+                'tvl': {
+                    'mainnet': value,
+                    'avalanche': value,
+                    'total': value,
+                }
+            },
+            'mainnet': emptyGroStatsEth(currentTimestamp, status),
+            'avalanche': emptyGroStatsAvax(status),
+        }
     }
 }
 
