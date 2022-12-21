@@ -27,5 +27,4 @@ export interface IApy {
         'pwrd': string,
         'gvt': string,
     },
-    'hodl_bonus': string
 }

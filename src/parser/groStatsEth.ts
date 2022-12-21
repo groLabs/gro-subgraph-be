@@ -20,6 +20,7 @@ export const groStatsParserEthereum = (
     stats_eth: any,
     nowTS: number,
 ): IGroStatsEthereum => {
+    console.dir(stats_eth, { depth: null });
     const md = stats_eth.masterDatas[0];
     const price = stats_eth.prices[0];
     const core = stats_eth.coreDatas[0];
@@ -36,8 +37,8 @@ export const groStatsParserEthereum = (
         : 0;
     const gvtTvl = parseFloat(core.total_supply_gvt) * parseFloat(price.gvt);
     const utilRatio = (gvtTvl > 0)
-        ? pwrdTvl / gvtTvl
-        : 0;
+    ? pwrdTvl / gvtTvl
+    : 0;
     const totalTvl = pwrdTvl + gvtTvl;
     const system = getSystem(strategies, totalTvl, price.threeCrv);
     const exposure = (system.vault)
@@ -66,15 +67,13 @@ export const groStatsParserEthereum = (
         'network': NetworkName.MAINNET,
         'apy': {
             'current': currentApy,
-            'hodl_bonus': NA,
         },
         'tvl': {
             "pwrd": toStr(pwrdTvl),
             "gvt": toStr(gvtTvl),
             "total": toStr(totalTvl),
             "util_ratio": toStr(utilRatio),
-            "util_ratio_limit_PD": NA,
-            "util_ratio_limit_GW": NA,
+            "util_ratio_limit": md.utilization_ratio,
         },
         'system': system,
         'exposure': exposure,

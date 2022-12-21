@@ -78,23 +78,17 @@ export const emptyGroStatsEth = (
                 'pwrd': value,
                 'gvt': value,
             },
-            'hodl_bonus': value,
         },
         'tvl': {
             'pwrd': value,
             'gvt': value,
             'total': value,
             'util_ratio': value,
-            'util_ratio_limit_PD': value,
-            'util_ratio_limit_GW': value,
+            'util_ratio_limit': value,
         },
         'system': {
             'amount': value,
             'last3d_apy': value,
-            'lifeguard': {
-                'amount': value,
-                'share': value,
-            },
             'vault': [],
         },
         'exposure': {

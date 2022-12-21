@@ -3,7 +3,6 @@ import { IPool } from './ethereum/IPool';
 import { IExposure } from './ethereum/IExposure';
 import { ITvl as ITvlEth } from './ethereum/ITvl';
 import { ITvl as ITvlAvax } from './avalanche/ITvl';
-import { ILifeguard } from './ethereum/ILifeguard';
 import { IVault as IVaultEth } from './ethereum/IVault';
 import { IVault as IVaultAvax } from './avalanche/IVault';
 import { ITokenPriceUsd } from './ethereum/ITokenPriceUsd';
@@ -23,7 +22,6 @@ export interface IGroStatsEthereum {
     'system': {
         'amount': string,
         'last3d_apy': string,
-        'lifeguard': ILifeguard,
         'vault': IVaultEth[] | null,
     },
     'exposure': IExposure,

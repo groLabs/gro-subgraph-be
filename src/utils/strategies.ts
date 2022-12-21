@@ -94,10 +94,6 @@ export const getSystem = (strats: any[], tvl: number, threeCrvPrice: number) => 
     const system = {
         'amount': toStr(tvl),
         'last3d_apy': systemAPY,
-        'lifeguard': {
-            "amount": toStr(0),
-            "share": toStr(0),
-        },
         'vault': vaults,
     }
     return system;

@@ -17,6 +17,7 @@ export const queryGroStatsEth = (
             networkId
             gro_per_block
             total_alloc
+            utilization_ratio
         }
         prices {
             pwrd
