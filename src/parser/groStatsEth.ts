@@ -36,9 +36,6 @@ export const groStatsParserEthereum = (
         ? (parseFloat(core.total_supply_pwrd_based) / pwrdFactor)
         : 0;
     const gvtTvl = parseFloat(core.total_supply_gvt) * parseFloat(price.gvt);
-    const utilRatio = (gvtTvl > 0)
-    ? pwrdTvl / gvtTvl
-    : 0;
     const totalTvl = pwrdTvl + gvtTvl;
     const system = getSystem(strategies, totalTvl, price.threeCrv);
     const exposure = (system.vault)
@@ -72,8 +69,8 @@ export const groStatsParserEthereum = (
             "pwrd": toStr(pwrdTvl),
             "gvt": toStr(gvtTvl),
             "total": toStr(totalTvl),
-            "util_ratio": toStr(utilRatio),
-            "util_ratio_limit": md.utilization_ratio,
+            "util_ratio": md.util_ratio,
+            "util_ratio_limit": md.util_ratio_limit,
         },
         'system': system,
         'exposure': exposure,
