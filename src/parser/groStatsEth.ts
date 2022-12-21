@@ -20,7 +20,7 @@ export const groStatsParserEthereum = (
     stats_eth: any,
     nowTS: number,
 ): IGroStatsEthereum => {
-    console.dir(stats_eth, { depth: null });
+    // console.dir(stats_eth, { depth: null });
     const md = stats_eth.masterDatas[0];
     const price = stats_eth.prices[0];
     const core = stats_eth.coreDatas[0];
