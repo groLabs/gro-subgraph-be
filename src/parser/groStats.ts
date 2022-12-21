@@ -1,3 +1,5 @@
+import { NA } from '../constants';
+import { toStr } from '../utils/utils';
 import {
     Status,
     NetworkName,
@@ -13,6 +15,15 @@ export const groStatsParser = (
     stats_eth: IGroStatsEthereum,
     stats_avax: IGroStatsAvalanche,
 ): IGroStats => {
+    // calc total tvl
+    let totalTVL = NA;
+    let ethTVL = NA;
+    let avaxTVL = NA;
+    if (stats_eth.tvl.total && stats_avax.tvl.total) {
+        ethTVL = stats_eth.tvl.total;
+        avaxTVL = stats_avax.tvl.total;
+        totalTVL = toStr(parseFloat(stats_eth.tvl.total) + parseFloat(stats_avax.tvl.total));
+    }
     const result = {
         'gro_stats_mc': {
             'status': (
@@ -25,9 +36,9 @@ export const groStatsParser = (
             'network': NetworkName.MAINNET,
             'mc_totals': {
                 'tvl': {
-                    'mainnet': 'N/A',
-                    'avalanche': 'N/A',
-                    'total': 'N/A',
+                    'mainnet': ethTVL,
+                    'avalanche': avaxTVL,
+                    'total': totalTVL,
                 }
             },
             'mainnet': stats_eth,
