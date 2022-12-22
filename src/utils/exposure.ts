@@ -57,8 +57,8 @@ export const getExposures = (
     // Because all assets expose to 3crv, the curve exposure is 100%
     protocols.push({
         'concentration': toStr(1.0),
-        'display_name': 'CURVE',
-        'name': 'CURVE',
+        'display_name': 'Curve',
+        'name': 'Curve',
     });
 
     protocolList.forEach((value, key) => {
