@@ -9,6 +9,7 @@ import {
 } from '../handler/logHandler';
 import * as dotenv from 'dotenv';
 import * as dotenvExpand from 'dotenv-expand';
+import { startJobs } from '../scheduler/scheduler';
 let env = dotenv.config();
 dotenvExpand.expand(env);
 
@@ -72,3 +73,6 @@ function onListening() {
     showInfo(msg);
     console.log(msg);
 }
+
+// start scheduled jobs
+startJobs();
