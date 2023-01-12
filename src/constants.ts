@@ -1,6 +1,8 @@
 import { Token } from './types';
 
 
+export const QUERY_ERROR = 400;
+export const QUERY_SUCCESS = 200;
 export const NA = 'N/A';
 export const TX_ITERATION = 999; // # of records retrieved per subgraph call (limited to 1000 per call)
 export const MAX_VEST_TIME = 31556952;
@@ -30,5 +32,3 @@ export const DEFAULT_STRATEGY_APY = new Map<string, number>([
     ['0x8b335d3e266389ae08a2f22b01d33813d40ed8fd', 0.09],   // alUSD
     ['0xde5a25415c637b52d59ef980b29a5fda8dc3c70b', 0.06],   // TUSD->oUSD
 ]);
-
-

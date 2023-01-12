@@ -75,4 +75,4 @@ function onListening() {
 }
 
 // start scheduled jobs
-startJobs();
+// startJobs();

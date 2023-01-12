@@ -1,0 +1,1 @@
+SELECT * FROM gro."MD_TOKENS"

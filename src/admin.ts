@@ -1,12 +1,16 @@
-import { etlPersonalStats } from './etl/etlPersonalStats';
 import { Subgraph } from './types';
-
+import { etlPersonalStats } from './etl/etlPersonalStats';
+import { loadHistoricalApy } from './loader/historicalApyLoader';
+// enable dotenv
+import * as dotenv from 'dotenv';
+import * as dotenvExpand from 'dotenv-expand';
+let env = dotenv.config();
+dotenvExpand.expand(env);
 
 //TODO: manage error outputs
 (async () => {
     try {
         const params: string[] = process.argv.slice(2);
-
         if (params.length > 0) {
             switch (params[0]) {
                 case 'getPersonalStats':
@@ -31,6 +35,10 @@ import { Subgraph } from './types';
                     console.log(`Unknown parameter/s: ${params}`);
                     break;
             }
+        } else {
+            // try something directly
+            console.log('hallo')
+            await loadHistoricalApy(1,2);
         }
         process.exit(0);
     } catch (err) {

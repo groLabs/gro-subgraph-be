@@ -70,3 +70,11 @@ export enum Route {
   GRO_STATS = 'gro_stats',
   PERSONAL_STATS = 'personal_stats',
 }
+
+export enum SqlCommand {
+  DELETE = 'delete',
+  INSERT = 'insert',
+  SELECT = 'select',
+  TRUNCATE = 'truncate',
+  UPDATE = 'update',
+}
