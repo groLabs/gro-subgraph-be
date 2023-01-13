@@ -7,5 +7,4 @@ export interface IStrategy {
     'amount': string,
     'last3d_apy': string,
     'share': string,
-    'last_update': number,
 }

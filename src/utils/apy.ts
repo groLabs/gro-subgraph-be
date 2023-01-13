@@ -7,18 +7,18 @@ const rekt = {
     'gvt': toStr(0),
 }
 
+// @dev: Pwrd APY set to fixed 2% with G^2
 export const getCoreApy = (
     tvlGvt: number,
     tvlPwrd: number,
-    systemApy: number,
+    trancheApy: number,
 ) => {
     const u = (tvlGvt > 0) ? tvlPwrd / tvlGvt : 0;
     if (u === 0)
         return rekt;
-    // TODO: PWRD will be a fixed apy. Now is 2%. 
     let pwrd = 0.02;
     // Keep pwrd 2% apy, other gain/loss will go to gvt    
-    let gvt = systemApy * (1 + u) - (pwrd * u)
+    let gvt = trancheApy * (1 + u) - (pwrd * u)
     return {
         'pwrd': toStr(pwrd),
         'gvt': toStr(gvt),
