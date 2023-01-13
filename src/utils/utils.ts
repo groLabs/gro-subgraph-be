@@ -31,6 +31,11 @@ export const getUrl = (subgraph: sg): IUrl => {
                 ETH: process.env.SG_G2_TEST_HOSTED_ETH as string,
                 AVAX: process.env.SG_PROD_HOSTED_AVAX as string,
             }
+        case sg.HISTORICAL_APY:
+            return {
+                ETH: process.env.SG_HISTORICAL_APY as string,
+                AVAX: process.env.SG_PROD_HOSTED_AVAX as string,
+            }
         default:
             return {
                 ETH: 'unknown',

@@ -5,6 +5,7 @@ export enum Subgraph {
   TEST_HOSTED = 'test_hosted',
   TEST_STUDIO = 'test_studio',
   G2_INTERNAL = 'g2_internal',
+  HISTORICAL_APY = 'historical_apy',
 }
 
 export enum Env {

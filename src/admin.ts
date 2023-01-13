@@ -7,7 +7,7 @@ import * as dotenvExpand from 'dotenv-expand';
 let env = dotenv.config();
 dotenvExpand.expand(env);
 
-//TODO: manage error outputs
+
 (async () => {
     try {
         const params: string[] = process.argv.slice(2);
@@ -37,8 +37,7 @@ dotenvExpand.expand(env);
             }
         } else {
             // try something directly
-            console.log('hallo')
-            await loadHistoricalApy(1,2);
+            await loadHistoricalApy();
         }
         process.exit(0);
     } catch (err) {

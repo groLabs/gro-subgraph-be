@@ -8,6 +8,7 @@ import { showError } from './logHandler';
 
 
 // TODO: user with only rights to insert into a list of tables
+// TODO: handle when evn params for db connection are empty
 const dbConnection = {
     host: process.env.DB_HOST as string,
     port: process.env.DB_PORT as number | undefined,
@@ -27,8 +28,13 @@ const NO_DATA = {
 export const query = async (
     file: string,
     params: any[],
-) => {
+ ): Promise<any> => {
     try {
+        if (dbConnection.host == undefined)
+            showError(
+                'handler/queryHandler.ts->query()',
+                'db settings in .env not found',
+            );
         let option;
         switch (file.slice(0, 4)) {
             case 'inse':
@@ -49,18 +55,15 @@ export const query = async (
             default:
                 return ERROR;
         }
-
         const q = fs.readFileSync(path.join(__dirname, `/../queries/${option}/${file}`), 'utf8');
-console.log('dbconnection', dbConnection, 'env', process.env);
         const result = await singleQuery(q, file, params);
-
-        if (result === QUERY_ERROR) {
+        if (result === QUERY_ERROR || dbConnection.host == undefined) {
             return ERROR;
         } else {
             return result;
         }
     } catch (err) {
-        showError('queryHandler.ts->query()', err);
+        showError('handler/queryHandler.ts->query()', err);
         return ERROR;
     }
 }
@@ -84,7 +87,7 @@ const singleQuery = async (
             }
         } catch (err) {
             showError(
-                'queryHandler.ts->singleQuery()',
+                'handler/queryHandler.ts->singleQuery()',
                 `\n Message: ${err} \n Query: ${file} \n Params: ${params}`
             );
             return ERROR;
@@ -92,7 +95,7 @@ const singleQuery = async (
             client.release();
         }
     } catch (err) {
-        showError('queryHandler.ts->singleQuery()', err);
+        showError('handler/queryHandler.ts->singleQuery()', err);
         return ERROR;
     }
 }

@@ -152,7 +152,6 @@ export const EMPTY_STRATEGY: IStrategy = {
     'amount': toStr(0),
     'last3d_apy': toStr(0),
     'share': toStr(0),
-    'last_update': 0,
 }
 
 export const EMPTY_VAULT: IVault = {

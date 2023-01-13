@@ -19,6 +19,7 @@ export const queryGroStatsEth = (
             total_alloc
             util_ratio
             util_ratio_limit
+            gvault_release_factor
         }
         prices {
             pwrd
