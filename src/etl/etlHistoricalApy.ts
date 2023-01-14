@@ -1,7 +1,7 @@
 import { QUERY_ERROR } from '../constants';
 import { query } from '../handler/queryHandler';
-import { etlGroStats } from '../etl/etlGroStats';
-import { parseHistoricalApy } from '../parser/historicalApyParser';
+import { etlGroStats } from './etlGroStats';
+import { parseHistoricalApyQuery } from '../parser/historicalApy';
 import {
     Status,
     Subgraph
@@ -12,7 +12,7 @@ import {
 } from '../handler/logHandler';
 
 
-export const loadHistoricalApy = async (): Promise<any> => {
+export const etlHistoricalApy = async (): Promise<any> => {
     // get gro stats data from ethereum subgraph
     const groStats = await etlGroStats(
         Subgraph.HISTORICAL_APY,
@@ -24,8 +24,8 @@ export const loadHistoricalApy = async (): Promise<any> => {
         let currentTimestamp = parseInt(groStats.gro_stats_mc.current_timestamp);
         let pwrdApy = parseFloat(groStats.gro_stats_mc.mainnet.apy.current.pwrd);
         let gvtApy = parseFloat(groStats.gro_stats_mc.mainnet.apy.current.gvt);
-        const paramsPwrd = parseHistoricalApy(currentTimestamp, 1, pwrdApy);
-        const paramsGvt = parseHistoricalApy(currentTimestamp, 2, gvtApy);
+        const paramsPwrd = parseHistoricalApyQuery(currentTimestamp, 1, pwrdApy);
+        const paramsGvt = parseHistoricalApyQuery(currentTimestamp, 2, gvtApy);
         // insert apys into table gro.PROTOCOL_APY
         const [
             resultPwrd,
@@ -43,13 +43,13 @@ export const loadHistoricalApy = async (): Promise<any> => {
             showInfo(`historical APYs [pwrd: ${pwrdApy} gvt: ${gvtApy}] successfully loaded`);
         } else {
             showError(
-                'loader/historicalApyLoader.ts->loadHistoricalApy()',
+                'loader/historicalApyLoader.ts->etlHistoricalApy()',
                 `Error while insterting historical APY into DB`,
             );
         }
     } else {
         showError(
-            'loader/historicalApyLoader.ts->loadHistoricalApy()',
+            'loader/historicalApyLoader.ts->etlHistoricalApy()',
             `Error while insterting gro stats from the ethereum subgraph`,
         );
     }

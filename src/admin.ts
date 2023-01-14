@@ -1,6 +1,6 @@
 import { Subgraph } from './types';
 import { etlPersonalStats } from './etl/etlPersonalStats';
-import { loadHistoricalApy } from './loader/historicalApyLoader';
+import { etlHistoricalApy } from './etl/etlHistoricalApy';
 // enable dotenv
 import * as dotenv from 'dotenv';
 import * as dotenvExpand from 'dotenv-expand';
@@ -37,7 +37,7 @@ dotenvExpand.expand(env);
             }
         } else {
             // try something directly
-            await loadHistoricalApy();
+            await etlHistoricalApy();
         }
         process.exit(0);
     } catch (err) {

@@ -1,12 +1,21 @@
-import express, { Request, Response, NextFunction } from 'express';
-import { query, validationResult } from 'express-validator';
-import { validate } from '../common/validate';
+import { now } from '../utils/utils';
+import { Subgraph } from '../types';
 import { showError } from '../handler/logHandler';
 import { etlGroStats } from '../etl/etlGroStats';
 import { etlPersonalStats } from '../etl/etlPersonalStats';
+import { validateApiRequest } from '../caller/validateApiRequest';
 import { personalStatsError } from '../parser/personalStatsError';
-import { Subgraph } from '../types';
-import { now } from '../utils/utils';
+import { historicalApyError } from '../parser/historicalApyError';
+import { getHistoricalApy } from '../handler/historicalApyHandler';
+import {
+    query,
+    validationResult
+} from 'express-validator';
+import express, {
+    Request,
+    Response,
+    NextFunction
+} from 'express';
 
 
 const router = express.Router();
@@ -20,12 +29,13 @@ const wrapAsync = function wrapAsync(fn: any) {
 // E.g.: http://localhost:3015/subgraph/gro_stats_mc?subgraph=prod_hosted
 router.get(
     '/gro_stats_mc',
-    validate([
+    validateApiRequest([
         query('subgraph')
             .trim()
             .notEmpty()
-            .withMessage(`field <subgraph> can't be empty`),
-    ]),
+            .withMessage(`field <subgraph> can't be empty`)],
+        'gro_stats_mc',
+    ),
     wrapAsync(async (req: Request, res: Response) => {
         try {
             // if errors during validation, response has been already sent, so just exit
@@ -64,7 +74,7 @@ router.get(
 // E.g.: http://localhost:3015/subgraph/gro_personal_position_mc?address=0x60ff7DcB4a9c1a89B18Fa2D1Bb9444143BbEA9BD&subgraph=prod_studio
 router.get(
     '/gro_personal_position_mc',
-    validate([
+    validateApiRequest([
         query('subgraph')
             .trim()
             .notEmpty()
@@ -75,8 +85,9 @@ router.get(
             .isLength({ min: 42, max: 42 })
             .withMessage('address must be 42 characters long')
             .matches(/^0x[A-Za-z0-9]{40}/)
-            .withMessage('should be a valid address and start with "0x"'),
-    ]),
+            .withMessage('should be a valid address and start with "0x"')],
+        'gro_personal_position_mc'
+    ),
     wrapAsync(async (req: Request, res: Response) => {
         try {
             // if errors during validation, response has been already sent, so just exit
@@ -107,6 +118,51 @@ router.get(
             res.json(personalStatsError(
                 now(),
                 'N/A',
+                err as string,
+            ));
+        }
+    })
+);
+
+// e.g.: http://localhost:3015/subgraph/historical_apy?network=mainnet&attr=apy_current,apy_current,apy_current&freq=twice_daily,daily,weekly&start=1669913771,1669913771,1669913771&end=1672505771,1672505771,1672505771
+// @dev: only `apy_current` is currently stored in the DB; any other apy will return null values
+router.get(
+    '/historical_apy',
+    validateApiRequest([
+        query('network')
+            .trim()
+            .notEmpty()
+            .withMessage(`network can't be empty`),
+        query('network')
+            .equals('mainnet')
+            .withMessage(`network must be 'mainnet'`),
+        query('attr')
+            .notEmpty()
+            .withMessage(`attr can't be empty`),
+        query('freq')
+            .notEmpty()
+            .withMessage(`freq can't be empty`),
+        query('start')
+            .notEmpty()
+            .withMessage(`start can't be empty`),
+        query('end')
+            .notEmpty()
+            .withMessage(`end can't be empty`)],
+        'historical_apy'
+    ),
+    wrapAsync(async (req: Request, res: Response) => {
+        try {
+            // if errors during validation, response has been already sent, so just exit
+            const errors = validationResult(req);
+            if (!errors.isEmpty())
+                return;
+            let { _network, attr, freq, start, end } = req.query;
+            const groStats = await getHistoricalApy(attr, freq, start, end);
+            res.json(groStats);
+        } catch (err) {
+            showError('routes/subgraph.ts->historical_apy', err);
+            res.json(historicalApyError(
+                now(),
                 err as string,
             ));
         }
