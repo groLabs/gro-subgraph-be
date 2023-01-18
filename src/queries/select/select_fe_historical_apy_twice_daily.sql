@@ -11,16 +11,16 @@ SELECT apy."current_timestamp",
     apy."apy_monthly",
     apy."apy_all_time",
     apy."apy_current"
-FROM gro."PROTOCOL_APY" apy,
+FROM g2."PROTOCOL_APY" apy,
     (
         SELECT PERCENTILE_DISC(0.50) WITHIN GROUP (
                 ORDER BY ts."current_timestamp"
             ) as ts,
             dates.days
-        FROM gro."PROTOCOL_APY" ts,
+        FROM g2."PROTOCOL_APY" ts,
             (
                 SELECT DISTINCT(TO_CHAR("current_date", 'DD/MM/YYYY')) as "days"
-                FROM gro."PROTOCOL_APY"
+                FROM g2."PROTOCOL_APY"
                 WHERE date("current_date") BETWEEN $1 AND $2
             ) dates
         WHERE TO_CHAR(ts."current_date", 'DD/MM/YYYY') = dates.days
@@ -40,14 +40,14 @@ SELECT apy."current_timestamp",
     apy."apy_monthly",
     apy."apy_all_time",
     apy."apy_current"
-FROM gro."PROTOCOL_APY" apy,
+FROM g2."PROTOCOL_APY" apy,
     (
         SELECT min(ts."current_timestamp") as ts,
             dates.days
-        FROM gro."PROTOCOL_APY" ts,
+        FROM g2."PROTOCOL_APY" ts,
             (
                 SELECT DISTINCT(TO_CHAR("current_date", 'DD/MM/YYYY')) as "days"
-                FROM gro."PROTOCOL_APY"
+                FROM g2."PROTOCOL_APY"
                 WHERE date("current_date") BETWEEN $1 AND $2
             ) dates
         WHERE TO_CHAR(ts."current_date", 'DD/MM/YYYY') = dates.days

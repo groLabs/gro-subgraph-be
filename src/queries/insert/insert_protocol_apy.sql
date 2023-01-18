@@ -1,4 +1,4 @@
-INSERT INTO gro."PROTOCOL_APY" (
+INSERT INTO g2."PROTOCOL_APY" (
         "current_timestamp",
         "current_date",
         "network_id",
