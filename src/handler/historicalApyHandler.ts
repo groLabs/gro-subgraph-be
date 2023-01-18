@@ -1,8 +1,11 @@
 import moment from 'moment';
 import { now } from '../utils/utils';
-import { showError } from './logHandler';
 import { LAUNCH_TIMESTAMP_ETH } from '../constants';
 import { historicalApyError } from '../parser/historicalApyError';
+import {
+    showInfo,
+    showError,
+} from './logHandler';
 import { 
     IResponses,
     IHistoricalApy,
@@ -66,9 +69,10 @@ export const getHistoricalApy = async (
                 ...object as IResponses,
             }
         }
+        showInfo(`Historical APY requested`);
         return result;
     } catch (err) {
-        showError('historicalAPY.ts->getHistoricalAPY()', err);
+        showError('handler/historicalApyHandler.ts->getHistoricalAPY()', err);
         return historicalApyError(
             now(),
             err as string,

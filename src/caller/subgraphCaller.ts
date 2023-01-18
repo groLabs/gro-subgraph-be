@@ -21,13 +21,13 @@ export const callSubgraph = async (
 ): Promise<any> => {
     let q;
     if (isEthSubgraph(url)) {
-        if (route === Route.PERSONAL_STATS) {
+        if (route === Route.GRO_PERSONAL_POSITION_MC) {
             q = queryPersonalStatsEth(
                 account,
                 first,
                 skip
             );
-        } else if (route === Route.GRO_STATS) {
+        } else if (route === Route.GRO_STATS_MC) {
             q = queryGroStatsEth(
                 first,
                 skip,
@@ -42,13 +42,13 @@ export const callSubgraph = async (
             return null;
         }
     } else if (isAvaxSubgraph(url)) {
-        if (route === Route.PERSONAL_STATS) {
+        if (route === Route.GRO_PERSONAL_POSITION_MC) {
             q = queryPersonalStatsAvax(
                 account,
                 first,
                 skip
             );
-        } else if (route === Route.GRO_STATS) {
+        } else if (route === Route.GRO_STATS_MC) {
             q = queryGroStatsAvax(
                 first,
                 skip,

@@ -17,7 +17,7 @@ export const getGroStats = async (
             '',
             TX_ITERATION,
             skip,
-            Route.GRO_STATS,
+            Route.GRO_STATS_MC,
             tsNow
         );
         if (call.errors) {

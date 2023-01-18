@@ -1,5 +1,4 @@
 import { now } from '../utils/utils';
-import { Subgraph } from '../types';
 import { showError } from '../handler/logHandler';
 import { etlGroStats } from '../etl/etlGroStats';
 import { etlPersonalStats } from '../etl/etlPersonalStats';
@@ -11,6 +10,10 @@ import {
     query,
     validationResult
 } from 'express-validator';
+import {
+    Route,
+    Subgraph,
+} from '../types';
 import express, {
     Request,
     Response,
@@ -34,7 +37,7 @@ router.get(
             .trim()
             .notEmpty()
             .withMessage(`field <subgraph> can't be empty`)],
-        'gro_stats_mc',
+        Route.GRO_STATS_MC,
     ),
     wrapAsync(async (req: Request, res: Response) => {
         try {
@@ -53,7 +56,7 @@ router.get(
             } else if (subgraph) {
                 // subgraph value is incorrect
                 const err_msg = `unknown target subgraph <${subgraph}>`;
-                showError('routes->subgraph.ts on /gro_stats_mc', err_msg);
+                showError('routes->subgraph.ts->gro_stats_mc', err_msg);
                 res.json(personalStatsError(
                     now(),
                     'N/A',
@@ -86,7 +89,7 @@ router.get(
             .withMessage('address must be 42 characters long')
             .matches(/^0x[A-Za-z0-9]{40}/)
             .withMessage('should be a valid address and start with "0x"')],
-        'gro_personal_position_mc'
+        Route.GRO_PERSONAL_POSITION_MC
     ),
     wrapAsync(async (req: Request, res: Response) => {
         try {
@@ -106,7 +109,7 @@ router.get(
             } else if (subgraph) {
                 // subgraph value is incorrect
                 const err_msg = `unknown target subgraph <${subgraph}>`;
-                showError('routes->subgraph.ts on /gro_personal_position_mc', err_msg);
+                showError('routes->subgraph.ts->gro_personal_position_mc', err_msg);
                 res.json(personalStatsError(
                     now(),
                     address?.toString() || 'N/A',
@@ -148,7 +151,7 @@ router.get(
         query('end')
             .notEmpty()
             .withMessage(`end can't be empty`)],
-        'historical_apy'
+        Route.HISTORICAL_APY
     ),
     wrapAsync(async (req: Request, res: Response) => {
         try {

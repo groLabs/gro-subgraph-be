@@ -1,3 +1,4 @@
+import { Route } from '../types';
 import { now } from '../utils/utils';
 import { groStatsError } from '../parser/groStatsError';
 import { personalStatsError } from '../parser/personalStatsError';
@@ -15,7 +16,7 @@ import {
 
 export const validateApiRequest = (
     validations: ValidationChain[],
-    route: string,
+    route: Route,
 ) => {
     return async (
         req: Request,
@@ -28,14 +29,14 @@ export const validateApiRequest = (
             return next();
         }
         switch (route) {
-            case 'gro_stats_mc':
+            case Route.GRO_STATS_MC:
                 res.status(400).json(
                     groStatsError(
                         now(),
                         JSON.stringify(errors)
                     ));
                 return next();
-            case 'gro_personal_position_mc':
+            case Route.GRO_PERSONAL_POSITION_MC:
                 res.status(400).json(
                     personalStatsError(
                         now(),
@@ -43,7 +44,7 @@ export const validateApiRequest = (
                         JSON.stringify(errors),
                     ));
                 return next();
-            case 'historical_apy':
+            case Route.HISTORICAL_APY:
                 res.status(400).json(
                     historicalApyError(
                         now(),
