@@ -1,6 +1,6 @@
 import { QUERY_ERROR } from '../constants';
-import { query } from '../handler/queryHandler';
 import { etlGroStats } from './etlGroStats';
+import { query } from '../handler/queryHandler';
 import { parseHistoricalApyQuery } from '../parser/historicalApy';
 import {
     Status,
@@ -12,7 +12,7 @@ import {
 } from '../handler/logHandler';
 
 
-export const etlHistoricalApy = async (): Promise<any> => {
+export const etlHistoricalApy = async (): Promise<void> => {
     // get gro stats data from ethereum subgraph
     const groStats = await etlGroStats(
         Subgraph.HISTORICAL_APY,
@@ -26,7 +26,7 @@ export const etlHistoricalApy = async (): Promise<any> => {
         let gvtApy = parseFloat(groStats.gro_stats_mc.mainnet.apy.current.gvt);
         const paramsPwrd = parseHistoricalApyQuery(currentTimestamp, 1, pwrdApy);
         const paramsGvt = parseHistoricalApyQuery(currentTimestamp, 2, gvtApy);
-        // insert apys into table gro.PROTOCOL_APY
+        // insert APYs into table g2.PROTOCOL_APY
         const [
             resultPwrd,
             resultGvt,
@@ -34,23 +34,22 @@ export const etlHistoricalApy = async (): Promise<any> => {
             query('insert_protocol_apy.sql', paramsPwrd),
             query('insert_protocol_apy.sql', paramsGvt),
         ]);
-        console.log(paramsPwrd);
-        // show error if applicable
+        // show logs
         if (
             resultPwrd.status !== QUERY_ERROR
             && resultGvt.status !== QUERY_ERROR
         ) {
-            showInfo(`historical APYs [pwrd: ${pwrdApy} gvt: ${gvtApy}] successfully loaded`);
+            showInfo(`Historical APY [pwrd: ${pwrdApy} gvt: ${gvtApy}] on timestamp ${currentTimestamp} successfully loaded`);
         } else {
             showError(
-                'loader/historicalApyLoader.ts->etlHistoricalApy()',
-                `Error while insterting historical APY into DB`,
+                'etl/etlHistoricalApy.ts->etlHistoricalApy()',
+                `Error while insterting historical APY into DB on timestamp ${currentTimestamp}`,
             );
         }
     } else {
         showError(
-            'loader/historicalApyLoader.ts->etlHistoricalApy()',
-            `Error while insterting gro stats from the ethereum subgraph`,
+            'etl/etlHistoricalApy.ts->etlHistoricalApy()',
+            `Gro stats parsed data from ethereum subgraph not available`,
         );
     }
 }
