@@ -21,7 +21,9 @@ export const calcStrategyApy = (
     for (let i = 0; i < harvests.length; i++) {
         netProfit += (harvests[i].gain - harvests[i].loss) * threeCrvPrice;
     }
-    if (harvests.length > 0) {
+    if (tvl === 0) {
+        return toStr(0);
+    } else if (harvests.length > 0) {
         const apy = (netProfit / tvl) * (365 / 7);
         return toStr(apy);
     } else {
@@ -55,7 +57,7 @@ const calcStrategies = (
                 str.id,
                 threeCrvPrice,
             ),
-            'share': toStr(strategyAssetsUsd / tvl),
+            'share': toStr(tvl > 0 ? strategyAssetsUsd / tvl : 0),
         }
         strats.push(strat);
     }
@@ -68,10 +70,13 @@ const calcVault = (
     strats: IStrategy[],
     tvl: number,
 ): IVault => {
-    const vaultApy = strats.reduce(
-        (prev, current) => prev + parseFloat(current.last3d_apy) * (parseFloat(current.amount) / tvl), 0
-    );
+    const vaultApy = tvl > 0
+        ? strats.reduce(
+            (prev, current) => prev + parseFloat(current.last3d_apy) * (parseFloat(current.amount) / tvl), 0
+        )
+        : 0;
     const strategyAssets = strats.reduce((prev, current) => prev + parseFloat(current.amount), 0);
+    const reservesAmount = tvl - strategyAssets;
     if (strats.length > 0) {
         return {
             'name': '3CRV',
@@ -82,9 +87,9 @@ const calcVault = (
             'reserves': {
                 'name': '3CRV',
                 'display_name': '3CRV yVault',
-                'amount': toStr(tvl - strategyAssets),
+                'amount': toStr(reservesAmount),
                 'last3d_apy': toStr(0),
-                'share': toStr((tvl - strategyAssets) / tvl),
+                'share': toStr(tvl > 0 ? reservesAmount / tvl : 0),
             },
             'strategies': strats,
         }

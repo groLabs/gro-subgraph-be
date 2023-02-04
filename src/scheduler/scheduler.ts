@@ -23,5 +23,5 @@ const historicalApyJob = async () => {
 }
 
 export const startJobs = async () => {
-    historicalApyJob();
+    //historicalApyJob();
 }

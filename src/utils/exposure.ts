@@ -48,7 +48,7 @@ export const getExposures = (
     // calc metacoin exposure
     strategyList.forEach((value, key) => {
         stablecoins.push({
-            'concentration': toStr(value / totalAmount),
+            'concentration': toStr(totalAmount > 0 ? value / totalAmount : 0),
             'display_name': key.toUpperCase(),
             'name': key.toUpperCase(),
         })
@@ -63,7 +63,7 @@ export const getExposures = (
 
     protocolList.forEach((value, key) => {
         protocols.push({
-            'concentration': toStr(value / totalAmount),
+            'concentration': toStr(totalAmount > 0 ? value / totalAmount : 0),
             'display_name': key.toUpperCase(),
             'name': key.toUpperCase(),
         });
