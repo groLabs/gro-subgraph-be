@@ -8,8 +8,23 @@ import { IVault } from '../interfaces/groStats/ethereum/IVault';
 import { IStrategy } from '../interfaces/groStats/ethereum/IStrategy';
 
 
-//@dev: strategy apy = ( net profit / tvl ) * ( 365 / 7 ) , where:
-//      net profit = gain - loss in USD of harvests within the last 7 days
+//@dev 1: strategy apy = ( net profit / tvl ) * ( 365 / 7 ) , where:
+//        net profit = gain - loss in USD of harvests within the last 7 days
+/*@dev 2: Example: Before harvest, we have LockedProfit = 10. After a harvest, two cases:
+
+Case A -> loss 13
+loss = 13
+lockedProfitBeforeLoss (aka. excessLoss) = 10
+lockedProfit = 0
+
+Case B -> loss 8
+loss = 8
+lockedProfitBeforeLoss (aka. excessLoss) = 10
+lockedProfit = 2
+
+Therefore, on the bot side:
+profit = (loss > lockedProfitBeforeLoss) ?  lockedProfitBeforeLoss - loss : lockedProfit
+ */
 export const calcStrategyApy = (
     tvl: number,
     _harvests: any[],
@@ -19,7 +34,13 @@ export const calcStrategyApy = (
     let netProfit = 0;
     let harvests = _harvests.filter((item: any) => item.strategyAddress.id === strategyAddress);
     for (let i = 0; i < harvests.length; i++) {
-        netProfit += (harvests[i].gain - harvests[i].loss) * threeCrvPrice;
+        // netProfit += (harvests[i].gain - harvests[i].loss) * threeCrvPrice;
+        const harvest = harvests[i];
+        if (harvest.loss > harvest.excessLoss) {
+            netProfit += (harvest.excessLoss - harvest.loss) * threeCrvPrice;
+        } else {
+            netProfit += (harvest.gain - harvest.loss) * threeCrvPrice;
+        }
     }
     if (tvl === 0) {
         return toStr(0);
