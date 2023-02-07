@@ -40,6 +40,7 @@ export const groStatsParserEthereum = (
         strategies,
         totalTvl,
         price.threeCrv,
+        md.gvault_release_factor,
     );
     const exposure = (system.vault)
         ? getExposures(system.vault)

@@ -84,6 +84,7 @@ export const queryGroStatsEth = (
             strategy_debt
             block_strategy_reported
             block_strategy_withdraw
+            locked_profit
             harvests (orderBy: timestamp, orderDirection: desc, where: {
                 timestamp_gt: ${ts7d}
             }) {

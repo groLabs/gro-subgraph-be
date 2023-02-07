@@ -85,17 +85,27 @@ const calcStrategies = (
     return strats;
 }
 
+// V1
 //@dev: vault apy = sum ( strategy_apy * ( strategy_asset / tvl ) )
 const calcVault = (
     _strats: any[],
     strats: IStrategy[],
     tvl: number,
+    gvault_release_factor: number,
 ): IVault => {
-    const vaultApy = tvl > 0
-        ? strats.reduce(
-            (prev, current) => prev + parseFloat(current.last3d_apy) * (parseFloat(current.amount) / tvl), 0
-        )
-        : 0;
+    let vaultApy = 0;
+    // get latest lockedProfit across strategies in GVault
+    const stratsUpdated = _strats.filter(item => item.block_strategy_reported !== 0);
+    if (stratsUpdated.length > 0 && tvl > 0) {
+        const latestStratUpdated = stratsUpdated.reduce(
+            (prev, curr) =>
+                (prev.block_strategy_reported > curr.block_strategy_reported)
+                    ? prev
+                    : curr);
+        vaultApy = ( (latestStratUpdated.locked_profit * 365 * 86400 ) / gvault_release_factor) / tvl;
+    }
+
+    // console.log('_strats', _strats, 'vaultApy', vaultApy, 'gvault_release_factor', gvault_release_factor);
     const strategyAssets = strats.reduce((prev, current) => prev + parseFloat(current.amount), 0);
     const reservesAmount = tvl - strategyAssets;
     if (strats.length > 0) {
@@ -119,11 +129,47 @@ const calcVault = (
     }
 }
 
+// V2
+//@dev: vault apy = sum ( strategy_apy * ( strategy_asset / tvl ) )
+// const calcVault = (
+//     _strats: any[],
+//     strats: IStrategy[],
+//     tvl: number,
+// ): IVault => {
+//     const vaultApy = tvl > 0
+//         ? strats.reduce(
+//             (prev, current) => prev + parseFloat(current.last3d_apy) * (parseFloat(current.amount) / tvl), 0
+//         )
+//         : 0;
+//     const strategyAssets = strats.reduce((prev, current) => prev + parseFloat(current.amount), 0);
+//     const reservesAmount = tvl - strategyAssets;
+//     if (strats.length > 0) {
+//         return {
+//             'name': '3CRV',
+//             'display_name': '3CRV yVault',
+//             'amount': toStr(tvl),
+//             'share': '1.0',
+//             'last3d_apy': toStr(vaultApy),
+//             'reserves': {
+//                 'name': '3CRV',
+//                 'display_name': '3CRV yVault',
+//                 'amount': toStr(reservesAmount),
+//                 'last3d_apy': toStr(0),
+//                 'share': toStr(tvl > 0 ? reservesAmount / tvl : 0),
+//             },
+//             'strategies': strats,
+//         }
+//     } else {
+//         return EMPTY_VAULT;
+//     }
+// }
+
 //@dev: With G^2, only one CRV Vault (aka GVault) instead of DAI, USDC & USDT Vaults
 export const getSystem = (
     strats: any[],
     tvl: number,
     threeCrvPrice: number,
+    gvault_release_factor: number,
 ) => {
     const strategies = calcStrategies(
         strats,
@@ -134,7 +180,9 @@ export const getSystem = (
         strats,
         strategies,
         tvl,
+        gvault_release_factor,
     );
+    //TODO: systemAPY is not vaultAPY
     const systemAPY = vault
         ? vault.last3d_apy
         : toStr(0);
