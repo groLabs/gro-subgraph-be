@@ -1,3 +1,4 @@
+import { Env } from '../types';
 import schedule from 'node-schedule';
 import { etlHistoricalApy } from '../etl/etlHistoricalApy';
 import {
@@ -22,6 +23,9 @@ const historicalApyJob = async () => {
     });
 }
 
+// @dev: store historical APY only if running in PROD environment (to potentially avoid duplicating data)
 export const startJobs = async () => {
-    historicalApyJob();
+    if (process.env.NODE_ENV === Env.PROD) {
+        historicalApyJob();
+    }
 }
