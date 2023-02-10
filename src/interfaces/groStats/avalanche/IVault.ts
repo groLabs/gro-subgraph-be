@@ -1,5 +1,5 @@
-import {IReserve} from './IReserve';
-import {IStrategy} from './IStrategy';
+import { IReserve } from './IReserve';
+import { IStrategy } from './IStrategy';
 
 
 export interface IVault {

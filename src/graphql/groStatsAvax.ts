@@ -16,5 +16,15 @@ export const queryGroStatsAvax = (
             status
             networkId
         }
+        strategies(orderBy: order, orderDirection: asc) {
+            id
+            strat_name
+            vault_name
+            vault_address
+            total_assets_strategy
+            total_assets_vault
+            coin
+            metacoin
+        }
     }`
 );
