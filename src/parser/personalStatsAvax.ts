@@ -11,7 +11,6 @@ import {
 } from '../types';
 
 
-
 export const parsePersonalStatsSubgraphAvalanche = (
     stats_avax: any
 ): IPersonalStatsAvalanche => {
@@ -25,24 +24,31 @@ export const parsePersonalStatsSubgraphAvalanche = (
         const approvals_avax: IApprovalTx[] = stats_avax.users[0].approvals;
 
         // Pre-calculations
-        const currentBalance_groDAI_e_v1_0 =
-            parseFloat(totals_avax.net_amount_groDAI_e_v1_0)
-            / parseFloat(stats_avax.prices[0].groDAI_e_v1_0);
-        const currentBalance_groUSDC_e_v1_0 =
-            parseFloat(totals_avax.net_amount_groUSDC_e_v1_0)
-            / parseFloat(stats_avax.prices[0].groUSDC_e_v1_0);
-        const currentBalance_groUSDT_e_v1_0 =
-            parseFloat(totals_avax.net_amount_groUSDT_e_v1_0)
-            / parseFloat(stats_avax.prices[0].groUSDT_e_v1_0);
-        const currentBalance_groDAI_e_v1_7 =
-            parseFloat(totals_avax.net_amount_groDAI_e_v1_7)
-            / parseFloat(stats_avax.prices[0].groDAI_e_v1_7);
-        const currentBalance_groUSDC_e_v1_7 =
-            parseFloat(totals_avax.net_amount_groUSDC_e_v1_7)
-            / parseFloat(stats_avax.prices[0].groUSDC_e_v1_7);
-        const currentBalance_groUSDT_e_v1_7 =
-            parseFloat(totals_avax.net_amount_groUSDT_e_v1_7)
-            / parseFloat(stats_avax.prices[0].groUSDT_e_v1_7);
+        const currentBalance_groDAI_e_v1_0 = (parseFloat(stats_avax.prices[0].groDAI_e_v1_0) > 0)
+            ? parseFloat(totals_avax.net_amount_groDAI_e_v1_0)
+            / parseFloat(stats_avax.prices[0].groDAI_e_v1_0)
+            : 0;
+        const currentBalance_groUSDC_e_v1_0 = (parseFloat(stats_avax.prices[0].groUSDC_e_v1_0) > 0)
+            ? parseFloat(totals_avax.net_amount_groUSDC_e_v1_0)
+            / parseFloat(stats_avax.prices[0].groUSDC_e_v1_0)
+            : 0;
+        const currentBalance_groUSDT_e_v1_0 = (parseFloat(stats_avax.prices[0].groUSDT_e_v1_0) > 0)
+            ? parseFloat(totals_avax.net_amount_groUSDT_e_v1_0)
+            / parseFloat(stats_avax.prices[0].groUSDT_e_v1_0)
+            : 0;
+        const currentBalance_groDAI_e_v1_7 = (parseFloat(stats_avax.prices[0].groDAI_e_v1_7) > 0)
+            ? parseFloat(totals_avax.net_amount_groDAI_e_v1_7)
+            / parseFloat(stats_avax.prices[0].groDAI_e_v1_7)
+            : 0;
+        const currentBalance_groUSDC_e_v1_7 = (parseFloat(stats_avax.prices[0].groUSDC_e_v1_7) > 0)
+            ? parseFloat(totals_avax.net_amount_groUSDC_e_v1_7)
+            / parseFloat(stats_avax.prices[0].groUSDC_e_v1_7)
+            : 0;
+        const currentBalance_groUSDT_e_v1_7 = (parseFloat(stats_avax.prices[0].groUSDT_e_v1_7) > 0)
+            ? parseFloat(totals_avax.net_amount_groUSDT_e_v1_7)
+            / parseFloat(stats_avax.prices[0].groUSDT_e_v1_7)
+            : 0;
+
         const currentBalanceTotal =
             currentBalance_groDAI_e_v1_0
             + currentBalance_groUSDC_e_v1_0
