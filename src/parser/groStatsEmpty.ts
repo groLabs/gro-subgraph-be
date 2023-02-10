@@ -1,5 +1,6 @@
 import { toStr } from '../utils/utils';
 import { IVault } from '../interfaces/groStats/ethereum/IVault';
+import { IVault as IVaultAvax } from '../interfaces/groStats/avalanche/IVault';
 import { IStrategy } from '../interfaces/groStats/ethereum/IStrategy';
 import { IExposure } from '../interfaces/groStats/ethereum/IExposure';
 import {
@@ -148,29 +149,62 @@ export const EMPTY_STRATEGY: IStrategy = {
     'display_name': NA,
     'metacoin': NA,
     'protocol': NA,
-    'address': '0x',
-    'amount': toStr(0),
-    'last3d_apy': toStr(0),
-    'share': toStr(0),
+    'address': NA,
+    'amount': NA,
+    'last3d_apy': NA,
+    'share': NA,
 }
 
 export const EMPTY_VAULT: IVault = {
-    'amount': '0',
+    'amount': NA,
     'display_name': NA,
-    'last3d_apy': '0',
+    'last3d_apy': NA,
     'name': NA,
     'reserves': {
-        'amount': '0',
+        'amount': NA,
         'display_name': NA,
-        'last3d_apy': '0',
+        'last3d_apy': NA,
         'name': NA,
-        'share': '0'
+        'share': NA
     },
-    'share': '0.4961491517610466',
+    'share': NA,
     'strategies': [EMPTY_STRATEGY],
 }
 
 export const EMPTY_EXPOSURE: IExposure = {
     'stablecoins': [],
     'protocols': [],
+}
+
+export const EMPTY_AVAX_VAULT: IVaultAvax = {
+    'name': NA,
+    'display_name': NA,
+    'stablecoin': NA,
+    'amount': NA,
+    'share': NA,
+    'all_time_apy': NA,
+    'last3d_apy': NA,
+    'reserves': {
+        'name': NA,
+        'display_name': NA,
+        'amount': NA,
+        'share': NA,
+        'last3d_apy': NA
+    },
+    'strategies': [{
+        'name': NA,
+        'display_name': NA,
+        'address': NA,
+        'amount': NA,
+        'share': NA,
+        'last3d_apy': NA,
+        'all_time_apy': NA,
+        'sharpe_ratio': NA,
+        'sortino_ratio': NA,
+        'romad_ratio': NA,
+        'tvl_cap': NA,
+        'open_position': {},
+        'past_5_closed_positions': [],
+    }],
+    'avax_exposure': NA,
 }

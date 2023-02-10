@@ -1,47 +1,64 @@
 import { Status } from '../types';
 import { toStr } from '../utils/utils';
+import { getLabsData as getData} from '../data/labs';
+import { AVAX_TVL_CAP } from '../constants';
 import { ITvl } from '../interfaces/groStats/avalanche/ITvl';
 import { IVault } from '../interfaces/groStats/avalanche/IVault';
 import { IStrategy } from '../interfaces/groStats/avalanche/IStrategy';
 import { emptyGroStatsAvax } from '../parser/groStatsEmpty';
 
 
-export const getLabs = (_strats: any[]): IVault[] => {
+export const getLabs = (
+    _strats: any[],
+    tvl: number,
+): IVault[] => {
     let vaults: IVault[] = [];
     for (let i = 0; i < _strats.length; i++) {
         let str = _strats[i];
+        const data = getData(str.vault_name);
+        const vaultAsset = parseFloat(str.total_assets_vault);
+        const vaultShare = (tvl > 0)
+            ? vaultAsset / tvl
+            : 0;
+        const stratAsset = parseFloat(str.total_assets_strategy);
+        const stratShare = (vaultAsset > 0)
+            ? stratAsset / vaultAsset
+            : 0;
+        const reservesAsset = (vaultShare > 0)
+            ? (vaultAsset - stratAsset) / tvl
+            : 0;
         const strat: IStrategy = {
             'name': str.strat_name,
             'display_name': str.strat_display_name,
             'address': str.id,
             'amount': str.total_assets_strategy,
-            'share': toStr(0),
-            'last3d_apy': toStr(0),
-            'all_time_apy': toStr(0),
-            'sharpe_ratio': toStr(0),
-            'sortino_ratio': toStr(0),
-            'romad_ratio': toStr(0),
-            'tvl_cap': toStr(2000000),
+            'share': toStr(stratShare),
+            'last3d_apy': data.strategies[0].last3d_apy,
+            'all_time_apy': data.strategies[0].all_time_apy,
+            'sharpe_ratio': data.strategies[0].sharpe_ratio,
+            'sortino_ratio': data.strategies[0].sortino_ratio,
+            'romad_ratio': data.strategies[0].romad_ratio,
+            'tvl_cap': AVAX_TVL_CAP,
             'open_position': {},
-            'past_5_closed_positions': [],
+            'past_5_closed_positions': data.strategies[0].past_5_closed_positions,
         }
         const vault: IVault = {
             'name': str.vault_name,
             'display_name': str.vault_display_name,
             'stablecoin': str.coin,
             'amount': str.total_assets_vault,
-            'share': toStr(0), // TBC
-            'all_time_apy': toStr(0), // TBC
-            'last3d_apy': toStr(0), // TBC
+            'share': toStr(vaultShare),
+            'all_time_apy': data.all_time_apy,
+            'last3d_apy': data.last3d_apy,
             'reserves': {
                 'name': str.vault_name,
                 'display_name': str.vault_display_name,
                 'amount': str.total_assets_vault,
-                'share': toStr(0), // TBC
+                'share': toStr(reservesAsset),
                 'last3d_apy': toStr(0),
             },
             'strategies': [strat],
-            'avax_exposure': toStr(0),
+            'avax_exposure': data.avax_exposure,
         }
 
         vaults.push(vault);
