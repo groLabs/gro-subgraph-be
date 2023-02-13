@@ -1,7 +1,6 @@
 import { Status } from '../types';
 import { toStr } from '../utils/utils';
 import { getLabsData as getData} from '../data/labs';
-import { AVAX_TVL_CAP } from '../constants';
 import { ITvl } from '../interfaces/groStats/avalanche/ITvl';
 import { IVault } from '../interfaces/groStats/avalanche/IVault';
 import { IStrategy } from '../interfaces/groStats/avalanche/IStrategy';
@@ -38,7 +37,7 @@ export const getLabs = (
             'sharpe_ratio': data.strategies[0].sharpe_ratio,
             'sortino_ratio': data.strategies[0].sortino_ratio,
             'romad_ratio': data.strategies[0].romad_ratio,
-            'tvl_cap': AVAX_TVL_CAP,
+            'tvl_cap': str.tvl_cap,
             'open_position': {},
             'past_5_closed_positions': data.strategies[0].past_5_closed_positions,
         }

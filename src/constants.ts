@@ -15,7 +15,6 @@ export const TS_15D = 1296000;          // Fifteen days
 export const DECIMALS = 7;
 export const BLOCKS_PER_YEAR = 2252571;
 export const PWRD_TVL_CORRECTION = 432.5559;  // correction due to rebasing (as of Nov'22)
-export const AVAX_TVL_CAP = toStr(20000);
 export const STABLECOINS = [
     Token.DAI,
     Token.USDC,
