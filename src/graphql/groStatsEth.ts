@@ -70,6 +70,7 @@ export const queryGroStatsEth = (
             block_timestamp
             virtual_price
         }
+        # gvaultStrategies (block:{number: 16615309}){
         gvaultStrategies {
             id
             coin
@@ -80,7 +81,6 @@ export const queryGroStatsEth = (
             vault_name
             vault_display_name
             vault_address
-            total_assets_strategy
             strategy_debt
             block_strategy_reported
             block_strategy_withdraw

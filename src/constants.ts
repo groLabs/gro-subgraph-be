@@ -1,5 +1,4 @@
 import { Token } from './types';
-import { toStr } from './utils/utils';
 
 
 export const QUERY_ERROR = 400;
