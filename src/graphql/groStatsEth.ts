@@ -20,7 +20,6 @@ export const queryGroStatsEth = (
             total_alloc
             util_ratio
             util_ratio_limit
-            gvault_release_factor
         }
         prices {
         # prices (block:{number: 16615309}) {
@@ -73,6 +72,13 @@ export const queryGroStatsEth = (
             block_timestamp
             virtual_price
         }
+        gvaults {
+        # gvaults (block:{number: 16615309}){
+            id
+            release_factor
+            locked_profit
+            locked_profit_timestamp
+        }
         gvaultStrategies {
         # gvaultStrategies (block:{number: 16615309}){
             id
@@ -87,7 +93,6 @@ export const queryGroStatsEth = (
             strategy_debt
             block_strategy_reported
             block_strategy_withdraw
-            locked_profit
             harvests (orderBy: timestamp, orderDirection: desc, where: {
                 timestamp_gt: ${ts7d}
             }) {

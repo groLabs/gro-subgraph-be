@@ -24,6 +24,7 @@ export const groStatsParserEthereum = (
     const price = stats_eth.prices[0];
     const core = stats_eth.coreDatas[0];
     const factor = stats_eth.factors[0];
+    const gvault = stats_eth.gvaults[0];
     const strategies = stats_eth.gvaultStrategies;
     const currentTimestamp = stats_eth._meta.block.timestamp;
     const poolData = stats_eth.poolDatas;
@@ -40,7 +41,8 @@ export const groStatsParserEthereum = (
         strategies,
         totalTvl,
         price.threeCrv,
-        md.gvault_release_factor,
+        gvault.release_factor,
+        gvault.locked_profit,
     );
     const exposure = (system.vault)
         ? getExposures(system.vault)
