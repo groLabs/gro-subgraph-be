@@ -21,7 +21,7 @@ export const emptyEthUser = (
     status: Status
 ): IPersonalStatsEthereum => {
     const value = (status === Status.OK) ? toStr(0) : NA;
-    return {
+    const result: IPersonalStatsEthereum = {
         'status': status,
         'network_id': NetworkId.MAINNET,
         'network': NetworkName.MAINNET,
@@ -70,11 +70,6 @@ export const emptyEthUser = (
             'pwrd': value,
             'gvt': value,
             'total': value
-        },
-        'net_returns_ratio': {
-            'pwrd': NA,
-            'gvt': NA,
-            'total': NA
         },
         'vest_bonus': {
             'locked_gro': NA,
@@ -177,6 +172,7 @@ export const emptyEthUser = (
             'proofs': []
         }
     }
+    return result;
 };
 
 export const emptyAvaxUser = (

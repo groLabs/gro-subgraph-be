@@ -82,7 +82,7 @@ export const parsePersonalStatsSubgraphAvalanche = (
             + netReturns_groUSDC_e_v1_7
             + netReturns_groUSDT_e_v1_7;
 
-        const result = {
+        const result: IPersonalStatsAvalanche = {
             'status': md_avax.status as Status,
             'network_id': md_avax.networkId as NetworkId,
             'launch_timestamp': md_avax.launchTimestamp as string,

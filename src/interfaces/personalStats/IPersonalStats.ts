@@ -35,7 +35,6 @@ interface ITotalsSummary {
     'total': string
 }
 
-
 export interface IPersonalStatsEthereum {
     'status': Status,
     'network_id': NetworkId,
@@ -57,7 +56,6 @@ export interface IPersonalStatsEthereum {
     'net_amount_added': ITotalsEthereum,
     'current_balance': ITotalsEthereum,
     'net_returns': ITotalsEthereum,
-    'net_returns_ratio': ITotalsEthereum,
     'vest_bonus': IVestingBonus,
     'pools': {
         'all': IPool,

@@ -28,6 +28,7 @@ export const parsePersonalStatsSubgraphEthereum = (
 ): IPersonalStatsEthereum => {
     try {
         // console.dir(stats_eth, { depth: null });
+        // If no user or price data, return empty user
         const currentTimestamp = stats_eth._meta.block.timestamp;
         if (stats_eth.users.length === 0 || stats_eth.prices.length === 0)
             return emptyEthUser(
@@ -70,7 +71,7 @@ export const parsePersonalStatsSubgraphEthereum = (
 
         const onlyGtoken = (item: string) => ['gvt', 'pwrd'].includes(item) ? true : false;
 
-        const result = {
+        const result: IPersonalStatsEthereum = {
             'status': md_eth.status as Status,
             'network_id': md_eth.networkId.toString() as NetworkId,
             'network': md_eth.networkName as NetworkName,
@@ -103,11 +104,6 @@ export const parsePersonalStatsSubgraphEthereum = (
                 'pwrd': toStr(netReturnsPwrd),
                 'gvt': toStr(netReturnsGvt),
                 'total': toStr(netReturnsTotal),
-            },
-            'net_returns_ratio': {
-                'pwrd': NA,
-                'gvt': NA,
-                'total': NA
             },
             'transaction': {
                 'deposits': transfers_eth
