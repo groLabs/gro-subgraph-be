@@ -13,6 +13,7 @@ export const queryGroStatsEth = (
             }
         }
         masterDatas {
+        # masterDatas (block:{number: 16615309}) {
             status
             networkId
             gro_per_block
@@ -22,6 +23,7 @@ export const queryGroStatsEth = (
             gvault_release_factor
         }
         prices {
+        # prices (block:{number: 16615309}) {
             pwrd
             gvt
             gro
@@ -39,6 +41,7 @@ export const queryGroStatsEth = (
             pwrd
         }
         coreDatas {
+        # coreDatas (block:{number: 16615309}) {
             total_supply_gvt
             total_supply_pwrd_based
             total_supply_gro
@@ -70,8 +73,8 @@ export const queryGroStatsEth = (
             block_timestamp
             virtual_price
         }
-        # gvaultStrategies (block:{number: 16615309}){
         gvaultStrategies {
+        # gvaultStrategies (block:{number: 16615309}){
             id
             coin
             metacoin
