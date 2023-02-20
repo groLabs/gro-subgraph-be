@@ -15,7 +15,7 @@ export const queryGroStatsEth = (
         masterDatas {
         # masterDatas (block:{number: 16615309}) {
             status
-            networkId
+            network_id
             gro_per_block
             total_alloc
             util_ratio
@@ -34,7 +34,7 @@ export const queryGroStatsEth = (
             uniswap_gro_usdc
             balancer_gro_weth
             curve_pwrd3crv
-            threeCrv
+            three_crv
         }
         factors {
             pwrd
@@ -64,7 +64,7 @@ export const queryGroStatsEth = (
         poolSwaps (orderBy: block_timestamp, orderDirection: desc, where: {
             block_timestamp_gte: ${tsNow - 86400 * 2.1}
         }) {
-            poolId
+            pool_id
             amount0_in
             amount1_in
             amount0_out
@@ -89,21 +89,23 @@ export const queryGroStatsEth = (
             strat_display_name
             vault_name
             vault_display_name
-            vault_address
+            vault_address {
+                id
+            }
             strategy_debt
             block_strategy_reported
             block_strategy_withdraw
-            harvests (orderBy: timestamp, orderDirection: desc, where: {
-                timestamp_gt: ${ts7d}
+            harvests (orderBy: block_timestamp, orderDirection: desc, where: {
+                block_timestamp_gt: ${ts7d}
             }) {
-              timestamp
+                block_timestamp
               gain
               loss
-              debtPaid
-              debtAdded
-              lockedProfit
-              excessLoss
-              strategyAddress {
+              debt_paid
+              debt_added
+              locked_profit
+              excess_loss
+              strategy_address {
                 id
               }
             }

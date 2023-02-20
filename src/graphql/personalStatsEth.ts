@@ -13,9 +13,9 @@ export const queryPersonalStatsEth = (
         }
         masterDatas {
             status
-            networkId
-            networkName
-            launchTimestamp
+            network_id
+            network_name
+            launch_timestamp
             gro_per_block
             total_alloc
             total_locked_amount
@@ -87,60 +87,60 @@ export const queryPersonalStatsEth = (
             transfers (
                 first: ${first}
                 skip: ${skip}
-                orderBy: timestamp
+                orderBy: block_timestamp
                 orderDirection: desc
             ) {
                 token
                 hash
-                timestamp
-                usd_amount : usdAmount
-                coin_amount : coinAmount
-                block_number : block
+                block_timestamp
+                usd_amount
+                coin_amount
+                block_number
                 type
             }
             approvals (
-                orderBy: timestamp
+                orderBy: block_timestamp
                 orderDirection: desc
             ) {
                 token
                 hash
-                timestamp
-                spender: spenderAddress
-                usd_amount : usdAmount
-                coin_amount : coinAmount
-                block_number : block
+                block_timestamp
+                spender: spender_address
+                usd_amount
+                coin_amount
+                block_number
             }
-            pool_0: pools(where: {poolId: 0}) {
+            pool_0: pools(where: {pool_id: 0}) {
                 net_reward
                 balance
                 reward_debt
               }
-            pool_1: pools(where: {poolId: 1}) {
+            pool_1: pools(where: {pool_id: 1}) {
                 net_reward
                 balance
                 reward_debt
             }
-            pool_2: pools(where: {poolId: 2}) {
+            pool_2: pools(where: {pool_id: 2}) {
                 net_reward
                 balance
                 reward_debt
             }
-            pool_3: pools(where: {poolId: 3}) {
+            pool_3: pools(where: {pool_id: 3}) {
                 net_reward
                 balance
                 reward_debt
             }
-            pool_4: pools(where: {poolId: 4}) {
+            pool_4: pools(where: {pool_id: 4}) {
                 net_reward
                 balance
                 reward_debt
             }
-            pool_5: pools(where: {poolId: 5}) {
+            pool_5: pools(where: {pool_id: 5}) {
                 net_reward
                 balance
                 reward_debt
             }
-            pool_6: pools(where: {poolId: 6}) {
+            pool_6: pools(where: {pool_id: 6}) {
                 net_reward
                 balance
                 reward_debt

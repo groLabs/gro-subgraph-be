@@ -17,7 +17,7 @@ export const calcStrategyApy = (
     threeCrvPrice: number,
 ): string => {
     let netProfit = 0;
-    let harvests = _harvests.filter((item: any) => item.strategyAddress.id === strategyAddress);
+    let harvests = _harvests.filter((item: any) => item.strategy_address.id === strategyAddress);
     for (let i = 0; i < harvests.length; i++) {
         netProfit += (harvests[i].gain - harvests[i].loss) * threeCrvPrice;
     }

@@ -73,9 +73,9 @@ export const parsePersonalStatsSubgraphEthereum = (
 
         const result: IPersonalStatsEthereum = {
             'status': md_eth.status as Status,
-            'network_id': md_eth.networkId.toString() as NetworkId,
-            'network': md_eth.networkName as NetworkName,
-            'launch_timestamp': md_eth.launchTimestamp.toString(),
+            'network_id': md_eth.network_id.toString() as NetworkId,
+            'network': md_eth.network_name as NetworkName,
+            'launch_timestamp': md_eth.launch_timestamp.toString(),
             'current_timestamp': currentTimestamp.toString(),
             'address': stats_eth.users[0].address as string,
             'prices': stats_eth.prices[0],

@@ -40,7 +40,7 @@ export const groStatsParserEthereum = (
     const system = getSystem(
         strategies,
         totalTvl,
-        price.threeCrv,
+        price.three_crv,
         gvault.release_factor,
         gvault.locked_profit,
     );

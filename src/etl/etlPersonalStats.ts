@@ -77,7 +77,6 @@ export const etlPersonalStats = async (
             );
         }
     } catch (err) {
-        console.log('** 4');
         showError('etl/etlSubgraph.ts->etlPersonalStats()', err);
         return personalStatsError(
             now(),
