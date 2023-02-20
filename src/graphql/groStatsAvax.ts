@@ -14,7 +14,7 @@ export const queryGroStatsAvax = (
         }
         masterDatas {
             status
-            networkId
+            network_id
         }
         strategies(orderBy: order, orderDirection: asc) {
             id

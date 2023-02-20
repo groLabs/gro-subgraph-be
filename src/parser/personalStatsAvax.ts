@@ -84,8 +84,8 @@ export const parsePersonalStatsSubgraphAvalanche = (
 
         const result: IPersonalStatsAvalanche = {
             'status': md_avax.status as Status,
-            'network_id': md_avax.networkId as NetworkId,
-            'launch_timestamp': md_avax.launchTimestamp as string,
+            'network_id': md_avax.network_id as NetworkId,
+            'launch_timestamp': md_avax.launch_timestamp as string,
             'amount_added': {
                 'groDAI.e_vault': toStr(totals_avax.value_added_groDAI_e_v1_0),
                 'groUSDC.e_vault': toStr(totals_avax.value_added_groUSDC_e_v1_0),

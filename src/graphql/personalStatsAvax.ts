@@ -13,9 +13,9 @@ export const queryPersonalStatsAvax = (
         }
         masterDatas {
             status
-            networkId
-            networkName
-            launchTimestamp
+            network_id
+            network_name
+            launch_timestamp
         }
         prices {
             groDAI_e_v1_0
@@ -59,58 +59,29 @@ export const queryPersonalStatsAvax = (
             transfers (
                 first: ${first}
                 skip: ${skip}
-                orderBy: timestamp
+                orderBy: block_timestamp
                 orderDirection: desc
             ) {
                 token
                 hash
-                timestamp
-                usd_amount : usdAmount
-                coin_amount : coinAmount
-                block_number : block
+                timestamp: block_timestamp
+                usd_amount
+                coin_amount
+                block_number
                 type
             }
             approvals (
-                orderBy: timestamp
+                orderBy: block_timestamp
                 orderDirection: desc
             ) {
                 token
                 hash
-                timestamp
-                spender: spenderAddress
-                usd_amount : usdAmount
-                coin_amount : coinAmount
-                block_number : block
+                timestamp: block_timestamp
+                spender: spender_address
+                usd_amount
+                coin_amount
+                block_number
             }
         }
     }`
 );
-
-
-// export const personalStatsEth = (
-//     account: string,
-//     first: number,
-//     skip: number
-// ) => (
-//     `{
-//         transferTxes (
-//             first: ${first}
-//             skip: ${skip}
-//             orderBy: timestamp
-//             orderDirection: desc
-//             where: {
-//                 userAddress: "${account}"
-//             }
-//         )
-//         {
-//             block
-//             timestamp
-//             hash
-//             token
-//             type
-//             userAddress
-//             coinAmount
-//             usdAmount
-//         }
-//     }`
-// );
