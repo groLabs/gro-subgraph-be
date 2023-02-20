@@ -92,7 +92,7 @@ export const queryPersonalStatsEth = (
             ) {
                 token
                 hash
-                block_timestamp
+                timestamp: block_timestamp
                 usd_amount
                 coin_amount
                 block_number
@@ -104,7 +104,7 @@ export const queryPersonalStatsEth = (
             ) {
                 token
                 hash
-                block_timestamp
+                timestamp: block_timestamp
                 spender: spender_address
                 usd_amount
                 coin_amount
