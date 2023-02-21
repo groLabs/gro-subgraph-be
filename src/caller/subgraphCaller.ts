@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Route } from '../types';
+import { TS_15D } from '../constants';
 import { showError } from '../handler/logHandler';
 import { queryGroStatsEth } from '../graphql/groStatsEth';
 import { queryGroStatsAvax } from '../graphql/groStatsAvax';
@@ -9,7 +10,7 @@ import {
     isEthSubgraph,
     isAvaxSubgraph
 } from '../utils/utils';
-import { TS_7D, TS_15D } from '../constants';
+
 
 export const callSubgraph = async (
     url: string,
@@ -32,7 +33,7 @@ export const callSubgraph = async (
                 first,
                 skip,
                 tsNow,
-                tsNow - TS_7D,
+                tsNow - TS_15D,
             );
         } else {
             showError(
@@ -62,7 +63,6 @@ export const callSubgraph = async (
             );
             return null;
         }
-
     } else {
         showError(
             'caller/subgraphCaller.ts->callSubgraph()',
@@ -80,6 +80,5 @@ export const callSubgraph = async (
             JSON.stringify(result.data.errors, null, 1),
         );
     }
-
     return result.data;
 }

@@ -2,7 +2,7 @@ export const queryGroStatsEth = (
     first: number,
     skip: number,
     tsNow: number,
-    ts7d: number,
+    ts15d: number,
 ) => (
     `{
         _meta {
@@ -13,7 +13,6 @@ export const queryGroStatsEth = (
             }
         }
         masterDatas {
-        # masterDatas (block:{number: 16615309}) {
             status
             network_id
             gro_per_block
@@ -22,7 +21,6 @@ export const queryGroStatsEth = (
             util_ratio_limit
         }
         prices {
-        # prices (block:{number: 16615309}) {
             pwrd
             gvt
             gro
@@ -40,7 +38,6 @@ export const queryGroStatsEth = (
             pwrd
         }
         coreDatas {
-        # coreDatas (block:{number: 16615309}) {
             total_supply_gvt
             total_supply_pwrd_based
             total_supply_gro
@@ -73,41 +70,39 @@ export const queryGroStatsEth = (
             virtual_price
         }
         gvaults {
-        # gvaults (block:{number: 16615309}){
             id
             release_factor
             locked_profit
             locked_profit_timestamp
-        }
-        gvaultStrategies {
-        # gvaultStrategies (block:{number: 16615309}){
-            id
-            coin
-            metacoin
-            protocol
-            strat_name
-            strat_display_name
-            vault_name
-            vault_display_name
-            vault_address {
+            strategies {
                 id
-            }
-            strategy_debt
-            block_strategy_reported
-            block_strategy_withdraw
-            harvests (orderBy: block_timestamp, orderDirection: desc, where: {
-                block_timestamp_gt: ${ts7d}
-            }) {
-                block_timestamp
-              gain
-              loss
-              debt_paid
-              debt_added
-              locked_profit
-              excess_loss
-              strategy_address {
-                id
-              }
+                coin
+                metacoin
+                protocol
+                strat_name
+                strat_display_name
+                vault_name
+                vault_display_name
+                vault_address {
+                    id
+                }
+                strategy_debt
+                block_strategy_reported
+                block_strategy_withdraw
+                harvests (orderBy: block_timestamp, orderDirection: desc, where: {
+                    block_timestamp_gt: ${ts15d}
+                }) {
+                    block_timestamp
+                  gain
+                  loss
+                  debt_paid
+                  debt_added
+                  locked_profit
+                  excess_loss
+                  strategy_address {
+                    id
+                  }
+                }
             }
         }
     }`
