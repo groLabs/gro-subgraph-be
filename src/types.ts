@@ -26,6 +26,7 @@ export enum Token {
   FRAX = 'frax',
   OUSD = 'ousd',
   ALUSD = 'alusd',
+  LUSD = 'lusd',
   GUSD = 'gusd',
   WETH = 'weth',
   AVAX = 'avax',
