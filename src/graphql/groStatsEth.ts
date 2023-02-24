@@ -98,7 +98,6 @@ export const queryGroStatsEth = (
                   debt_paid
                   debt_added
                   locked_profit
-                  excess_loss
                   strategy_address {
                     id
                   }
