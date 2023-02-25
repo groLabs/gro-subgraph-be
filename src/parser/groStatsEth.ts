@@ -60,7 +60,7 @@ export const groStatsParserEthereum = (
         parseFloat(currentApy.pwrd),
         parseFloat(currentApy.gvt),
     );
-    const result = {
+    const result: IGroStatsEthereum = {
         'status': md.status as Status,
         'current_timestamp': currentTimestamp.toString(),
         'launch_timestamp': LAUNCH_TIMESTAMP_ETH,
@@ -81,9 +81,6 @@ export const groStatsParserEthereum = (
             'pwrd': toStr(price.pwrd),
             'gvt': toStr(price.gvt),
             'gro': toStr(price.gro),
-            'dai': toStr(price.dai),
-            'usdc': toStr(price.usdc),
-            'usdt': toStr(price.usdt),
             'uniswap_gvt_gro': toStr(price.uniswap_gvt_gro),
             'uniswap_gro_usdc': toStr(price.uniswap_gro_usdc),
             'balancer_gro_weth': toStr(price.balancer_gro_weth),

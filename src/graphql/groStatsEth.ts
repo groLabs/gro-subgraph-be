@@ -24,10 +24,6 @@ export const queryGroStatsEth = (
             pwrd
             gvt
             gro
-            dai
-            usdc
-            usdt
-            weth
             uniswap_gvt_gro
             uniswap_gro_usdc
             balancer_gro_weth

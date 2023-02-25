@@ -53,30 +53,6 @@ export const emptyGroStatsEth = (
         'launch_timestamp': LAUNCH_TIMESTAMP_ETH,
         'network': NetworkName.MAINNET,
         'apy': {
-            // 'last24h': {
-            //     'pwrd': value,
-            //     'gvt': value,
-            // },
-            // 'last7d': {
-            //     'pwrd': value,
-            //     'gvt': value,
-            // },
-            // 'daily': {
-            //     'pwrd': value,
-            //     'gvt': value,
-            // },
-            // 'weekly': {
-            //     'pwrd': value,
-            //     'gvt': value,
-            // },
-            // 'monthly': {
-            //     'pwrd': value,
-            //     'gvt': value,
-            // },
-            // 'all_time': {
-            //     'pwrd': value,
-            //     'gvt': value,
-            // },
             'current': {
                 'pwrd': value,
                 'gvt': value,
@@ -102,9 +78,6 @@ export const emptyGroStatsEth = (
             'pwrd': NA,
             'gvt': NA,
             'gro': NA,
-            'dai': NA,
-            'usdc': NA,
-            'usdt': NA,
             'uniswap_gvt_gro': NA,
             'uniswap_gro_usdc': NA,
             'balancer_gro_weth': NA,

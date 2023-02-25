@@ -31,7 +31,6 @@ export const emptyEthUser = (
         'prices': {
             'gvt': 0,
             'gro': 0,
-            'weth': 0,
             'balancer_gro_weth': 0,
             'uniswap_gvt_gro': 0,
             'uniswap_gro_usdc': 0,

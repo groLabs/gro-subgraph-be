@@ -26,10 +26,6 @@ export const queryPersonalStatsEth = (
         prices {
             gvt
             gro
-            weth
-            dai
-            usdc
-            usdt
             curve_pwrd3crv
             uniswap_gvt_gro
             uniswap_gro_usdc
@@ -69,12 +65,6 @@ export const queryPersonalStatsEth = (
                 net_based_amount_pwrd
                 amount_total_gro
                 amount_total_gro_team
-                # current_balance_gvt = totals.net_amount_gvt * prices.gvt
-                # current_balance_pwrd = totals.net_based_amount_pwrd / factors.pwrd
-                # current_balance_total = current_balance_gvt + current_balance_pwrd 
-                # net_returns_gvt = current_balance_gvt - totals.net_value_gvt
-                # net_returns_pwrd = current_balance_pwrd - totals.net_value_pwrd
-                # net_returns_total = current_balance_total - totals.net_value_total
             }
             vestingBonus {
                 locked_gro
