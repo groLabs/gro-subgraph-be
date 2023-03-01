@@ -1,4 +1,5 @@
 import { toStr } from '../utils/utils';
+import { IVestingAirdropProof } from '../interfaces/personalStats/IVestingAirdropProof';
 import {
     IPersonalStatsEthereum,
     IPersonalStatsAvalanche,
@@ -13,6 +14,7 @@ import {
     LAUNCH_TIMESTAMP_ETH,
     LAUNCH_TIMESTAMP_AVAX,
 } from '../constants';
+
 
 
 export const emptyEthUser = (
@@ -161,15 +163,7 @@ export const emptyEthUser = (
             'vesting': NA,
             'team': NA,
         },
-        'vesting_airdrop': {
-            'name': NA,
-            'token': NA,
-            'amount': NA,
-            'claim_initialized': NA,
-            'claimed_amount': NA,
-            'claimable_amount': NA,
-            'proofs': []
-        }
+        'vesting_airdrop': EMPTY_VESTING_AIRDROP,
     }
     return result;
 };
@@ -270,6 +264,16 @@ export const emptyAvaxUser = (
     }
 }
 
+export const EMPTY_VESTING_AIRDROP = {
+    'name': NA,
+    'token': NA,
+    'amount': NA,
+    'claim_initialized': NA,
+    'claimed_amount': NA,
+    'claimable_amount': NA,
+    'proofs': []
+}
+
 export const NO_POOL = {
     'net_reward': NA,
     'balance': NA,
@@ -288,4 +292,16 @@ export const EMPTY_POOL = {
         'claim_now': toStr(0),
         'vest_all': toStr(0)
     }
+}
+
+export const EMPTY_VESTING_AIRDROP_PROOF: IVestingAirdropProof = {
+    'name': NA,
+    'token': NA,
+    'root': NA,
+    'total': NA,
+    'airdrops': [{
+        'address': NA,
+        'amount': NA,
+        'proofs': [],
+    }],
 }

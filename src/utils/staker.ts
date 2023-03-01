@@ -127,42 +127,10 @@ export const calcRewards = (
                 accGroPerShare
                 + ((currentBlock - blockNumber) * groPerBlock * poolShare) / lpSupply
             ) - rewardDebt;
-        if (process.env.NODE_ENV === Env.DEV) {
-            showCalcRewards(
-                poolId,
-                balance,
-                groPerBlock,
-                currentBlock,
-                blockNumber,
-                poolShare,
-                accGroPerShare,
-                rewardDebt,
-                lpSupply,
-                reward,
-            );
-        }
         return reward;
     } else {
         return 0;
     }
-}
-
-const showCalcRewards = (
-    poolId: number,
-    balance: number,
-    groPerBlock: number,
-    currentBlock: number,
-    blockNumber: number,
-    poolShare: number,
-    accGroPerShare: number,
-    rewardDebt: number,
-    lpSupply: number,
-    reward: number,
-): void => {
-    console.log(`Reward calculation for PoolId ${poolId}`);
-    console.log(`balance: ${balance} groPerBlock: ${groPerBlock} currentBlock: ${currentBlock}`);
-    console.log(`blockNumber: ${blockNumber} poolShare: ${poolShare} accGroPerShare: ${accGroPerShare}`);
-    console.log(`rewardDebt: ${rewardDebt} lpSupply: ${lpSupply} => reward: ${reward}`);
 }
 
 export const getGroBalanceCombined = (

@@ -145,7 +145,6 @@ export const parsePersonalStatsSubgraphEthereum = (
             'vest_bonus': getVestingBonus(
                 parseFloat(totalGro),
                 parseFloat(netReward),
-                parseFloat(groBalanceCombined.total),
                 parseInt(currentTimestamp),
                 latestStartTime,
                 md_eth.total_locked_amount,

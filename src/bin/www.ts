@@ -17,6 +17,8 @@ import {
 let env = dotenv.config();
 dotenvExpand.expand(env);
 
+showInfo('Starting subgraph bot ...');
+
 // Load airdrop & vestingAirdrop proofs synchronously once
 readAirdropProofs();
 readVestingAirdropProofs();
@@ -77,9 +79,8 @@ function onListening() {
     var bind = typeof addr === 'string'
         ? `pipe ${addr}`
         : `port ${(addr?.port) ? addr?.port : 'unknown'}`;
-    const msg = `Subgraph express server listening on ${bind}`;
-    showInfo(msg);
-    console.log(msg);
+    showInfo(`Subgraph express server listening on ${bind}`);
+    showInfo(`Subgraph bot ready!`);
 }
 
 // start scheduled jobs
