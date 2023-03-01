@@ -1,5 +1,7 @@
 import { MAX_VEST_TIME } from '../constants';
 import { IVestingBonus } from '../interfaces/personalStats/IVestingBonus';
+import { IVestingAirdrop } from '../interfaces/personalStats/IVestingAirdrop';
+import { getVestingAirdropProofsUser } from '../handler/airdropHandler';
 import { toStr } from './utils';
 
 
@@ -26,6 +28,25 @@ export const getVestingBonus = (
             'claim_now': toStr(vestAll * 0.3),
             'vest_all': toStr(vestAll),
         }
+    }
+    return result;
+}
+
+export const getVestingAirdrop = (
+    account: string,
+    claim_initialized: string,
+    claimed_amount: string,
+    total_claim_amount: string,
+): IVestingAirdrop => {
+    const proof = getVestingAirdropProofsUser(account);
+    const result = {
+        'name': proof.name,
+        'token': proof.token,
+        'amount': total_claim_amount,
+        'claim_initialized': claim_initialized,
+        'claimed_amount': claimed_amount,
+        'claimable_amount': 'x',
+        'proofs': proof.proofs,
     }
     return result;
 }

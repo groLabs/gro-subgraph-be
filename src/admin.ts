@@ -1,6 +1,11 @@
 import { Subgraph } from './types';
 import { etlPersonalStats } from './etl/etlPersonalStats';
 import { etlHistoricalApy } from './etl/etlHistoricalApy';
+import {
+    readAirdropProofs,
+    readVestingAirdropProofs,
+} from './etl/etlAirdrops';
+import { getAirdropProofsUser } from './handler/airdropHandler'
 // enable dotenv
 import * as dotenv from 'dotenv';
 import * as dotenvExpand from 'dotenv-expand';
@@ -30,6 +35,15 @@ dotenvExpand.expand(env);
                     } else {
                         console.log(`Wrong parameters for getPersonalStats - e.g. getPersonalStats <subgraph> <account>`);
                     }
+                    break;
+                case 'airdrop':
+                    readAirdropProofs();
+                    const result2 = getAirdropProofsUser('0x654Ffa2Eaf122317A25c38169c375e735D6308D4');
+                    console.log(result2);
+                    break;
+                case 'vestingAirdrop':
+                    let result = readVestingAirdropProofs();
+                    console.dir(result, { depth: null });
                     break;
                 default:
                     console.log(`Unknown parameter/s: ${params}`);

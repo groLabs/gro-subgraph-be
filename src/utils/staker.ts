@@ -179,13 +179,12 @@ export const getGroBalanceCombined = (
     const pool1Data = poolDatas.filter((item: IPoolData) => item.id == '1')[0];
     const pool2Data = poolDatas.filter((item: IPoolData) => item.id == '2')[0];
     const pool5Data = poolDatas.filter((item: IPoolData) => item.id == '5')[0];
-    const pool1TotalSupply = parseFloat(pool1Data.total_supply);
-    const pool2TotalSupply = parseFloat(pool2Data.total_supply);
-    const pool5TotalSupply = parseFloat(pool5Data.total_supply);
-    const pool1GroReserve = parseFloat(pool1Data.reserve1);
-    const pool2GroReserve = parseFloat(pool2Data.reserve0);
-    const pool5GroReserve = parseFloat(pool5Data.reserve0);
-
+    const pool1TotalSupply = (pool1Data) ? parseFloat(pool1Data.total_supply) : 0;
+    const pool2TotalSupply = (pool2Data) ? parseFloat(pool2Data.total_supply) : 0;
+    const pool5TotalSupply = (pool5Data) ? parseFloat(pool5Data.total_supply) : 0;
+    const pool1GroReserve = (pool1Data) ? parseFloat(pool1Data.reserve1) : 0;
+    const pool2GroReserve = (pool2Data) ? parseFloat(pool2Data.reserve0) : 0;
+    const pool5GroReserve = (pool5Data) ? parseFloat(pool5Data.reserve0) : 0;
     const pool1GroAmount = (pool1TotalSupply !== 0)
         ? (pool1LPAmount * pool1GroReserve) / pool1TotalSupply
         : 0;
@@ -195,7 +194,6 @@ export const getGroBalanceCombined = (
     const pool5GroAmount = (pool5TotalSupply != 0)
         ? (pool5LPAmount * pool5GroReserve) / pool5TotalSupply
         : 0;
-
     return {
         'total': toStr(
             pool0GroAmount

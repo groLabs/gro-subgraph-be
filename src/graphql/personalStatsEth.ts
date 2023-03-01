@@ -74,6 +74,21 @@ export const queryPersonalStatsEth = (
                 vesting_gro
                 latest_start_time
             }
+            vestingAirdrop {
+                claim_initialized
+                claimed_amount
+                total_claim_amount
+            }
+            airdrop_claims(
+                orderBy: block_timestamp
+                orderDirection: asc
+            ) {
+                id
+                tranche_id
+                amount
+                contract_address
+                block_timestamp
+            }
             transfers (
                 first: ${first}
                 skip: ${skip}

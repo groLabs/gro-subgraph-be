@@ -10,8 +10,16 @@ import {
 import * as dotenv from 'dotenv';
 import * as dotenvExpand from 'dotenv-expand';
 import { startJobs } from '../scheduler/scheduler';
+import {
+    readAirdropProofs,
+    readVestingAirdropProofs,
+} from '../etl/etlAirdrops';
 let env = dotenv.config();
 dotenvExpand.expand(env);
+
+// Load airdrop & vestingAirdrop proofs synchronously once
+readAirdropProofs();
+readVestingAirdropProofs();
 
 // Get port from environment and store in Express.
 const port = normalizePort(process.env.PORT);

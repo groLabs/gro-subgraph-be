@@ -1,5 +1,6 @@
 import { IPool } from './IPool';
 import { IPrice } from './IPrice';
+import { IAirdrop } from './IAirdrop';
 import { IGroGate } from './IGroGate';
 import { ITransferTx } from './ITransferTx';
 import { IApprovalTx } from './IApprovalTx';
@@ -39,7 +40,7 @@ export interface IPersonalStatsEthereum {
     'status': Status,
     'network_id': NetworkId,
     'prices': IPrice,
-    'airdrops': [],
+    'airdrops': IAirdrop[],
     'transaction': {
         'deposits': ITransferTx[],
         'withdrawals': ITransferTx[],

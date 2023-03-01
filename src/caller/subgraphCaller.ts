@@ -81,4 +81,40 @@ export const callSubgraph = async (
         );
     }
     return result.data;
+
+    // TODO: improve error handling in axios
+    // axios.post(
+    //     url,
+    //     { query: q }
+    // ).then(data => {
+    //     // console.log(data);
+    //     // if (data.data.errors) {
+    //     //     showError(
+    //     //         'caller/subgraphCaller.ts->callSubgraph() [Error from Subgraph]',
+    //     //         JSON.stringify(data.data.errors, null, 1),
+    //     //     );
+    //     // }
+    //     return data.data;
+    // }).catch(err => {
+    //     if (err.response) {
+    //         // Request made and server responded
+    //         showError(
+    //             'caller/subgraphCaller.ts->callSubgraph()',
+    //             `<${err.response.status} ${err.response.statusText}> on url ${err.response.config.url}`,
+    //         );
+    //     } else if (err.request) {
+    //         // The request was made but no response was received
+    //         showError(
+    //             'caller/subgraphCaller.ts->callSubgraph()',
+    //             `Axios request without response: ${err.request}`,
+    //         );
+    //     } else {
+    //         // Something happened in setting up the request that triggered an Error
+    //         showError(
+    //             'caller/subgraphCaller.ts->callSubgraph()',
+    //             `Axios error on setting up the request: ${err.message}`,
+    //         );
+    //     }
+    //     return null;
+    // });
 }
