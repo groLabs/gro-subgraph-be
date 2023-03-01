@@ -1,6 +1,7 @@
 import { now } from '../utils/utils';
-import { showError } from '../handler/logHandler';
 import { etlGroStats } from '../etl/etlGroStats';
+import { showError } from '../handler/logHandler';
+import { groStatsError } from '../parser/groStatsError';
 import { etlPersonalStats } from '../etl/etlPersonalStats';
 import { validateApiRequest } from '../caller/validateApiRequest';
 import { personalStatsError } from '../parser/personalStatsError';
@@ -48,26 +49,24 @@ router.get(
             const { subgraph } = req.query;
             if ((<any>Object).values(Subgraph).includes(subgraph)) {
                 // address & subgraph fields are correct
-                const personalStats = await etlGroStats(
+                const groStats = await etlGroStats(
                     subgraph as Subgraph,
                     0,
                     []);
-                res.json(personalStats);
+                res.json(groStats);
             } else if (subgraph) {
                 // subgraph value is incorrect
                 const err_msg = `unknown target subgraph <${subgraph}>`;
                 showError('routes->subgraph.ts->gro_stats_mc', err_msg);
-                res.json(personalStatsError(
+                res.json(groStatsError(
                     now(),
-                    'N/A',
                     err_msg
                 ));
             }
         } catch (err) {
             showError('routes/subgraph.ts->gro_stats_mc', err);
-            res.json(personalStatsError(
+            res.json(groStatsError(
                 now(),
-                'N/A',
                 err as string,
             ));
         }

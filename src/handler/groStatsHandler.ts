@@ -4,7 +4,6 @@ import { showError } from '../handler/logHandler';
 import { callSubgraph } from '../caller/subgraphCaller';
 
 
-//TODO: review where to apply recursivity (probably in Vault/Strategies)
 export const getGroStats = async (
     url: string,
     skip: number,
@@ -20,24 +19,12 @@ export const getGroStats = async (
             Route.GRO_STATS_MC,
             tsNow
         );
-        if (call.errors) {
+        if (!call) {
+            return null;
+        } else if (call.errors) {
             return call;
         } else {
-            if (skip === 0) {
-                result = call.data;
-            } else {
-                // todo
-                // const transfers = result.users[0].transfers.concat(call.data.users[0].transfers);
-                // result.users[0].transfers = transfers;
-            }
-            return (/*call.data.users[0].transfers.length < TX_ITERATION*/ 1 === 1)
-                ? result
-                : getGroStats(
-                    url,
-                    skip + TX_ITERATION,
-                    result,
-                    tsNow,
-                );
+            return call.data;
         }
     } catch (err) {
         showError('handler/groStatsHandler.ts->getGroStats()', err);

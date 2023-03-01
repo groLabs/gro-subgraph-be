@@ -1,3 +1,5 @@
+import { NA } from '../constants';
+import { IGroStats } from '../interfaces/groStats/IGroStats';
 import {
     Status,
     NetworkName,
@@ -6,7 +8,6 @@ import {
     emptyGroStatsEth,
     emptyGroStatsAvax,
 } from './groStatsEmpty';
-import { IGroStats } from '../interfaces/groStats/IGroStats';
 
 
 export const groStatsError = (
@@ -21,9 +22,9 @@ export const groStatsError = (
             'network': NetworkName.MAINNET,
             'mc_totals': {
                 'tvl': {
-                    'mainnet': 'N/A',
-                    'avalanche': 'N/A',
-                    'total': 'N/A',
+                    'mainnet': NA,
+                    'avalanche': NA,
+                    'total': NA,
                 }
             },
             'mainnet': emptyGroStatsEth(

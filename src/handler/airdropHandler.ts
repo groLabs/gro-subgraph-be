@@ -10,9 +10,7 @@ import {
 } from '../etl/etlAirdrops';
 
 
-// TODO: try/catch
-// TODO: if no file, then xx
-// TODO: check if ggetAirdropProofs returns data; otherwise, return empty airdrops
+// @dev: <participated> assumes being in the airdrop list even if no claim
 export const getAirdropProofsUser = (userAddress: string): IAirdrop[] => {
     try {
         let result: IAirdrop[] = [];
@@ -30,7 +28,7 @@ export const getAirdropProofsUser = (userAddress: string): IAirdrop[] => {
             const airdrop: IAirdrop = {
                 'amount': amount,
                 'amount_to_claim': user ? user.amount : '0',
-                'claimable': expired ? 'false' : 'true', // todo: or if already claimed
+                'claimable': expired ? 'false' : 'true',
                 'claimed': 'false',
                 'display_name': airdrops[i].display_name,
                 'expired': expired ? 'true' : 'false',
@@ -39,8 +37,8 @@ export const getAirdropProofsUser = (userAddress: string): IAirdrop[] => {
                 'launch_ts': airdrops[i].timestamp,
                 'merkle_root_index': airdrops[i].merkleIndex,
                 'name': airdrops[i].name,
-                'participated': user ? 'true' : 'false', // TBC: Assumes 'participated' means being in the airdrop list even if didn't claim
-                'proofs': user ? user.proof : [], // todo: empty if already claimed
+                'participated': user ? 'true' : 'false', 
+                'proofs': user ? user.proof : [],
                 'token': airdrops[i].token,
             }
             result.push(airdrop);
@@ -55,7 +53,6 @@ export const getAirdropProofsUser = (userAddress: string): IAirdrop[] => {
     }
 }
 
-// TODO: same checks as getAirdrops
 export const getVestingAirdropProofsUser = (userAddress: string): IVestingAirdrop => {
     const proofs = getVestingAirdropProofs();
     for (let i = 0; i < proofs.airdrops.length; i++) {

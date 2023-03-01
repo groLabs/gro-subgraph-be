@@ -41,7 +41,31 @@ export const etlGroStats = async (
                 tsNow,
             )
         ]);
-        if (resultEth.errors) {
+        if (resultEth && resultAvax) {
+            const resultEthParsed = groStatsParserEthereum(
+                resultEth,
+                tsNow,
+            );
+            const resultAvaxParsed = groStatsParserAvalanche(
+                resultAvax,
+            );
+            const resultTotals = groStatsParser(
+                resultEthParsed,
+                resultAvaxParsed,
+            );
+            showInfo(`Gro stats requested`);
+            return resultTotals;
+        } else if (!resultEth) {
+            return groStatsError(
+                tsNow.toString(),
+                'Error in ethereum subgraph call -> please see server logs'
+            );
+        } else if (!resultAvax) {
+            return groStatsError(
+                tsNow.toString(),
+                'Error in avalanche subgraph call -> please see server logs'
+            );
+        } else if (resultEth.errors) {
             return groStatsError(
                 tsNow.toString(),
                 resultEth.errors.map((item: any) => item)
@@ -51,26 +75,10 @@ export const etlGroStats = async (
                 tsNow.toString(),
                 resultAvax.errors.map((item: any) => item)
             );
-        } else if (resultEth && resultAvax) {
-            const resultEthParsed = groStatsParserEthereum(
-                resultEth,
-                tsNow,
-            );
-            const resultAvaxParsed = groStatsParserAvalanche(
-                resultAvax
-            );
-            const resultTotals = groStatsParser(
-                resultEthParsed,
-                resultAvaxParsed
-            );
-            showInfo(`Gro stats requested`);
-            // if (process.env.NODE_ENV === Env.DEV)
-            //     console.dir(resultTotals, { depth: null });
-            return resultTotals;
         } else {
             return groStatsError(
                 now(),
-                'Unknown error in /etl/etlGroStats.ts->etlGroStats()',
+                'Unknown error when calling subgraphs -> please see server logs',
             );
         }
     } catch (err) {
