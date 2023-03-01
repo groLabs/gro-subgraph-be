@@ -60,13 +60,13 @@ export const getVestingAirdropProofsUser = (userAddress: string): IVestingAirdro
     const proofs = getVestingAirdropProofs();
     for (let i = 0; i < proofs.airdrops.length; i++) {
         const user = proofs.airdrops[i];
-        if (user.address === userAddress) {
+        if (user.address.toLowerCase() === userAddress) {
             return {
                 'name': proofs.name,
                 'amount': user.amount,
-                'claim_initialized': '',
-                'claimed_amount': '',
-                'claimable_amount': '',
+                'claim_initialized': '',    // based on GMerkleVestor event LogInitialClaim
+                'claimed_amount': '',       // based on GMerkleVestor events LogInitialClaim & LogClaim
+                'claimable_amount': '',     // based on GMerkleVestor events LogInitialClaim, LogClaim & timestamps
                 'proofs': user.proofs,
                 'token': proofs.token,
             }

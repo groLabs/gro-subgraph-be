@@ -1,4 +1,3 @@
-import { NA } from '../constants';
 import { showError } from '../handler/logHandler';
 import { getAirdrops } from '../utils/airdrop';
 import { emptyEthUser } from './personalStatsEmpty';
@@ -34,8 +33,11 @@ export const parsePersonalStatsSubgraphEthereum = (
         // Debug subgraph respone:
         // console.dir(stats_eth, { depth: null });
 
+        // Very randombly the subgraph returns null timestamp although all data is fine
+        // => Replaced <stats_eth._meta.block.timestamp> by <now()>
+        const currentTimestamp = now();
+        
         // If no user or price data, return empty user
-        const currentTimestamp = stats_eth._meta.block.timestamp;
         if (stats_eth.users.length === 0 || stats_eth.prices.length === 0)
             return emptyEthUser(
                 currentTimestamp,
@@ -43,12 +45,9 @@ export const parsePersonalStatsSubgraphEthereum = (
                 Status.OK,
             );
 
+        // Pre-calculations
         const md_eth = stats_eth.masterDatas[0];
         const totals_eth = stats_eth.users[0].totals;
-        const transfers_eth: ITransferTx[] = stats_eth.users[0].transfers;
-        const approvals_eth: IApprovalTx[] = stats_eth.users[0].approvals;
-
-        // Pre-calculations
         const currentBalancePwrd = parseFloat(totals_eth.net_based_amount_pwrd) / parseFloat(stats_eth.factors[0].pwrd);
         const currentBalanceGvt = parseFloat(totals_eth.net_amount_gvt) * parseFloat(stats_eth.prices[0].gvt);
         const currentBalanceTotal = currentBalancePwrd + currentBalanceGvt;
@@ -56,21 +55,20 @@ export const parsePersonalStatsSubgraphEthereum = (
         const netReturnsGvt = currentBalanceGvt - parseFloat(totals_eth.net_value_gvt);
         const netReturnsTotal = netReturnsPwrd + netReturnsGvt;
 
-        //TODO: do a loop ;)
+        // Prepare datasets
         let pools: IPool[] = [];
-        pools[0] = getPool(0, stats_eth);
-        pools[1] = getPool(1, stats_eth);
-        pools[2] = getPool(2, stats_eth);
-        pools[3] = getPool(3, stats_eth);
-        pools[4] = getPool(4, stats_eth);
-        pools[5] = getPool(5, stats_eth);
-        pools[6] = getPool(6, stats_eth);
+        for (let i=0; i<7; i++) {
+            pools.push(getPool(i, stats_eth));
+        }
         const allPools: IPool = getAllPools(pools);
+        const transfers_eth: ITransferTx[] = stats_eth.users[0].transfers;
+        const approvals_eth: IApprovalTx[] = stats_eth.users[0].approvals;
         const totalGro = stats_eth.users[0].vestingBonus.vesting_gro
         const netReward = stats_eth.users[0].vestingBonus.net_reward;
         const latestStartTime = stats_eth.users[0].vestingBonus.latest_start_time
         const airdropClaims = stats_eth.users[0].airdrop_claims;
         const vestingAirdrop = stats_eth.users[0].vestingAirdrop;
+        const onlyGtoken = (item: string) => ['gvt', 'pwrd'].includes(item) ? true : false;
         const groBalanceCombined = getGroBalanceCombined(
             parseFloat(totals_eth.amount_total_gro),
             parseFloat(totalGro),
@@ -78,8 +76,8 @@ export const parsePersonalStatsSubgraphEthereum = (
             pools,
             stats_eth.poolDatas,
         );
-        const onlyGtoken = (item: string) => ['gvt', 'pwrd'].includes(item) ? true : false;
 
+        // Personal stats output
         const result: IPersonalStatsEthereum = {
             'status': md_eth.status as Status,
             'network_id': md_eth.network_id.toString() as NetworkId,
@@ -148,7 +146,7 @@ export const parsePersonalStatsSubgraphEthereum = (
                 parseFloat(totalGro),
                 parseFloat(netReward),
                 parseFloat(groBalanceCombined.total),
-                currentTimestamp,
+                parseInt(currentTimestamp),
                 latestStartTime,
                 md_eth.total_locked_amount,
                 md_eth.total_bonus,
@@ -169,9 +167,8 @@ export const parsePersonalStatsSubgraphEthereum = (
             'gro_balance_combined_detail': groBalanceCombined.detail,
             'vesting_airdrop': getVestingAirdrop(
                 account,
-                vestingAirdrop.claim_initialized,
-                vestingAirdrop.claimed_amount,
-                vestingAirdrop.total_claim_amount,
+                vestingAirdrop,
+                parseInt(currentTimestamp),
             ),
         }
         //console.dir(result, { depth: null });

@@ -13,6 +13,14 @@ export const DECIMALS = 7;
 export const BLOCKS_PER_YEAR = 2252571;
 export const PWRD_TVL_CORRECTION = 432.5559;  // correction due to rebasing (as of Nov'22)
 
+// UST Vesting Airdrop
+const ONE_MONTH_SECONDS = 2629746; // average year (including leap years) in seconds / 12
+export const UST_VESTING_AIRDROP = {
+    START_TIME: 1656654244,
+    END_TIME: 1717138402,
+    VESTING_TIME: ONE_MONTH_SECONDS * 23, // 2 years period - 1 month
+}
+
 // Post-G2 strategies: average of the estimated APY from the Convex pools as of 27.02.23
 export const DEFAULT_STRATEGY_APY = new Map<string, number>([
     ['0xd18415e9bc188f113cb54a9edd86df21898555c7', 0.0293],  // FRAX

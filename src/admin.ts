@@ -19,8 +19,6 @@ dotenvExpand.expand(env);
         if (params.length > 0) {
             switch (params[0]) {
                 case 'getPersonalStats':
-                    // Example eth:     0x60ff7dcb4a9c1a89b18fa2d1bb9444143bbea9bd
-                    // Example avax:    0x2ce1a66f22a2dc6e410d9021d57aeb8d13d6bfef
                     if (params.length === 3) {
                         if ((<any>Object).values(Subgraph).includes(params[1])) {
                             await etlPersonalStats(

@@ -1,8 +1,11 @@
-import { MAX_VEST_TIME } from '../constants';
+import { toStr } from './utils';
+import {
+    MAX_VEST_TIME,
+    UST_VESTING_AIRDROP as UST_AIR,
+} from '../constants';
 import { IVestingBonus } from '../interfaces/personalStats/IVestingBonus';
 import { IVestingAirdrop } from '../interfaces/personalStats/IVestingAirdrop';
 import { getVestingAirdropProofsUser } from '../handler/airdropHandler';
-import { toStr } from './utils';
 
 
 export const getVestingBonus = (
@@ -34,19 +37,35 @@ export const getVestingBonus = (
 
 export const getVestingAirdrop = (
     account: string,
-    claim_initialized: string,
-    claimed_amount: string,
-    total_claim_amount: string,
+    userData: any,
+    currentTimestamp: number,
 ): IVestingAirdrop => {
-    const proof = getVestingAirdropProofsUser(account);
-    const result = {
-        'name': proof.name,
-        'token': proof.token,
-        'amount': total_claim_amount,
-        'claim_initialized': claim_initialized,
-        'claimed_amount': claimed_amount,
-        'claimable_amount': 'x',
-        'proofs': proof.proofs,
+    let claimableAmount = 0;
+    const vestingAirdrop = getVestingAirdropProofsUser(account);
+    const claimedAmount = parseFloat(userData.claimed_amount);
+    const totalClaim = parseFloat(userData.total_claim_amount); // If no LogInitialClain, it will be 0
+    // Calc claimable amount
+    console.log('totalClaim',totalClaim,'currentTimestamp',currentTimestamp,'claimedAmount',claimedAmount);
+    if (userData.claim_initialized) {
+        if (currentTimestamp < UST_AIR.END_TIME) {
+            claimableAmount =
+                ((totalClaim * (currentTimestamp - UST_AIR.START_TIME)) /
+                    UST_AIR.VESTING_TIME) - claimedAmount;
+        } else {
+            claimableAmount = totalClaim - claimedAmount;
+        }
+    } else {
+        if (currentTimestamp < UST_AIR.END_TIME) {
+            claimableAmount =
+                (totalClaim * (currentTimestamp - UST_AIR.START_TIME)) /
+                (UST_AIR.VESTING_TIME);
+        } else {
+            claimableAmount = totalClaim;
+        }
     }
-    return result;
+    // Add user data based on claims
+    vestingAirdrop.claim_initialized = userData.claim_initialized;
+    vestingAirdrop.claimed_amount = userData.claimed_amount;
+    vestingAirdrop.claimable_amount = claimableAmount.toString();
+    return vestingAirdrop;
 }
