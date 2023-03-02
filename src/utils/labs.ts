@@ -1,10 +1,10 @@
 import { Status } from '../types';
 import { toStr } from '../utils/utils';
 import { getLabsData as getData} from '../data/labs';
+import { emptyGroStatsAvax } from '../parser/groStatsEmpty';
 import { ITvl } from '../interfaces/groStats/avalanche/ITvl';
 import { IVault } from '../interfaces/groStats/avalanche/IVault';
 import { IStrategy } from '../interfaces/groStats/avalanche/IStrategy';
-import { emptyGroStatsAvax } from '../parser/groStatsEmpty';
 
 
 export const getLabs = (
@@ -59,7 +59,6 @@ export const getLabs = (
             'strategies': [strat],
             'avax_exposure': data.avax_exposure,
         }
-
         vaults.push(vault);
     }
     return vaults;

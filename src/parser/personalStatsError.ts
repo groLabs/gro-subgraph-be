@@ -1,3 +1,5 @@
+import { NA } from '../constants';
+import { IPersonalStatsTotals} from '../interfaces/personalStats/IPersonalStats';
 import {
     Status,
     NetworkName
@@ -6,13 +8,13 @@ import {
     emptyEthUser, 
     emptyAvaxUser
 } from './personalStatsEmpty';
-import { IPersonalStatsTotals} from '../interfaces/personalStats/IPersonalStats';
+
 
 
 const emptyTotals = {
-    'ethereum': 'N/A',
-    'avalanche': 'N/A',
-    'total': 'N/A'
+    'ethereum': NA,
+    'avalanche': NA,
+    'total': NA
 }
 
 export const personalStatsError = (

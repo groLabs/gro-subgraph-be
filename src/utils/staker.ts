@@ -1,4 +1,3 @@
-import { Env } from '../types';
 import { toStr } from './utils';
 import { NA } from '../constants';
 import { showError } from '../handler/logHandler';
@@ -50,7 +49,6 @@ export const getPool = (
                     showError('parser/personalStatsEth.ts->getPool()', `Pool <${poolId} not found`);
                     break;
             }
-            // console.log('pool', poolId, 'pricePerShare:', pricePerShare, 'balance', (parseFloat(pool[0].balance)));
             const reward = calcRewards(
                 poolId,
                 pool[0].balance,

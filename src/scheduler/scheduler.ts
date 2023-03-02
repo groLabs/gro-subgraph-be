@@ -23,7 +23,7 @@ const historicalApyJob = async () => {
     });
 }
 
-// @dev: store historical APY only if running in PROD environment (to potentially avoid duplicating data)
+// @dev: store historical APY only if running in PROD environment (to avoid duplicating data in dev mode)
 export const startJobs = async () => {
     if (process.env.NODE_ENV === Env.PROD) {
         historicalApyJob();

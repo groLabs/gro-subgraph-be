@@ -12,7 +12,6 @@ export const getExposures = (
     let protocolList = new Map<string, number>();
     let strategyList = new Map<string, number>();
     const totalAmount = vaults.reduce((prev, current) => prev + parseFloat(current.amount), 0);
-
     for (let i = 0; i < vaults.length; i++) {
         const vault = vaults[i];
         for (let x = 0; x < vault.strategies.length; x++) {
@@ -33,7 +32,6 @@ export const getExposures = (
             );
         }
     }
-
     // Because all assets expose to 3crv, all stablecoin exposures are 100%
     const stableCoinList = ['DAI', 'USDC', 'USDT']
     for (let z = 0; z < stableCoinList.length; z++) {
@@ -44,7 +42,6 @@ export const getExposures = (
             'name': token,
         });
     }
-
     // calc metacoin exposure
     strategyList.forEach((value, key) => {
         stablecoins.push({
@@ -53,14 +50,12 @@ export const getExposures = (
             'name': key.toUpperCase(),
         })
     })
-
     // Because all assets expose to 3crv, the curve exposure is 100%
     protocols.push({
         'concentration': toStr(1.0),
         'display_name': 'Curve',
         'name': 'Curve',
     });
-
     protocolList.forEach((value, key) => {
         protocols.push({
             'concentration': toStr(totalAmount > 0 ? value / totalAmount : 0),
@@ -68,7 +63,6 @@ export const getExposures = (
             'name': key.toUpperCase(),
         });
     });
-
     return {
         protocols: protocols,
         stablecoins: stablecoins,

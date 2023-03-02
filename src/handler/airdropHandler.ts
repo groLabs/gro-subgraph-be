@@ -46,8 +46,8 @@ export const getAirdropProofsUser = (userAddress: string): IAirdrop[] => {
         return result;
     } catch (err) {
         showError(
-            '/handler/airdropHandler.ts',
-            `getAirdropProofsUser(): ${err} for user ${userAddress} -> Airdrops section excluded.`,
+            'handler/airdropHandler.ts->getAirdropProofsUser()',
+            `${err} for user ${userAddress} -> Airdrops section excluded.`,
         );
         return [];
     }

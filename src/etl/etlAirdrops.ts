@@ -29,12 +29,9 @@ export const readAirdropProofs = (): void => {
         }
         showInfo(`Airdrop proof files ready! ${files}`);
     } catch (err) {
-        showError(
-            '/etl/etlAirdrops.ts',
-            `readAirdropProofs(): ${err}`,
-        );
+        showError('etl/etlAirdrops.ts->readAirdropProofs()', err);
         showWarning(
-            '/etl/etlAirdrops.ts',
+            'etl/etlAirdrops.ts',
             `Section <ethereum->airdrops> not available in personal stats`,
         );
     }
@@ -49,11 +46,9 @@ export const readVestingAirdropProofs = (): void => {
     } catch (err) {
         vestingAirdrops = EMPTY_VESTING_AIRDROP_PROOF;
         showError(
-            '/etl/etlAirdrops.ts',
-            `readVestingAirdropProofs(): ${err}`,
-        );
+            'etl/etlAirdrops.ts->readVestingAirdropProofs()', err);
         showWarning(
-            '/etl/etlAirdrops.ts',
+            'etl/etlAirdrops.ts',
             `Section <ethereum->vesting_airdrop> not available in personal stats`,
         );
     }

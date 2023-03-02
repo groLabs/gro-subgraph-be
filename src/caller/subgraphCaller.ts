@@ -37,7 +37,7 @@ export const callSubgraph = async (
             );
         } else {
             showError(
-                'caller/subgraphCaller.ts->callSubgraph()',
+                'caller/subgraphCaller.ts->callSubgraph()->isEthSubgraph',
                 `unknown route ${route}}`,
             );
             return null;
@@ -58,7 +58,7 @@ export const callSubgraph = async (
             );
         } else {
             showError(
-                'caller/subgraphCaller.ts->callSubgraph()',
+                'caller/subgraphCaller.ts->callSubgraph()->isAvaxSubgraph',
                 `unknown route ${route}}`,
             );
             return null;

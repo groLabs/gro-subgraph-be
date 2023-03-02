@@ -176,7 +176,7 @@ export const parsePersonalStatsSubgraphAvalanche = (
     } catch (err) {
         showError(
             'parser/personalStatsAvax.ts->parsePersonalStatsSubgraphAvalanche()',
-            `${err}`,
+            err,
         );
         return emptyAvaxUser(Status.ERROR);
     }

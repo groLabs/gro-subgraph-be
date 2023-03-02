@@ -23,7 +23,7 @@ export const getVestingBonus = (
 ): IVestingBonus => {
     const lockedGro = totalGro - totalGro * (currentTimeStamp - latestStartTime) / MAX_VEST_TIME;
     const globalEndTime = globalStartTime + MAX_VEST_TIME;
-    const totalGroove = 
+    const totalGroove =
         (totalLockedAmount * (1 - initUnlockedPercent)) * (globalEndTime - currentTimeStamp) / MAX_VEST_TIME;
     const vestAll = lockedGro * totalBonus / totalGroove;
     const result = {
@@ -75,10 +75,7 @@ export const getVestingAirdrop = (
             return vestingAirdrop;
         }
     } catch (err) {
-        showError(
-            '/utils/vesting.ts',
-            `getVestingAirdrop(): ${err}`,
-        );
+        showError('utils/vesting.ts->getVestingAirdrop()', err);
         return EMPTY_VESTING_AIRDROP;
     }
 }

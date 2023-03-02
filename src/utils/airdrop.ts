@@ -11,7 +11,7 @@ export const getAirdrops = (
     try {
         let airdrops = getAirdropProofsUser(account);
         for (let i = 0; i < airdrops.length; i++) {
-            // Exclude first version of Airdrop contracts
+            // Exclude first Airdrop contract version
             const claim = airdropClaims.find(
                 (item: IAirdropClaim) =>
                     item.tranche_id === i
@@ -26,10 +26,7 @@ export const getAirdrops = (
         }
         return airdrops;
     } catch (err) {
-        showError(
-            '/utils/airdrop.ts',
-            `getAirdrops(): ${err}`,
-        );
+        showError('utils/airdrop.ts->getAirdrops()', err);
         return [];
     }
 }
