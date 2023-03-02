@@ -51,6 +51,7 @@ export const isEthSubgraph = (url: string): boolean => {
         || url === process.env.SG_TEST_HOSTED_ETH
         || url === process.env.SG_TEST_STUDIO_ETH
         || url === process.env.SG_G2_TEST_HOSTED_ETH
+        || url === process.env.SG_HISTORICAL_APY
     )
         ? true
         : false;

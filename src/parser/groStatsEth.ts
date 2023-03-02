@@ -1,4 +1,7 @@
-import { toStr } from '../utils/utils';
+import {
+    now,
+    toStr,
+} from '../utils/utils';
 import { getPools } from '../utils/pools';
 import { getCoreApy } from '../utils/apy';
 import { getSystem } from '../utils/strategies';
@@ -25,7 +28,7 @@ export const groStatsParserEthereum = (
     const core = stats_eth.coreDatas[0];
     const factor = stats_eth.factors[0];
     const gvaults = stats_eth.gvaults;
-    const currentTimestamp = stats_eth._meta.block.timestamp;
+    const currentTimestamp = now();
     const poolData = stats_eth.poolDatas;
     const stakerData = stats_eth.stakerDatas;
     const poolSwaps = stats_eth.poolSwaps;
