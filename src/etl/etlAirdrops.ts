@@ -15,6 +15,7 @@ import {
 let airdropProofs: IAirdropProof[] = [];
 let vestingAirdrops: IVestingAirdropProof;
 
+// Global getters
 export const getAirdropProofs = () => airdropProofs;
 export const getVestingAirdropProofs = () => vestingAirdrops;
 

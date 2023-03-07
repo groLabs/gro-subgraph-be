@@ -45,6 +45,8 @@ export const emptyEthUser = (
             'transfers_in': [],
             'transfers_out': [],
             'approvals': [],
+            'staker_deposits': [],
+            'staker_withdrawals': [],
             'failures': []
         },
         'amount_added': {

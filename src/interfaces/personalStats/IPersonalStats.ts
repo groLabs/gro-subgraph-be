@@ -47,6 +47,8 @@ export interface IPersonalStatsEthereum {
         'transfers_in': ITransferTx[],
         'transfers_out': ITransferTx[],
         'approvals': IApprovalTx[],
+        'staker_deposits': ITransferTx[],
+        'staker_withdrawals': ITransferTx[],
         'failures': []
     },
     'current_timestamp': string,
