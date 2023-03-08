@@ -143,12 +143,10 @@ export const parsePersonalStatsSubgraphEthereum = (
                 'staker_deposits': transfers_eth
                     .filter((item: ITransferTx) => (
                         item.type === 'staker_deposit'
-                        && onlyGtoken(item.token)
                     )),
                 'staker_withdrawals': transfers_eth
                     .filter((item: ITransferTx) => (
                         item.type === 'staker_withdrawal'
-                        && onlyGtoken(item.token)
                     )),
                 'failures': [] as []
             },
