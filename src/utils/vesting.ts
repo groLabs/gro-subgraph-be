@@ -14,26 +14,34 @@ import {
 export const getVestingBonus = (
     totalGro: number,
     netReward: number,
-    currentTimeStamp: number,
-    latestStartTime: number,
+    currentTime: number,
+    startTime: number,
     totalLockedAmount: number,
     totalBonus: number,
     globalStartTime: number,
     initUnlockedPercent: number,
 ): IVestingBonus => {
-    const lockedGro = totalGro - totalGro * (currentTimeStamp - latestStartTime) / MAX_VEST_TIME;
-    const globalEndTime = globalStartTime + MAX_VEST_TIME;
-    const totalGroove =
-        (totalLockedAmount * (1 - initUnlockedPercent)) * (globalEndTime - currentTimeStamp) / MAX_VEST_TIME;
-    const vestAll = lockedGro * totalBonus / totalGroove;
-    const result = {
-        'locked_gro': toStr(lockedGro),
-        'net_reward': toStr(netReward),
-        'rewards': {
-            'claim_now': toStr(vestAll * 0.3),
-            'vest_all': toStr(vestAll),
+        let unlockedGro = 0;
+        const _endTime = startTime + MAX_VEST_TIME;
+        if (_endTime > currentTime) {
+            unlockedGro = (totalGro * initUnlockedPercent) / 10000;
+            unlockedGro = unlockedGro  + ((totalGro - unlockedGro) * (currentTime - startTime)) / (_endTime - startTime);
+        } else {
+            unlockedGro = totalGro;
         }
-    }
+        const globalEndTime = globalStartTime + MAX_VEST_TIME;
+        const totalGroove =
+            (totalLockedAmount * (1 - initUnlockedPercent)) * (globalEndTime - currentTime) / MAX_VEST_TIME;
+        const vestingBalance = totalGro - unlockedGro;
+        const vestAll = vestingBalance * totalBonus / totalGroove;
+        const result = {
+            'locked_gro': toStr(vestingBalance),
+            'net_reward': toStr(netReward),
+            'rewards': {
+                'claim_now': toStr(vestAll * 0.3),
+                'vest_all': toStr(vestAll),
+            }
+        }
     return result;
 }
 
