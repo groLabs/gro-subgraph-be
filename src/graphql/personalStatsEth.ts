@@ -68,8 +68,6 @@ export const queryPersonalStatsEth = (
             }
             vestingBonus {
                 net_reward
-                claim_now
-                vest_all
                 vesting_gro
                 latest_start_time
             }
