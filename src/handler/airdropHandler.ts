@@ -28,7 +28,7 @@ export const getAirdropProofsUser = (userAddress: string): IAirdrop[] => {
             const airdrop: IAirdrop = {
                 'amount': amount,
                 'amount_to_claim': user ? user.amount : '0',
-                'claimable': expired ? 'false' : 'true',
+                'claimable': user && !expired ? 'true' : 'false',
                 'claimed': 'false',
                 'display_name': airdrops[i].display_name,
                 'expired': expired ? 'true' : 'false',

@@ -67,7 +67,6 @@ export const queryPersonalStatsEth = (
                 amount_total_gro_team
             }
             vestingBonus {
-                locked_gro
                 net_reward
                 claim_now
                 vest_all

@@ -1,5 +1,5 @@
-import { showError } from '../handler/logHandler';
 import { getAirdrops } from '../utils/airdrop';
+import { showError } from '../handler/logHandler';
 import { emptyEthUser } from './personalStatsEmpty';
 import { IPool } from '../interfaces/personalStats/IPool';
 import { ITransferTx } from '../interfaces/personalStats/ITransferTx';
@@ -33,7 +33,7 @@ export const parsePersonalStatsSubgraphEthereum = (
         // Debug subgraph respone:
         // console.dir(stats_eth, { depth: null });
 
-        // Very randombly the subgraph returns null timestamp although all data is fine
+        // Subgraphs sometimes return null timestamp although all data is fine
         // => Replaced <stats_eth._meta.block.timestamp> by <now()>
         const currentTimestamp = now();
         
@@ -178,7 +178,10 @@ export const parsePersonalStatsSubgraphEthereum = (
                 parseInt(currentTimestamp),
             ),
         }
-        //console.dir(result, { depth: null });
+
+        // Debug personal stats output:
+        // console.dir(result, { depth: null });
+
         return result;
     } catch (err) {
         showError('parser/personalStatsEth.ts->parsePersonalStatsSubgraphEthereum()', err);
