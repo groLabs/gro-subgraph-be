@@ -72,7 +72,7 @@ export const parsePersonalStatsSubgraphEthereum = (
         const groBalanceCombined = getGroBalanceCombined(
             parseFloat(totals_eth.amount_total_gro),
             parseFloat(totalGro),
-            parseFloat(totals_eth.amount_total_gro_team),
+            parseFloat(totals_eth.amount_vest_team_gro),
             pools,
             stats_eth.poolDatas,
         );

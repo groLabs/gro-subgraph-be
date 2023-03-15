@@ -64,7 +64,7 @@ export const queryPersonalStatsEth = (
                 net_amount_gvt
                 net_based_amount_pwrd
                 amount_total_gro
-                amount_total_gro_team
+                amount_vest_team_gro
             }
             vestingBonus {
                 net_reward
