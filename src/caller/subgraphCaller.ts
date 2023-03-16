@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Route } from '../types';
 import { TS_15D } from '../constants';
+import { IError } from '../interfaces/url/IError';
 import { showError } from '../handler/logHandler';
 import { queryGroStatsEth } from '../graphql/groStatsEth';
 import { queryGroStatsAvax } from '../graphql/groStatsAvax';
@@ -70,51 +71,46 @@ export const callSubgraph = async (
         );
         return null;
     }
+
     const result = await axios.post(
         url,
         { query: q }
-    );
-    if (result.data.errors) {
-        showError(
-            'caller/subgraphCaller.ts->callSubgraph() [Error from Subgraph]',
-            JSON.stringify(result.data.errors, null, 1),
-        );
-    }
-    return result.data;
-
-    // TODO: improve error handling in axios
-    // axios.post(
-    //     url,
-    //     { query: q }
-    // ).then(data => {
-    //     // console.log(data);
-    //     // if (data.data.errors) {
-    //     //     showError(
-    //     //         'caller/subgraphCaller.ts->callSubgraph() [Error from Subgraph]',
-    //     //         JSON.stringify(data.data.errors, null, 1),
-    //     //     );
-    //     // }
-    //     return data.data;
-    // }).catch(err => {
-    //     if (err.response) {
-    //         // Request made and server responded
-    //         showError(
-    //             'caller/subgraphCaller.ts->callSubgraph()',
-    //             `<${err.response.status} ${err.response.statusText}> on url ${err.response.config.url}`,
-    //         );
-    //     } else if (err.request) {
-    //         // The request was made but no response was received
-    //         showError(
-    //             'caller/subgraphCaller.ts->callSubgraph()',
-    //             `Axios request without response: ${err.request}`,
-    //         );
-    //     } else {
-    //         // Something happened in setting up the request that triggered an Error
-    //         showError(
-    //             'caller/subgraphCaller.ts->callSubgraph()',
-    //             `Axios error on setting up the request: ${err.message}`,
-    //         );
-    //     }
-    //     return null;
-    // });
+    ).then(res => {
+        if (res.data.errors) {
+            showError(
+                'caller/subgraphCaller.ts->callSubgraph() [Error from Subgraph]',
+                JSON.stringify(res.data.errors, null, 1),
+            );
+        }
+        return res.data;
+    }).catch(err => {
+        let errorMsg = '';
+        if (err.response) {
+            // Request made and server responded
+            errorMsg = `<${err.response.status} ${err.response.statusText}> on url ${err.response.config.url}`;
+            showError(
+                'caller/subgraphCaller.ts->callSubgraph() [Error from Axios]',
+                errorMsg,
+            );
+        } else if (err.request) {
+            // The request was made but no response was received
+            errorMsg = `Request without response ${err.message}`;
+            showError(
+                'caller/subgraphCaller.ts->callSubgraph() [Error from Axios]',
+                errorMsg,
+            );
+        } else {
+            // Something happened in setting up the request that triggered an Error
+            errorMsg = `Error on setting up the request: ${err.message}`;
+            showError(
+                'caller/subgraphCaller.ts->callSubgraph() [Error from Axios]',
+                errorMsg,
+            );
+        }
+        const errorResponse: IError = {
+            errors: [errorMsg],
+        }
+        return errorResponse;
+    });
+    return result;
 }
