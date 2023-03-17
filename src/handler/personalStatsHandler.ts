@@ -21,6 +21,8 @@ export const getPersonalStats = async (
         );
         if (call.errors) {
             return call;
+        }  else if (!call) {
+            return null;
         } else if (call.data.users.length === 0) {
             return call.data;
         } else {

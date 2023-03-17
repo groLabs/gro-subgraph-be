@@ -19,12 +19,12 @@ export const getGroStats = async (
             Route.GRO_STATS_MC,
             tsNow
         );
-        if (!call) {
-            return null;
-        } else if (call.errors) {
+        if (call.errors) {
             return call;
-        } else {
+        } if (call.data) {
             return call.data;
+        } else {
+            return null;
         }
     } catch (err) {
         showError('handler/groStatsHandler.ts->getGroStats()', err);

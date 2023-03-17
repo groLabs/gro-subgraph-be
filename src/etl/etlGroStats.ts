@@ -24,6 +24,7 @@ export const etlGroStats = async (
     try {
         const tsNow = parseInt(now());
         const url = getUrl(subgraph);
+        
         const [
             resultEth,
             resultAvax,
@@ -41,7 +42,18 @@ export const etlGroStats = async (
                 tsNow,
             )
         ]);
-        if (resultEth && resultAvax) {
+
+        if (resultEth.errors) {
+            return groStatsError(
+                tsNow.toString(),
+                resultEth.errors.map((item: any) => item)
+            );
+        } else if (resultAvax.errors) {
+            return groStatsError(
+                tsNow.toString(),
+                resultAvax.errors.map((item: any) => item)
+            );
+        } else if (resultEth && resultAvax) {
             const resultEthParsed = groStatsParserEthereum(
                 resultEth,
                 tsNow,
@@ -64,16 +76,6 @@ export const etlGroStats = async (
             return groStatsError(
                 tsNow.toString(),
                 'Error in avalanche subgraph call -> please see server logs'
-            );
-        } else if (resultEth.errors) {
-            return groStatsError(
-                tsNow.toString(),
-                resultEth.errors.map((item: any) => item)
-            );
-        } else if (resultAvax.errors) {
-            return groStatsError(
-                tsNow.toString(),
-                resultAvax.errors.map((item: any) => item)
             );
         } else {
             return groStatsError(

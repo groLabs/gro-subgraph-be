@@ -1,10 +1,10 @@
+import { Subgraph } from '../types';
 import { getPersonalStats } from '../handler/personalStatsHandler';
 import { parsePersonalStatsSubgraphEthereum } from '../parser/personalStatsEth';
 import { parsePersonalStatsSubgraphAvalanche } from '../parser/personalStatsAvax';
 import { personalStatsSubgraphParserTotals } from '../parser/personalStatsTotals';
 import { personalStatsError } from '../parser/personalStatsError';
 import { IPersonalStatsTotals } from '../interfaces/personalStats/IPersonalStats';
-import { Subgraph } from '../types';
 import {
     now,
     getUrl,
@@ -24,6 +24,7 @@ export const etlPersonalStats = async (
     try {
         const account = _account.toLowerCase(); // Subgraphs store addresses in lowercase
         const url = getUrl(subgraph);
+
         const [
             resultEth,
             resultAvax,
@@ -41,6 +42,7 @@ export const etlPersonalStats = async (
                 result
             )
         ]);
+
         if (resultEth.errors) {
             return personalStatsError(
                 now(),
@@ -56,18 +58,16 @@ export const etlPersonalStats = async (
         } else if (resultEth && resultAvax) {
             const resultEthParsed = parsePersonalStatsSubgraphEthereum(
                 account,
-                resultEth
+                resultEth,
             );
             const resultAvaxParsed = parsePersonalStatsSubgraphAvalanche(
                 resultAvax
             );
             const resultTotals = personalStatsSubgraphParserTotals(
                 resultEthParsed,
-                resultAvaxParsed
+                resultAvaxParsed,
             );
             showInfo(`Personal stats requested for user ${account}`);
-            // if (process.env.NODE_ENV === Env.DEV)
-            //     console.dir(resultTotals, { depth: null });
             return resultTotals;
         } else {
             return personalStatsError(
