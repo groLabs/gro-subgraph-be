@@ -36,7 +36,7 @@ export const parsePersonalStatsSubgraphEthereum = (
         // Subgraphs sometimes return null timestamp although all data is fine
         // => Replaced <stats_eth._meta.block.timestamp> by <now()>
         const currentTimestamp = now();
-        
+
         // If no user or price data, return empty user
         if (stats_eth.users.length === 0 || stats_eth.prices.length === 0)
             return emptyEthUser(
@@ -57,7 +57,7 @@ export const parsePersonalStatsSubgraphEthereum = (
 
         // Prepare datasets
         let pools: IPool[] = [];
-        for (let i=0; i<7; i++) {
+        for (let i = 0; i < 7; i++) {
             pools.push(getPool(i, stats_eth));
         }
         const allPools: IPool = getAllPools(pools);

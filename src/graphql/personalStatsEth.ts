@@ -1,7 +1,7 @@
 export const queryPersonalStatsEth = (
     account: string,
     first: number,
-    skip: number
+    blockTimestamp: number
 ) => (
     `{
         _meta {
@@ -88,9 +88,9 @@ export const queryPersonalStatsEth = (
             }
             transfers (
                 first: ${first}
-                skip: ${skip}
+                where: { block_timestamp_gte: ${blockTimestamp} }
                 orderBy: block_timestamp
-                orderDirection: desc
+                orderDirection: asc
             ) {
                 token
                 hash
@@ -150,4 +150,3 @@ export const queryPersonalStatsEth = (
         }
     }`
 );
-

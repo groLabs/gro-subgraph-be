@@ -3,6 +3,7 @@ export const PWRD_APY = 0.02;
 export const QUERY_ERROR = 400;
 export const QUERY_SUCCESS = 200;
 export const TX_ITERATION = 999; // # of records retrieved per subgraph call (limited to 1000 per call)
+export const NUM_TRANSFER_CHECKS = 3; // # of TransferTx to be checked in getPersonalStats() when records > TX_ITERATION
 export const MAX_VEST_TIME = 31556952;
 export const LAUNCH_TIMESTAMP_ETH = '1622204347';
 export const LAUNCH_TIMESTAMP_AVAX = '1638483222';
