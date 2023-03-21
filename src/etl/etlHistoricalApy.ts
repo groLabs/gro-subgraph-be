@@ -43,7 +43,7 @@ export const etlHistoricalApy = async (): Promise<void> => {
         } else {
             showError(
                 'etl/etlHistoricalApy.ts->etlHistoricalApy()',
-                `Error while insterting historical APY into DB on timestamp ${currentTimestamp}`,
+                `Error while inserting historical APY into DB on timestamp ${currentTimestamp}`,
             );
         }
     } else {
