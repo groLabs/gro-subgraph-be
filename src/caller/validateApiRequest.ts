@@ -14,6 +14,24 @@ import {
 } from 'express';
 
 
+const sendErrorResponse = (
+    res: Response,
+    route: Route,
+    errors: string
+) => {
+    switch (route) {
+        case Route.GRO_STATS_MC:
+            res.status(400).json(groStatsError(now(), errors));
+            break;
+        case Route.GRO_PERSONAL_POSITION_MC:
+            res.status(400).json(personalStatsError(now(), 'N/A', errors));
+            break;
+        case Route.HISTORICAL_APY:
+            res.status(400).json(historicalApyError(now(), errors));
+            break;
+    }
+};
+
 export const validateApiRequest = (
     validations: ValidationChain[],
     route: Route,
@@ -28,31 +46,7 @@ export const validateApiRequest = (
         if (errors.isEmpty()) {
             return next();
         }
-        switch (route) {
-            case Route.GRO_STATS_MC:
-                res.status(400).json(
-                    groStatsError(
-                        now(),
-                        JSON.stringify(errors)
-                    ));
-                return next();
-            case Route.GRO_PERSONAL_POSITION_MC:
-                res.status(400).json(
-                    personalStatsError(
-                        now(),
-                        'N/A',
-                        JSON.stringify(errors),
-                    ));
-                return next();
-            case Route.HISTORICAL_APY:
-                res.status(400).json(
-                    historicalApyError(
-                        now(),
-                        JSON.stringify(errors),
-                    ));
-                return next();
-            default:
-                return next();
-        }
+        sendErrorResponse(res, route, JSON.stringify(errors));
+        return next();
     }
 }
