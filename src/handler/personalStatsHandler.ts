@@ -12,7 +12,7 @@ export const getPersonalStats = async (
     url: string,
     account: string,
     lastBlockTS: number,
-    result: any
+    result: any = null,
 ): Promise<any> => {
     try {
         const call = await callSubgraph(
@@ -38,7 +38,7 @@ export const getPersonalStats = async (
                 // Get highest block timestamp from last transfer (as it's sorted ascending)
                 lastBlockTS = (currentTransfersLength > 0)
                     ? currentTransfers[currentTransfersLength - 1].timestamp
-                    : 0;     
+                    : 0;
             } else if (currentTransfersLength > 0) {
                 // ** Next iterations **
                 // Get last previous N Transfers (normally 3)
@@ -56,11 +56,9 @@ export const getPersonalStats = async (
                     : prev[prev.length - 1].timestamp;
             }
             
-            const isReady = (currentTransfersLength === 0 || currentTransfersLength < TX_ITERATION)
-                ? true
-                : false;
+            const isReady = currentTransfersLength === 0 || currentTransfersLength < TX_ITERATION;
 
-            // Transfer are extracted is ascending order, but sent to the FE in descending order
+            // Transfers are extracted is ascending order but sent to the FE in descending order
             if (isReady) {
                 result.users[0].transfers
                     .sort((a: ITransferTxSubgraph, b: ITransferTxSubgraph) => b.timestamp - a.timestamp);
@@ -81,38 +79,19 @@ export const getPersonalStats = async (
     }
 }
 
-
-// Goal: This is to handle multiple transfers in the same transaction (therefore, same block timestamp
-// for different records in entity TransferTx), as the block timestamp is used to filter the calls and without
-// a proper handling, there could be repeated records.
-// How: compares the three last Transfers from the previous call vs. up to three first Transfers
-// from the last call and deletes Transfers from the last call if already existing in the previous call
-// Only comparing 3 records, as there shouldn't be Transfers with more than 3 Gro-tokens in the same Tx.
+// Remove any repeated record from last Transfers call that already existed in previous calls
+// This is needed because the the graphql query is based on block number 'gte', so when doing iterations,
+// any previous Transfer needs to be removed from the last Transfers call, and also because there can be
+// multiple Transfers with same block number (eg: emergency withdrawal)
 // e.g.: 0xb58d5e530a42e6cc150310ed187c0d78812a8ee709fe842ad2d6931ba32a06c7
 const removeRepeated = (
     curr: ITransferTxSubgraph[],
     prev: ITransferTxSubgraph[]
 ): ITransferTxSubgraph[] => {
-    for (let z = 0; z < prev.length; z++) {
-        if (
-            curr[0]
-            && prev[z].block_number == curr[0].block_number
-            && prev[z].token == curr[0].token
-        ) {
-            curr.shift();
-        } else if (
-            curr[1]
-            && prev[z].block_number == curr[1].block_number
-            && prev[z].token == curr[1].token
-        ) {
-            curr.slice(1, 1);
-        } else if (
-            curr[2]
-            && prev[z].block_number == curr[2].block_number
-            && prev[z].token == curr[2].token
-        ) {
-            curr.slice(2, 1);
-        }
-    }
+    curr = curr.filter((currItem) =>
+        !prev.some((prevItem) =>
+            prevItem.block_number === currItem.block_number && prevItem.token === currItem.token
+        )
+    );
     return curr;
 }
