@@ -20,19 +20,18 @@ export const etlHistoricalApy = async (): Promise<void> => {
     );
     if (groStats.gro_stats_mc.status === Status.OK) {
         // parse apy data
-        let currentTimestamp = parseInt(groStats.gro_stats_mc.current_timestamp);
-        let pwrdApy = parseFloat(groStats.gro_stats_mc.mainnet.apy.current.pwrd);
-        let gvtApy = parseFloat(groStats.gro_stats_mc.mainnet.apy.current.gvt);
+        const currentTimestamp = parseInt(groStats.gro_stats_mc.current_timestamp);
+        const pwrdApy = parseFloat(groStats.gro_stats_mc.mainnet.apy.current.pwrd);
+        const gvtApy = parseFloat(groStats.gro_stats_mc.mainnet.apy.current.gvt);
         const paramsPwrd = parseHistoricalApyQuery(currentTimestamp, 1, pwrdApy);
         const paramsGvt = parseHistoricalApyQuery(currentTimestamp, 2, gvtApy);
+
         // insert APYs into table g2.PROTOCOL_APY
-        const [
-            resultPwrd,
-            resultGvt,
-        ] = await Promise.all([
+        const [resultPwrd, resultGvt] = await Promise.all([
             query('insert_protocol_apy.sql', paramsPwrd),
             query('insert_protocol_apy.sql', paramsGvt),
         ]);
+        
         // show logs
         if (
             resultPwrd.status !== QUERY_ERROR

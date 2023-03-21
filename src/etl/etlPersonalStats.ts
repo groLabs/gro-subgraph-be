@@ -21,67 +21,34 @@ export const etlPersonalStats = async (
     skip: number,
     result: any
 ): Promise<IPersonalStatsTotals> => {
+    const path = 'etl/etlSubgraph.ts->etlPersonalStats()';
     try {
         const account = _account.toLowerCase(); // Subgraphs store addresses in lowercase
         const url = getUrl(subgraph);
 
-        const [
-            resultEth,
-            resultAvax,
-        ] = await Promise.all([
-            getPersonalStats(
-                url.ETH,
-                account,
-                skip,
-                result
-            ),
-            getPersonalStats(
-                url.AVAX,
-                account,
-                skip,
-                result
-            )
+        const [resultEth, resultAvax] = await Promise.all([
+            getPersonalStats(url.ETH, account, skip, result),
+            getPersonalStats(url.AVAX, account, skip, result),
         ]);
 
-        if (resultEth.errors) {
-            return personalStatsError(
-                now(),
-                _account,
-                resultEth.errors.map((item: any) => item)
-            );
-        } else if (resultAvax.errors) {
-            return personalStatsError(
-                now(),
-                _account,
-                resultAvax.errors.map((item: any) => item)
-            );
-        } else if (resultEth && resultAvax) {
-            const resultEthParsed = parsePersonalStatsSubgraphEthereum(
-                account,
-                resultEth,
-            );
-            const resultAvaxParsed = parsePersonalStatsSubgraphAvalanche(
-                resultAvax
-            );
-            const resultTotals = personalStatsSubgraphParserTotals(
-                resultEthParsed,
-                resultAvaxParsed,
-            );
+        if (resultEth.errors || resultAvax.errors) {
+            const errors = resultEth.errors
+                ? resultEth.errors
+                : resultAvax.errors;
+            return personalStatsError(now(), _account, errors);
+        }
+
+        if (resultEth && resultAvax) {
+            const resultEthParsed = parsePersonalStatsSubgraphEthereum(account, resultEth);
+            const resultAvaxParsed = parsePersonalStatsSubgraphAvalanche(resultAvax);
+            const resultTotals = personalStatsSubgraphParserTotals(resultEthParsed, resultAvaxParsed);
             showInfo(`Personal stats requested for user ${account}`);
             return resultTotals;
-        } else {
-            return personalStatsError(
-                now(),
-                _account,
-                'Unknown error in /etl/etlSubgraph->etlPersonalStats()'
-            );
         }
+
+        return personalStatsError(now(), _account, `Unknown error in ${path}`);
     } catch (err) {
         showError('etl/etlSubgraph.ts->etlPersonalStats()', err);
-        return personalStatsError(
-            now(),
-            _account,
-            err as string
-        );
+        return personalStatsError(now(), _account, err as string);
     }
 }

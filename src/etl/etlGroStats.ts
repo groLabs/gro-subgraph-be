@@ -23,44 +23,27 @@ export const etlGroStats = async (
     try {
         const tsNow = parseInt(now());
         const url = getUrl(subgraph);
-
         const [resultEth, resultAvax] = await Promise.all([
             getGroStats(url.ETH, skip, tsNow),
             getGroStats(url.AVAX, skip, tsNow),
         ]);
-
         if (resultEth.errors) {
-            return groStatsError(
-                tsNow.toString(),
-                resultEth.errors.map((item: any) => item)
-            );
-        } else if (resultAvax.errors) {
-            return groStatsError(
-                tsNow.toString(),
-                resultAvax.errors.map((item: any) => item)
-            );
-        } else if (resultEth && resultAvax) {
+            return groStatsError(tsNow.toString(), resultEth.errors);
+        }
+        if (resultAvax.errors) {
+            return groStatsError(tsNow.toString(), resultAvax.errors);
+        }
+        if (resultEth && resultAvax) {
             const resultEthParsed = groStatsParserEthereum(resultEth, tsNow);
             const resultAvaxParsed = groStatsParserAvalanche(resultAvax);
             const resultTotals = groStatsParser(resultEthParsed, resultAvaxParsed);
-            showInfo(`Gro stats requested`);
+            showInfo('Gro stats requested');
             return resultTotals;
-        } else if (!resultEth) {
-            return groStatsError(
-                tsNow.toString(),
-                'Error in ethereum subgraph call -> please see server logs'
-            );
-        } else if (!resultAvax) {
-            return groStatsError(
-                tsNow.toString(),
-                'Error in avalanche subgraph call -> please see server logs'
-            );
-        } else {
-            return groStatsError(
-                now(),
-                'Unknown error when calling subgraphs -> please see server logs',
-            );
         }
+        const errorMsg = resultEth
+            ? 'Error in avalanche subgraph call -> please see server logs'
+            : 'Error in ethereum subgraph call -> please see server logs';
+        return groStatsError(tsNow.toString(), errorMsg);
     } catch (err) {
         showError('etl/etlGroStats.ts->etlGroStats()', err);
         return groStatsError(

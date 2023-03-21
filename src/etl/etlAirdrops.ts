@@ -22,8 +22,8 @@ export const getVestingAirdropProofs = () => vestingAirdrops;
 // @dev: excludes the first 6 airdrops
 export const readAirdropProofs = (): void => {
     try {
-        const files = fs.readdirSync(path.join(__dirname, `/../data/airdrops`));
-        files.sort((a, b) => a.localeCompare(b));
+        const files = fs.readdirSync(path.join(__dirname, `/../data/airdrops`))
+            .sort((a, b) => a.localeCompare(b));
         for (let i = 7; i < files.length; i++) {
             const data = fs.readFileSync(path.join(__dirname, `/../data/airdrops/${files[i]}`), 'utf8');
             airdropProofs.push(JSON.parse(data));
@@ -40,8 +40,8 @@ export const readAirdropProofs = (): void => {
 
 export const readVestingAirdropProofs = (): void => {
     try {
-        const file = 'airdrop-vesting-ust.json';
-        const data = fs.readFileSync(path.join(__dirname, `/../data/vestingAirdrops/${file}`), 'utf8');
+        const file = path.join(__dirname, `/../data/vestingAirdrops/airdrop-vesting-ust.json`);
+        const data = fs.readFileSync(file, 'utf8');
         vestingAirdrops = JSON.parse(data);
         showInfo(`UST vestingAirdrop proof file ready! ${file}`);
     } catch (err) {
