@@ -17,7 +17,6 @@ export const etlHistoricalApy = async (): Promise<void> => {
     const groStats = await etlGroStats(
         Subgraph.HISTORICAL_APY,
         0,
-        [],
     );
     if (groStats.gro_stats_mc.status === Status.OK) {
         // parse apy data

@@ -7,7 +7,6 @@ import { callSubgraph } from '../caller/subgraphCaller';
 export const getGroStats = async (
     url: string,
     skip: number,
-    result: any,
     tsNow: number,
 ): Promise<any> => {
     try {

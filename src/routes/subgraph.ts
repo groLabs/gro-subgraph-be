@@ -18,15 +18,16 @@ import {
 import express, {
     Request,
     Response,
-    NextFunction
+    NextFunction,
+    RequestHandler,
 } from 'express';
 
 
 const router = express.Router();
 
-const wrapAsync = function wrapAsync(fn: any) {
-    return function wrap(req: Request, res: Response, next: NextFunction) {
-        fn(req, res, next).catch(next);
+const wrapAsync = (fn: RequestHandler): RequestHandler => {
+    return (req: Request, res: Response, next: NextFunction) => {
+        Promise.resolve(fn(req, res, next)).catch(next);
     };
 }
 
@@ -47,12 +48,12 @@ router.get(
             if (!errors.isEmpty())
                 return;
             const { subgraph } = req.query;
-            if ((<any>Object).values(Subgraph).includes(subgraph)) {
+            if (Object.values(Subgraph).includes(subgraph as Subgraph)) {
                 // address & subgraph fields are correct
                 const groStats = await etlGroStats(
                     subgraph as Subgraph,
-                    0,
-                    []);
+                    0
+                );
                 res.json(groStats);
             } else if (subgraph) {
                 // subgraph value is incorrect
@@ -97,7 +98,7 @@ router.get(
             if (!errors.isEmpty())
                 return;
             const { subgraph, address } = req.query;
-            if ((<any>Object).values(Subgraph).includes(subgraph)) {
+            if (Object.values(Subgraph).includes(subgraph as Subgraph)) {
                 // address & subgraph fields are correct
                 const personalStats = await etlPersonalStats(
                     subgraph as Subgraph,
@@ -158,7 +159,7 @@ router.get(
             const errors = validationResult(req);
             if (!errors.isEmpty())
                 return;
-            let { _network, attr, freq, start, end } = req.query;
+            const { attr, freq, start, end } = req.query;
             const groStats = await getHistoricalApy(attr, freq, start, end);
             res.json(groStats);
         } catch (err) {

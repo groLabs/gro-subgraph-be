@@ -19,28 +19,14 @@ import {
 export const etlGroStats = async (
     subgraph: Subgraph,
     skip: number,
-    result: any
 ): Promise<IGroStats> => {
     try {
         const tsNow = parseInt(now());
         const url = getUrl(subgraph);
-        
-        const [
-            resultEth,
-            resultAvax,
-        ] = await Promise.all([
-            getGroStats(
-                url.ETH,
-                skip,
-                result,
-                tsNow,
-            ),
-            getGroStats(
-                url.AVAX,
-                skip,
-                result,
-                tsNow,
-            )
+
+        const [resultEth, resultAvax] = await Promise.all([
+            getGroStats(url.ETH, skip, tsNow),
+            getGroStats(url.AVAX, skip, tsNow),
         ]);
 
         if (resultEth.errors) {
@@ -54,17 +40,9 @@ export const etlGroStats = async (
                 resultAvax.errors.map((item: any) => item)
             );
         } else if (resultEth && resultAvax) {
-            const resultEthParsed = groStatsParserEthereum(
-                resultEth,
-                tsNow,
-            );
-            const resultAvaxParsed = groStatsParserAvalanche(
-                resultAvax,
-            );
-            const resultTotals = groStatsParser(
-                resultEthParsed,
-                resultAvaxParsed,
-            );
+            const resultEthParsed = groStatsParserEthereum(resultEth, tsNow);
+            const resultAvaxParsed = groStatsParserAvalanche(resultAvax);
+            const resultTotals = groStatsParser(resultEthParsed, resultAvaxParsed);
             showInfo(`Gro stats requested`);
             return resultTotals;
         } else if (!resultEth) {
