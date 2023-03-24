@@ -1,26 +1,26 @@
 export interface IPool {
-    'deposit_url': string,
-    'remove_url': string,
-    'name': string,
-    'display_name': string,
-    'type': string,
-    'display_type': string,
-    'display_order': string,
-    'tokens': string[],
-    'pid': string,
-    'tvl': string,
-    'tvl_staked': string,
-    'staked': string,
-    'unstaked': string,
-    'required_tokens_num': string,
-    'disable': string,
-    'lp_usd_price': string,
-    'apy': {
-        'current': {
-            'total': string,
-            'token': string,
-            'pool_fees': string,
-            'reward': string
+    readonly 'deposit_url': string,
+    readonly 'remove_url': string,
+    readonly 'name': string,
+    readonly 'display_name': string,
+    readonly 'type': string,
+    readonly 'display_type': string,
+    readonly 'display_order': string,
+    readonly 'tokens': string[],
+    readonly 'pid': string,
+    readonly 'tvl': string,
+    readonly 'tvl_staked': string,
+    readonly 'staked': string,
+    readonly 'unstaked': string,
+    readonly 'required_tokens_num': string,
+    readonly 'disable': string,
+    readonly 'lp_usd_price': string,
+    readonly 'apy': {
+        readonly 'current': {
+            readonly 'total': string,
+            readonly 'token': string,
+            readonly 'pool_fees': string,
+            readonly 'reward': string
         }
     }
 }

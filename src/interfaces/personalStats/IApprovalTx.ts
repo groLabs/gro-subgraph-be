@@ -4,12 +4,12 @@ import {
 } from '../../types';
 
 export interface IApprovalTx {
-  block: string
-  timestamp: string
-  hash: string
-  type: TxType
-  token: Token
-  spenderAddress: string
-  coinAmount: number
-  usdAmount: number
+  readonly block: string
+  readonly timestamp: string
+  readonly hash: string
+  readonly type: TxType
+  readonly token: Token
+  readonly spenderAddress: string
+  readonly coinAmount: number
+  readonly usdAmount: number
 }

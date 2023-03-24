@@ -1,6 +1,6 @@
 export interface IPoolData {
-    'id': string
-    'reserve0': string,
-    'reserve1': string,
-    'total_supply': string
+    readonly 'id': string
+    readonly 'reserve0': string,
+    readonly 'reserve1': string,
+    readonly 'total_supply': string
 }

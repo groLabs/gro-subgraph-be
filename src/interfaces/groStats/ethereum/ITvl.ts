@@ -1,7 +1,7 @@
 export interface ITvl {
-    'pwrd': string,
-    'gvt': string,
-    'total': string,
-    'util_ratio': string,
-    'util_ratio_limit': string,
+    readonly 'pwrd': string,
+    readonly 'gvt': string,
+    readonly 'total': string,
+    readonly 'util_ratio': string,
+    readonly 'util_ratio_limit': string,
 }

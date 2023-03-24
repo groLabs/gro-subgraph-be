@@ -1,16 +1,16 @@
 export interface IAirdrop {
     'amount': string,
-    'amount_to_claim': string,
-    'claimable': string,
+    readonly 'amount_to_claim': string,
+    readonly 'claimable': string,
     'claimed': string,
-    'display_name': string,
-    'expired': string,
-    'expiry_ts': string,
+    readonly 'display_name': string,
+    readonly 'expired': string,
+    readonly 'expiry_ts': string,
     'hash': string,
-    'launch_ts': string,
-    'merkle_root_index': string,
-    'name': string,
-    'participated': string,
+    readonly 'launch_ts': string,
+    readonly 'merkle_root_index': string,
+    readonly 'name': string,
+    readonly 'participated': string,
     'proofs': string[],
-    'token': string
+    readonly 'token': string
 }

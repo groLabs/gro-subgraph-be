@@ -1,35 +1,34 @@
 import { Status } from '../../types';
 
-
 interface IApy {
-    'gvt': number,
-    'date': number,
-    'pwrd': number,
+    readonly 'gvt': number,
+    readonly 'date': number,
+    readonly 'pwrd': number,
 }
 
 interface IResponse {
-    'attribute': string,
-    'frequency': string,
-    'start': string,
-    'end': string,
-    'results': IApy[],
+    readonly 'attribute': string,
+    readonly 'frequency': string,
+    readonly 'start': string,
+    readonly 'end': string,
+    readonly 'results': IApy[],
 }
 
 export interface IResponses {
-    'response1': IResponse,
-    'response2': IResponse,
-    'response3': IResponse,
+    readonly 'response1': IResponse,
+    readonly 'response2': IResponse,
+    readonly 'response3': IResponse,
 }
 
 export interface IHistoricalApy {
-    'historical_stats': {
-        'status': Status,
-        'error_msg': string | null,
-        'current_timestamp': string,
-        'launch_timestamp': string,
-        'network': string,
-        'response1': IResponse | [],
-        'response2': IResponse | [],
-        'response3': IResponse | [],
+    readonly 'historical_stats': {
+        readonly 'status': Status,
+        readonly 'error_msg': string | null,
+        readonly 'current_timestamp': string,
+        readonly 'launch_timestamp': string,
+        readonly 'network': string,
+        readonly 'response1': IResponse | [],
+        readonly 'response2': IResponse | [],
+        readonly 'response3': IResponse | [],
     }
 }

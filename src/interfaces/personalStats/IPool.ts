@@ -1,9 +1,9 @@
 export interface IPool {
-    'net_reward': string
-    'balance': string,
-    'coinBalance': string,
-    'rewards': {
-        'claim_now': string,
-        'vest_all': string
+    readonly 'net_reward': string
+    readonly 'balance': string,
+    readonly 'coinBalance': string,
+    readonly 'rewards': {
+        readonly 'claim_now': string,
+        readonly 'vest_all': string
     }
 }

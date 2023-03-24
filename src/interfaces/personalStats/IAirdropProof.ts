@@ -1,17 +1,17 @@
 export interface IAirdropProof {
-    'name': string,
-    'display_name': string,
-    'token': string,
-    'expiry_ts': string,
-    'timestamp': string,
-    'claimable': string,
-    'totalAmount': string,
-    'merkleIndex': string,
-    'root': string,
-    'proofs': {
+    readonly 'name': string,
+    readonly 'display_name': string,
+    readonly 'token': string,
+    readonly 'expiry_ts': string,
+    readonly 'timestamp': string,
+    readonly 'claimable': string,
+    readonly 'totalAmount': string,
+    readonly 'merkleIndex': string,
+    readonly 'root': string,
+    readonly 'proofs': {
         [key: string]: {
-            'amount': string,
-            'proof': string[],
+            readonly 'amount': string,
+            readonly 'proof': string[],
         }
     }
 }

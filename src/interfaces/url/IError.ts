@@ -1,3 +1,3 @@
 export interface IError {
-    'errors': string[],
+    readonly 'errors': string[],
 }

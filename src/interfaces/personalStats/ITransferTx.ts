@@ -4,11 +4,11 @@ import {
 } from '../../types';
 
 export interface ITransferTx {
-    block: string
-    timestamp: string
-    hash: string
-    type: TxType
-    token: Token
-    coinAmount: number
-    usdAmount: number
+    readonly block: string
+    readonly timestamp: string
+    readonly hash: string
+    readonly type: TxType
+    readonly token: Token
+    readonly coinAmount: number
+    readonly usdAmount: number
 }

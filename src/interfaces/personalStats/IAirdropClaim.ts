@@ -1,7 +1,7 @@
 export interface IAirdropClaim {
-    'id': string,
-    'tranche_id': number,
-    'amount': string,
-    'contract_address': string,
-    'block_timestamp': number
+    readonly 'id': string,
+    readonly 'tranche_id': number,
+    readonly 'amount': string,
+    readonly 'contract_address': string,
+    readonly 'block_timestamp': number
 }

@@ -1,7 +1,7 @@
 export interface IReserve {
-    'name': string,
-    'display_name': string,
-    'amount': string,
-    'share': string,
-    'last3d_apy': string
+    readonly 'name': string,
+    readonly 'display_name': string,
+    readonly 'amount': string,
+    readonly 'share': string,
+    readonly 'last3d_apy': string
 }

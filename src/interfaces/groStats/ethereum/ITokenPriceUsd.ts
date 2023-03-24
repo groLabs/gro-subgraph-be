@@ -1,9 +1,9 @@
 export interface ITokenPriceUsd {
-    'pwrd': string,
-    'gvt': string,
-    'gro': string,
-    'uniswap_gvt_gro': string,
-    'uniswap_gro_usdc': string,
-    'balancer_gro_weth': string,
-    'curve_pwrd3crv': string,
+    readonly 'pwrd': string,
+    readonly 'gvt': string,
+    readonly 'gro': string,
+    readonly 'uniswap_gvt_gro': string,
+    readonly 'uniswap_gro_usdc': string,
+    readonly 'balancer_gro_weth': string,
+    readonly 'curve_pwrd3crv': string,
 }

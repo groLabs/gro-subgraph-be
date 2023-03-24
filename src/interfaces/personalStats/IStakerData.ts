@@ -1,7 +1,7 @@
 export interface IStakerData {
-    'id': string
-    'lp_supply': number,
-    'acc_gro_per_share': number,
-    'alloc_point': number,
-    'pool_share': number,
+    readonly 'id': string
+    readonly 'lp_supply': number,
+    readonly 'acc_gro_per_share': number,
+    readonly 'alloc_point': number,
+    readonly 'pool_share': number,
 }

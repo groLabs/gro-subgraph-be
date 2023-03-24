@@ -11,48 +11,47 @@ import {
     NetworkName,
 } from '../../types';
 
-
 export interface IGroStatsEthereum {
-    'status': Status,
-    'network': NetworkName,
-    'current_timestamp': string,
-    'launch_timestamp': string,
-    'apy': IApy,
-    'tvl': ITvlEth,
-    'system': {
-        'amount': string,
-        'last3d_apy': string,
-        'vault': IVaultEth[] | null,
+    readonly 'status': Status,
+    readonly 'network': NetworkName,
+    readonly 'current_timestamp': string,
+    readonly 'launch_timestamp': string,
+    readonly 'apy': IApy,
+    readonly 'tvl': ITvlEth,
+    readonly 'system': {
+        readonly 'amount': string,
+        readonly 'last3d_apy': string,
+        readonly 'vault': IVaultEth[] | null,
     },
-    'exposure': IExposure,
-    'token_price_usd': ITokenPriceUsd,
-    'pools': IPool[] | null,
+    readonly 'exposure': IExposure,
+    readonly 'token_price_usd': ITokenPriceUsd,
+    readonly 'pools': IPool[] | null,
 }
 
 export interface IGroStatsAvalanche {
-    'status': Status,
-    'network': NetworkName,
-    'launch_timestamp': string,
-    'tvl': ITvlAvax,
-    'token_price_usd': {
-        'avax': string,
+    readonly 'status': Status,
+    readonly 'network': NetworkName,
+    readonly 'launch_timestamp': string,
+    readonly 'tvl': ITvlAvax,
+    readonly 'token_price_usd': {
+        readonly 'avax': string,
     },
-    'labs_vault': IVaultAvax[] | null,
+    readonly 'labs_vault': IVaultAvax[] | null,
 }
 
 export interface IGroStats {
     'gro_stats_mc': {
-        'status': Status,
-        'current_timestamp': string,
-        'network': string,
-        'mc_totals': {
-            'tvl': {
-                'mainnet': string,
-                'avalanche': string,
-                'total': string,
+        readonly 'status': Status,
+        readonly 'current_timestamp': string,
+        readonly 'network': string,
+        readonly 'mc_totals': {
+            readonly 'tvl': {
+                readonly 'mainnet': string,
+                readonly 'avalanche': string,
+                readonly 'total': string,
             }
         },
-        'mainnet': IGroStatsEthereum,
-        'avalanche': IGroStatsAvalanche,
+        readonly 'mainnet': IGroStatsEthereum,
+        readonly 'avalanche': IGroStatsAvalanche,
     }
 }

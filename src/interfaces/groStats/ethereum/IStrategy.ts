@@ -1,10 +1,10 @@
 export interface IStrategy {
-    'name': string,
-    'display_name': string,
-    'metacoin': string,
-    'protocol': string,
-    'address': string,
-    'amount': string,
-    'last3d_apy': string,
-    'share': string,
+    readonly 'name': string,
+    readonly 'display_name': string,
+    readonly 'metacoin': string,
+    readonly 'protocol': string,
+    readonly 'address': string,
+    readonly 'amount': string,
+    readonly 'last3d_apy': string,
+    readonly 'share': string,
 }

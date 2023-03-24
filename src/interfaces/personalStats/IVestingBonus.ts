@@ -1,8 +1,8 @@
 export interface IVestingBonus {
-    'locked_gro': string,
-    'net_reward': string,
-    'rewards': {
-        'claim_now': string,
-        'vest_all': string
+    readonly 'locked_gro': string,
+    readonly 'net_reward': string,
+    readonly 'rewards': {
+        readonly 'claim_now': string,
+        readonly 'vest_all': string
     }
 }

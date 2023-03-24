@@ -1,4 +1,4 @@
 export interface IUrl {
-    'ETH': string
-    'AVAX': string,
+    readonly 'ETH': string
+    readonly 'AVAX': string,
 }

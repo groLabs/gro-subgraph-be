@@ -1,5 +1,5 @@
 export interface IExposureItem {
-    'name': string,
-    'display_name': string,
-    'concentration': string,
+    readonly 'name': string,
+    readonly 'display_name': string,
+    readonly 'concentration': string,
 }

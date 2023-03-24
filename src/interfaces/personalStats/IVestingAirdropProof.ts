@@ -1,11 +1,11 @@
 export interface IVestingAirdropProof {
-    'name': string,
-    'token': string,
-    'root': string,
-    'total': string,
-    'airdrops': [{
-        'address': string,
-        'amount': string,
-        'proofs': string[],
+    readonly 'name': string,
+    readonly 'token': string,
+    readonly 'root': string,
+    readonly 'total': string,
+    readonly 'airdrops': [{
+        readonly 'address': string,
+        readonly 'amount': string,
+        readonly 'proofs': string[],
     }],
 }

@@ -1,9 +1,9 @@
 export interface IVestingAirdrop {
-    'name': string,
-    'amount': string,
+    readonly 'name': string,
+    readonly 'amount': string,
     'claim_initialized': string,
     'claimed_amount': string,
     'claimable_amount': string,
-    'proofs': string[],
-    'token': string,
+    readonly 'proofs': string[],
+    readonly 'token': string,
 }

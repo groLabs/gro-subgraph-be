@@ -1,6 +1,6 @@
 import { IExposureItem } from './IExposureItem';
 
 export interface IExposure {
-    'stablecoins': IExposureItem[],
-    'protocols': IExposureItem[],
+    readonly 'stablecoins': IExposureItem[],
+    readonly 'protocols': IExposureItem[],
 }

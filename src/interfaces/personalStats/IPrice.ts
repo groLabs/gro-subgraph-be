@@ -1,8 +1,8 @@
 export interface IPrice {
-    'gvt': number
-    'gro': number,
-    'balancer_gro_weth': number,
-    'uniswap_gvt_gro': number,
-    'uniswap_gro_usdc': number,
-    'curve_pwrd3crv': number,
+    readonly 'gvt': number
+    readonly 'gro': number,
+    readonly 'balancer_gro_weth': number,
+    readonly 'uniswap_gvt_gro': number,
+    readonly 'uniswap_gro_usdc': number,
+    readonly 'curve_pwrd3crv': number,
 }

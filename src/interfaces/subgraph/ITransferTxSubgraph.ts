@@ -4,11 +4,11 @@ import {
 } from '../../types';
 
 export interface ITransferTxSubgraph {
-    block_number: number
-    timestamp: number
-    hash: string
-    type: TxType
-    token: Token
-    coin_amount: string
-    usd_amount: string
+    readonly block_number: number
+    readonly timestamp: number
+    readonly hash: string
+    readonly type: TxType
+    readonly token: Token
+    readonly coin_amount: string
+    readonly usd_amount: string
 }

@@ -1,17 +1,17 @@
 import { IStrategy } from './IStrategy';
 
 export interface IVault {
-    'name': string,
-    'display_name': string,
-    'amount': string,
-    'share': string,
-    'last3d_apy': string,
-    'reserves': {
-        'name': string,
-        'display_name': string,
-        'amount': string,
-        'last3d_apy': string,
-        'share': string
+    readonly 'name': string,
+    readonly 'display_name': string,
+    readonly 'amount': string,
+    readonly 'share': string,
+    readonly 'last3d_apy': string,
+    readonly 'reserves': {
+        readonly 'name': string,
+        readonly 'display_name': string,
+        readonly 'amount': string,
+        readonly 'last3d_apy': string,
+        readonly 'share': string
     },
-    'strategies': IStrategy[],
+    readonly 'strategies': IStrategy[],
 }
