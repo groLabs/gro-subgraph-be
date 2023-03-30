@@ -1,4 +1,8 @@
 import {
+    Route,
+    Status,
+} from '../types';
+import {
     IStatus,
     IStatusNetwork,
 } from '../interfaces/status/IStatus';
@@ -7,8 +11,8 @@ import {
     statusNetwork,
     statusNetworkError,
 } from '../parser/status';
-import { Route, Status } from '../types';
 import { now } from '../utils/utils';
+import { showInfo } from '../handler/logHandler';
 import { callSubgraph } from '../caller/subgraphCaller';
 import { IIndexStatues } from '../interfaces/subgraph/IIndexStatuses';
 
@@ -51,6 +55,7 @@ export const statusHandler = async (): Promise<IStatus> => {
             } if (result.data) {
                 const sg = checkStatus(result.data);
                 const error = sg.find((item) => item.status === Status.ERROR);
+                showInfo(`Health status requested -> status: [${error ? Status.ERROR : Status.OK}]`);
                 return globalStatus(
                     error ? Status.ERROR : Status.OK,
                     tsNow.toString(),

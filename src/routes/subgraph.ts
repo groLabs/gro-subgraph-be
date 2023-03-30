@@ -14,8 +14,13 @@ import {
 } from 'express-validator';
 import {
     Route,
+    Status,
     Subgraph,
 } from '../types';
+import {
+    globalStatus,
+    statusNetworkError,
+} from '../parser/status';
 import express, {
     Request,
     Response,
@@ -164,15 +169,16 @@ router.get(
 // E.g.: http://localhost:3015/subgraph/status?subgraph=prod_hosted
 router.get(
     '/status',
-    wrapAsync(async (req: Request, res: Response) => {
+    wrapAsync(async (_: Request, res: Response) => {
         try {
             const status = await statusHandler();
             res.json(status);
         } catch (err) {
             showError('routes/subgraph.ts->status', err);
-            res.json(groStatsError(
+            res.json(globalStatus(
+                Status.ERROR,
                 now(),
-                err as string,
+                statusNetworkError(err as Error | string),
             ));
         }
     })

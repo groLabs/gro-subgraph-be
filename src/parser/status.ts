@@ -16,10 +16,10 @@ export const statusNetwork = (
 });
 
 export const statusNetworkError = (
-    err: any,
+    err: Error | string,
 ): IStatusNetwork[] => ([{
     'status': Status.ERROR,
-    'error_msg': err,
+    'error_msg': err instanceof Error ? err.message : err,
     'deployment_id': 'N/A',
 }]);
 
