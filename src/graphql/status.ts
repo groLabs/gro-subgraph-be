@@ -1,3 +1,7 @@
+/// @notice Generates a GraphQL query for retrieving the indexing status of a specified subgraph deployment
+/// @dev Constructs a query string to fetch indexing status data from The Graph's API
+/// @param deploymentId The subgraph deployment ID for which to query the indexing status
+/// @return A GraphQL query string to fetch indexing status data related to the specified subgraph deployment
 export const queryStatus = (deploymentId: string) => (
     `{
         indexingStatuses(subgraphs: [${deploymentId}]) {

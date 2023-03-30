@@ -1,6 +1,9 @@
+/// @notice Generates a GraphQL query for retrieving Gro protocol statistics from the Ethereum subgraph
+/// @dev Constructs a query string to fetch data from the Ethereum subgraph
+/// @param tsNow The current timestamp in seconds
+/// @param ts15d The timestamp 15 days ago in seconds
+/// @return A GraphQL query string to fetch data related to the Gro protocol on Ethereum
 export const queryGroStatsEth = (
-    first: number,
-    skip: number,
     tsNow: number,
     ts15d: number,
 ) => (

@@ -12,11 +12,13 @@ import {
 } from '../handler/logHandler';
 
 
+/// @notice Extracts historical APY data and inserts it into the g2.PROTOCOL_APY database table
+/// @dev Gets Gro stats from the Ethereum subgraph, parses the APY data, and inserts it into the database
+/// @return A Promise that resolves to void when the operation is completed or an error occurs
 export const etlHistoricalApy = async (): Promise<void> => {
     // get gro stats data from ethereum subgraph
     const groStats = await etlGroStats(
         Subgraph.HISTORICAL_APY,
-        0,
     );
     if (groStats.gro_stats_mc.status === Status.OK) {
         // parse apy data

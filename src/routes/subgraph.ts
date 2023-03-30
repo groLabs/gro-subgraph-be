@@ -57,7 +57,6 @@ router.get(
                 // address & subgraph fields are correct
                 const groStats = await etlGroStats(
                     subgraph as Subgraph,
-                    0
                 );
                 res.json(groStats);
             } else if (subgraph) {
@@ -104,8 +103,7 @@ router.get(
                 const personalStats = await etlPersonalStats(
                     subgraph as Subgraph,
                     address as string,
-                    0,
-                    []);
+                );
                 res.json(personalStats);
             } else if (subgraph) {
                 // subgraph value is incorrect

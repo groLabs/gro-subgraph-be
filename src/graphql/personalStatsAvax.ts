@@ -1,3 +1,9 @@
+/// @notice Generates a GraphQL query for retrieving a user's personal statistics from the Avalanche subgraph
+/// @dev Constructs a query string to fetch data from the Avalanche subgraph
+/// @param account The user's Avalanche address (lowercase)
+/// @param first The maximum number of transfer records to retrieve
+/// @param blockTimestamp The minimum block timestamp for transfer records
+/// @return A GraphQL query string to fetch personal statistics data related to the Gro protocol on Avalanche
 export const queryPersonalStatsAvax = (
     account: string,
     first: number,

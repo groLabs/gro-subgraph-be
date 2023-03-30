@@ -15,11 +15,14 @@ import {
 } from '../handler/logHandler';
 
 
+/// @notice Extracts personal stats for a given user from Ethereum and Avalanche subgraphs, and combines the results
+/// @dev Queries both Ethereum and Avalanche subgraphs, parses the results, and returns the combined personal stats
+/// @param subgraph The subgraph to be used for querying personal stats data
+/// @param _account The user's address
+/// @return A Promise that resolves to an IPersonalStatsTotals object containing the combined personal stats from Ethereum and Avalanche
 export const etlPersonalStats = async (
     subgraph: Subgraph,
     _account: string,
-    skip: number,
-    result: any
 ): Promise<IPersonalStatsTotals> => {
     const path = 'etl/etlSubgraph.ts->etlPersonalStats()';
     try {
@@ -27,8 +30,8 @@ export const etlPersonalStats = async (
         const url = getUrl(subgraph);
 
         const [resultEth, resultAvax] = await Promise.all([
-            getPersonalStats(url.ETH, account, skip, result),
-            getPersonalStats(url.AVAX, account, skip, result),
+            getPersonalStats(url.ETH, account, 0, []),
+            getPersonalStats(url.AVAX, account, 0, []),
         ]);
 
         if (resultEth.errors || resultAvax.errors) {

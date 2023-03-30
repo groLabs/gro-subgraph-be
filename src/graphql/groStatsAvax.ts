@@ -1,9 +1,7 @@
-export const queryGroStatsAvax = (
-    first: number,
-    skip: number,
-    tsNow: number,
-    ts15d: number,
-) => (
+/// @notice Generates a GraphQL query for retrieving Gro protocol statistics from the Avalanche subgraph
+/// @dev Constructs a query string to fetch data from the Avalanche subgraph
+/// @return A GraphQL query string to fetch data related to the Gro protocol on Avalanche
+export const queryGroStatsAvax = () => (
     `{
         _meta {
             hasIndexingErrors

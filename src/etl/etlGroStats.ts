@@ -15,17 +15,19 @@ import {
 } from '../handler/logHandler';
 
 
-// @dev: get strategy harvests from the last 15d
+/// @notice Retrieves and processes Gro Stats data from Ethereum and Avalanche subgraphs
+/// @dev Retrieve strategy harvests from the last 15d
+/// @param subgraph The subgraph object containing Ethereum or Avalanche subgraph URLs
+/// @return A combined and processed Gro Stats object or an error object if any errors occurred
 export const etlGroStats = async (
     subgraph: Subgraph,
-    skip: number,
 ): Promise<IGroStats> => {
     try {
         const tsNow = parseInt(now());
         const url = getUrl(subgraph);
         const [resultEth, resultAvax] = await Promise.all([
-            getGroStats(url.ETH, skip, tsNow),
-            getGroStats(url.AVAX, skip, tsNow),
+            getGroStats(url.ETH, tsNow),
+            getGroStats(url.AVAX, tsNow),
         ]);
         if (resultEth.errors) {
             return groStatsError(tsNow.toString(), resultEth.errors);

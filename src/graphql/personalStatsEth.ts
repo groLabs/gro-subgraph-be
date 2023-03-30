@@ -1,3 +1,9 @@
+/// @notice Generates a GraphQL query for retrieving a user's personal statistics from the Ethereum subgraph
+/// @dev Constructs a query string to fetch data from the Ethereum subgraph
+/// @param account The user's Ethereum address (lowercase)
+/// @param first The maximum number of transfer records to retrieve
+/// @param blockTimestamp The minimum block timestamp for transfer records
+/// @return A GraphQL query string to fetch personal statistics data related to the Gro protocol on Ethereum
 export const queryPersonalStatsEth = (
     account: string,
     first: number,

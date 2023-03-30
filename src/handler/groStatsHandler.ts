@@ -4,9 +4,14 @@ import { showError } from '../handler/logHandler';
 import { callSubgraph } from '../caller/subgraphCaller';
 
 
+/// @notice Fetches Gro protocol statistics from the specified subgraph URL
+/// @dev Calls a subgraph with the provided URL and timestamp, handles any errors, and returns the fetched data
+/// @param url The subgraph URL to fetch Gro protocol statistics from
+/// @param tsNow The current timestamp to pass to the callSubgraph function
+/// @return The Gro protocol statistics data fetched from the subgraph or null if an error occurs or no data is found
+// todo: fine-tune the response (avoid nulls)
 export const getGroStats = async (
     url: string,
-    skip: number,
     tsNow: number,
 ): Promise<any> => {
     try {
@@ -14,9 +19,9 @@ export const getGroStats = async (
             url,
             '',
             TX_ITERATION,
-            skip,
+            0,
             Route.GRO_STATS_MC,
-            tsNow
+            tsNow,
         );
         if (call.errors) {
             return call;

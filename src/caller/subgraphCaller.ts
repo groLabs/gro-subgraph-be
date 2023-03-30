@@ -18,6 +18,10 @@ import {
 } from '../utils/utils';
 
 
+/// @notice Wraps a given query string with a status
+/// @param query The query string to wrap
+/// @param status The status of the query (OK or ERROR)
+/// @return An IQuery object containing the status and query data
 const wrapQuery = (query: string, status: Status): IQuery => {
     return {
         status: status,
@@ -25,11 +29,19 @@ const wrapQuery = (query: string, status: Status): IQuery => {
     }
 }
 
+/// @notice Generates a query based on the provided parameters and route
+/// @param url The subgraph URL
+/// @param account The user account address
+/// @param first The number of records to fetch
+/// @param blockTS The block timestamp to start fetching records from (starts with 0)
+/// @param route The route for which the query should be generated
+/// @param tsNow The current timestamp
+/// @return An IQuery object containing the status and generated query data
 const getQuery = (
     url: string,
     account: string,
     first: number,
-    skip: number,
+    blockTS: number,
     route: Route,
     tsNow: number
 ): IQuery => {
@@ -46,15 +58,15 @@ const getQuery = (
         }
     } else if (isEthSubgraph(url)) {
         if (route === Route.GRO_PERSONAL_POSITION_MC) {
-            return wrapQuery(queryPersonalStatsEth(account, first, skip), Status.OK);
+            return wrapQuery(queryPersonalStatsEth(account, first, blockTS), Status.OK);
         } else if (route === Route.GRO_STATS_MC) {
-            return wrapQuery(queryGroStatsEth(first, skip, tsNow, tsNow - TS_15D), Status.OK);
+            return wrapQuery(queryGroStatsEth(tsNow, tsNow - TS_15D), Status.OK);
         }
     } else if (isAvaxSubgraph(url)) {
         if (route === Route.GRO_PERSONAL_POSITION_MC) {
-            return wrapQuery(queryPersonalStatsAvax(account, first, skip), Status.OK);
+            return wrapQuery(queryPersonalStatsAvax(account, first, blockTS), Status.OK);
         } else if (route === Route.GRO_STATS_MC) {
-            return wrapQuery(queryGroStatsAvax(first, skip, tsNow, tsNow - TS_15D), Status.OK);
+            return wrapQuery(queryGroStatsAvax(), Status.OK);
         }
     }
     const err = `Unknown route ${route} or subgraph api ${url}`
@@ -62,15 +74,23 @@ const getQuery = (
     return wrapQuery(err, Status.OK);
 };
 
+/// @notice Calls a subgraph with a specific query and returns the result
+/// @param url The subgraph URL
+/// @param account The user account address
+/// @param first The number of records to fetch
+/// @param blockTS The block timestamp to start fetching records from (starts with 0)
+/// @param route The route for which the query should be generated
+/// @param tsNow The current timestamp
+/// @return The result of the subgraph call or an error object if any errors occurred
 export const callSubgraph = async (
     url: string,
     account: string,
     first: number,
-    skip: number,
+    blockTS: number,
     route: Route,
     tsNow: number,
 ): Promise<any> => {
-    const query = getQuery(url, account, first, skip, route, tsNow);
+    const query = getQuery(url, account, first, blockTS, route, tsNow);
     if (query.status === Status.ERROR) {
         return {
             errors: [query.data],
