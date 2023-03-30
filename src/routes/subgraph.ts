@@ -2,6 +2,7 @@ import { now } from '../utils/utils';
 import { etlGroStats } from '../etl/etlGroStats';
 import { showError } from '../handler/logHandler';
 import { groStatsError } from '../parser/groStatsError';
+import { statusHandler } from '../handler/statusHandler';
 import { etlPersonalStats } from '../etl/etlPersonalStats';
 import { validateApiRequest } from '../caller/validateApiRequest';
 import { personalStatsError } from '../parser/personalStatsError';
@@ -37,8 +38,7 @@ router.get(
     validateApiRequest([
         query('subgraph')
             .trim()
-            .notEmpty()
-            .withMessage(`field <subgraph> can't be empty`)],
+            .notEmpty().withMessage(`field <subgraph> can't be empty`)],
         Route.GRO_STATS_MC,
     ),
     wrapAsync(async (req: Request, res: Response) => {
@@ -80,15 +80,11 @@ router.get(
     validateApiRequest([
         query('subgraph')
             .trim()
-            .notEmpty()
-            .withMessage(`field <subgraph> can't be empty`),
+            .notEmpty().withMessage(`field <subgraph> can't be empty`),
         query('address')
-            .notEmpty()
-            .withMessage(`address can't be empty`)
-            .isLength({ min: 42, max: 42 })
-            .withMessage('address must be 42 characters long')
-            .matches(/^0x[A-Za-z0-9]{40}/)
-            .withMessage('should be a valid address and start with "0x"')],
+            .notEmpty().withMessage(`address can't be empty`)
+            .isLength({ min: 42, max: 42 }).withMessage('address must be 42 characters long')
+            .matches(/^0x[A-Za-z0-9]{40}/).withMessage('should be a valid address and start with "0x"')],
         Route.GRO_PERSONAL_POSITION_MC
     ),
     wrapAsync(async (req: Request, res: Response) => {
@@ -134,23 +130,16 @@ router.get(
     validateApiRequest([
         query('network')
             .trim()
-            .notEmpty()
-            .withMessage(`network can't be empty`),
-        query('network')
-            .equals('mainnet')
-            .withMessage(`network must be 'mainnet'`),
+            .notEmpty().withMessage(`network can't be empty`)
+            .equals('mainnet').withMessage(`network must be 'mainnet'`),
         query('attr')
-            .notEmpty()
-            .withMessage(`attr can't be empty`),
+            .notEmpty().withMessage(`attr can't be empty`),
         query('freq')
-            .notEmpty()
-            .withMessage(`freq can't be empty`),
+            .notEmpty().withMessage(`freq can't be empty`),
         query('start')
-            .notEmpty()
-            .withMessage(`start can't be empty`),
+            .notEmpty().withMessage(`start can't be empty`),
         query('end')
-            .notEmpty()
-            .withMessage(`end can't be empty`)],
+            .notEmpty().withMessage(`end can't be empty`)],
         Route.HISTORICAL_APY
     ),
     wrapAsync(async (req: Request, res: Response) => {
@@ -165,6 +154,23 @@ router.get(
         } catch (err) {
             showError('routes/subgraph.ts->historical_apy', err);
             res.json(historicalApyError(
+                now(),
+                err as string,
+            ));
+        }
+    })
+);
+
+// E.g.: http://localhost:3015/subgraph/status?subgraph=prod_hosted
+router.get(
+    '/status',
+    wrapAsync(async (req: Request, res: Response) => {
+        try {
+            const status = await statusHandler();
+            res.json(status);
+        } catch (err) {
+            showError('routes/subgraph.ts->status', err);
+            res.json(groStatsError(
                 now(),
                 err as string,
             ));

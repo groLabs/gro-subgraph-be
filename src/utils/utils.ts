@@ -26,11 +26,6 @@ export const getUrl = (subgraph: sg): IUrl => {
                 ETH: process.env.SG_TEST_STUDIO_ETH as string,
                 AVAX: process.env.SG_TEST_STUDIO_AVAX as string,
             }
-        case sg.G2_INTERNAL:
-            return {
-                ETH: process.env.SG_G2_TEST_HOSTED_ETH as string,
-                AVAX: process.env.SG_PROD_HOSTED_AVAX as string,
-            }
         case sg.HISTORICAL_APY:
             return {
                 ETH: process.env.SG_HISTORICAL_APY as string,
@@ -50,7 +45,6 @@ export const isEthSubgraph = (url: string): boolean => {
         || url === process.env.SG_PROD_STUDIO_ETH
         || url === process.env.SG_TEST_HOSTED_ETH
         || url === process.env.SG_TEST_STUDIO_ETH
-        || url === process.env.SG_G2_TEST_HOSTED_ETH
         || url === process.env.SG_HISTORICAL_APY
     )
         ? true

@@ -1,17 +1,29 @@
 import axios from 'axios';
-import { Route } from '../types';
 import { TS_15D } from '../constants';
+import { queryStatus } from '../graphql/status';
 import { IError } from '../interfaces/url/IError';
 import { showError } from '../handler/logHandler';
+import { IQuery } from '../interfaces/status/IQuery';
 import { queryGroStatsEth } from '../graphql/groStatsEth';
 import { queryGroStatsAvax } from '../graphql/groStatsAvax';
 import { queryPersonalStatsEth } from '../graphql/personalStatsEth';
 import { queryPersonalStatsAvax } from '../graphql/personalStatsAvax';
+import { 
+    Route,
+    Status,
+} from '../types';
 import {
     isEthSubgraph,
     isAvaxSubgraph
 } from '../utils/utils';
 
+
+const wrapQuery = (query: string, status: Status): IQuery => {
+    return {
+        status: status,
+        data: query,
+    }
+}
 
 const getQuery = (
     url: string,
@@ -20,22 +32,34 @@ const getQuery = (
     skip: number,
     route: Route,
     tsNow: number
-): string | null => {
-    if (isEthSubgraph(url)) {
+): IQuery => {
+    if (route === Route.STATUS) {
+        const DEPLOYMENT_ID_ETH = process.env.DEPLOYMENT_ID_ETH;
+        const DEPLOYMENT_ID_AVAX = process.env.DEPLOYMENT_ID_AVAX;
+        if (!DEPLOYMENT_ID_ETH || !DEPLOYMENT_ID_AVAX) {
+            const err = 'env variables <DEPLOYMENT_ID_ETH> | <DEPLOYMENT_ID_AVAX> missing'
+            showError('caller/subgraphCaller.ts->getQuery()', err);
+            return wrapQuery(err, Status.ERROR);
+        } else {
+            const deployments = `"${DEPLOYMENT_ID_ETH}", "${DEPLOYMENT_ID_AVAX}"`;
+            return wrapQuery(queryStatus(deployments), Status.OK);
+        }
+    } else if (isEthSubgraph(url)) {
         if (route === Route.GRO_PERSONAL_POSITION_MC) {
-            return queryPersonalStatsEth(account, first, skip);
+            return wrapQuery(queryPersonalStatsEth(account, first, skip), Status.OK);
         } else if (route === Route.GRO_STATS_MC) {
-            return queryGroStatsEth(first, skip, tsNow, tsNow - TS_15D);
+            return wrapQuery(queryGroStatsEth(first, skip, tsNow, tsNow - TS_15D), Status.OK);
         }
     } else if (isAvaxSubgraph(url)) {
         if (route === Route.GRO_PERSONAL_POSITION_MC) {
-            return queryPersonalStatsAvax(account, first, skip);
+            return wrapQuery(queryPersonalStatsAvax(account, first, skip), Status.OK);
         } else if (route === Route.GRO_STATS_MC) {
-            return queryGroStatsAvax(first, skip, tsNow, tsNow - TS_15D);
+            return wrapQuery(queryGroStatsAvax(first, skip, tsNow, tsNow - TS_15D), Status.OK);
         }
     }
-    showError('caller/subgraphCaller.ts->getQuery()', `Unknown route ${route} or subgraph api ${url}`);
-    return null;
+    const err = `Unknown route ${route} or subgraph api ${url}`
+    showError('caller/subgraphCaller.ts->getQuery()', err);
+    return wrapQuery(err, Status.OK);
 };
 
 export const callSubgraph = async (
@@ -47,13 +71,15 @@ export const callSubgraph = async (
     tsNow: number,
 ): Promise<any> => {
     const query = getQuery(url, account, first, skip, route, tsNow);
-    if (!query) {
-        return null;
+    if (query.status === Status.ERROR) {
+        return {
+            errors: [query.data],
+        };
     }
-    const path = 'caller/subgraphCaller.ts->callSubgraph()'
+    const path = 'caller/subgraphCaller.ts->callSubgraph()';
     const result = await axios.post(
         url,
-        { query: query }
+        { query: query.data }
     ).then(res => {
         if (res.data.errors) {
             showError(
