@@ -1,10 +1,19 @@
 import moment from 'moment';
-import { NetworkId } from '../types';
 import { QUERY_ERROR } from '../constants';
 import { query } from '../handler/queryHandler';
 import { showError } from '../handler/logHandler';
+import {
+    Status,
+    NetworkId,
+} from '../types';
+import {
+    IApy,
+    IHistoricalApyCheck,
+} from '../interfaces/historicalApy/historicalApy';
 
 
+/// @notice Determines if the provided parameters are comma-separated lists of values
+/// @return True if all parameters are comma-separated lists, otherwise false
 const isArray = (
     attr: string,
     freq: string,
@@ -20,6 +29,9 @@ const isArray = (
     return false;
 }
 
+/// @notice Validates if the provided attributes are acceptable
+/// @param _attr An array of attribute values
+/// @return True if all attribute values are valid, otherwise false
 const isAttr = (_attr: any): boolean => {
     for (const attr of _attr) {
         if (
@@ -35,6 +47,9 @@ const isAttr = (_attr: any): boolean => {
     return true;
 }
 
+/// @notice Validates if the provided frequencies are acceptable
+/// @param _freq An array of frequency values
+/// @return True if all frequency values are valid, otherwise false
 const isFreq = (_freq: any): boolean => {
     for (const freq of _freq) {
         if (
@@ -46,6 +61,9 @@ const isFreq = (_freq: any): boolean => {
     return true;
 }
 
+/// @notice Validates if the provided timestamps are valid Unix timestamps
+/// @param _ts An array of timestamp values
+/// @return True if all timestamp values are valid Unix timestamps, otherwise false
 const isTimestamp = (_ts: any): boolean => {
     const regexp = /^\d{10}$/;
     for (const ts of _ts) {
@@ -56,6 +74,8 @@ const isTimestamp = (_ts: any): boolean => {
     return true;
 }
 
+/// @notice Validates if the provided parameters have the same length of values
+/// @return True if all parameters have the same length of values, otherwise false
 const isLength = (
     attr: string,
     freq: string,
@@ -70,36 +90,42 @@ const isLength = (
     return true;
 }
 
-const ERROR_ATTR = {
-    status: 'KO',
+const ERROR_ATTR: IHistoricalApyCheck = {
+    status: Status.ERROR,
     msg: `Unrecognised attribute: should be 'apy_last24h', 'apy_last7d', 'apy_daily', 'apy_weekly', 'apy_monthly', 'apy_all_time' or 'apy_current'`,
     data: [],
 }
 
-const ERROR_FREQ = {
-    status: 'KO',
+const ERROR_FREQ: IHistoricalApyCheck = {
+    status: Status.ERROR,
     msg: `Unrecognised frequency: should be 'twice_daily', 'daily' or 'weekly'`,
     data: [],
 }
 
-const ERROR_TIMESTAMP = {
-    status: 'KO',
+const ERROR_TIMESTAMP: IHistoricalApyCheck = {
+    status: Status.ERROR,
     msg: `Unrecognised date: start & end dates must be a unix timestamp`,
     data: [],
 }
 
-const ERROR_LENGTH = {
-    status: 'KO',
+const ERROR_LENGTH: IHistoricalApyCheck = {
+    status: Status.ERROR,
     msg: `Wrong length: all parameters must have the same length of values`,
     data: [],
 }
 
-const ERROR_VALUES = {
-    status: 'KO',
+const ERROR_VALUES: IHistoricalApyCheck = {
+    status: Status.ERROR,
     msg: `Wrong values: inconsistent values within the parameters`,
     data: [],
 }
 
+/// @notice Parses historical APY query results into a formatted array
+/// @dev only apyCurrent is used, the rest of time transformations are disabled
+/// @param currentTs The current timestamp
+/// @param tokenId The token ID
+/// @param apyCurrent The current APY
+/// @return A formatted array containing parsed historical APY data
 export const parseHistoricalApyQuery = (
     currentTs: number,
     tokenId: number,
@@ -122,12 +148,18 @@ export const parseHistoricalApyQuery = (
     return result;
 }
 
+/// @notice Fetches and formats historical APY data from the database
+/// @param kpi The KPI attribute to query
+/// @param frequency The frequency of the historical data
+/// @param startDate The start date of the historical data range
+/// @param endDate The end date of the historical data range
+/// @return A promise that resolves to an array of IApy objects containing the historical APY data.
 export const parseData = async (
     kpi: string,
     frequency: string,
     startDate: number,
     endDate: number,
-) => {
+): Promise<IApy[]> => {
     try {
         let q;
         const fromDate = moment.unix(startDate).format('MM/DD/YYYY');
@@ -143,7 +175,7 @@ export const parseData = async (
                 q = 'select_fe_historical_apy_weekly.sql';
                 break;
             default:
-                return {};
+                return [];
         }
         const res = await query(q, [fromDate, toDate]);
         if (res.status !== QUERY_ERROR) {
@@ -172,19 +204,22 @@ export const parseData = async (
             }
             return result;
         } else {
-            return {}
+            return [];
         }
     } catch (err) {
         showError('handler/historicalAPY.ts->parseData()', err);
+        return [];
     }
 }
 
+/// @notice Validates the provided parameters for querying historical APY data
+/// @return An object with the validation status, message, and data (if validation is successful)
 export const checkData = (
     attr: any,
     freq: any,
     start: any,
     end: any,
-) => {
+): IHistoricalApyCheck => {
     try {
         // Array of values
         if (isArray(attr, freq, start, end)) {
@@ -209,8 +244,8 @@ export const checkData = (
                     return ERROR_LENGTH;
                 } else {
                     return {
-                        status: 'OK',
-                        msg: 'OK',
+                        status: Status.OK,
+                        msg: Status.OK,
                         data: [attr, freq, start, end],
                     }
                 }
@@ -227,8 +262,8 @@ export const checkData = (
                 return ERROR_TIMESTAMP;
             } else {
                 return {
-                    status: 'OK',
-                    msg: 'OK',
+                    status: Status.OK,
+                    msg: Status.OK,
                     data: [[attr], [freq], [start], [end]],
                 }
             }
@@ -236,7 +271,7 @@ export const checkData = (
     } catch (err) {
         showError('historicalAPY.ts->checkData()', err);
         return {
-            status: 'KO',
+            status: Status.ERROR,
             msg: `Unrecognised error in historicalAPY.ts->checkData():${err}`,
             data: [],
         }

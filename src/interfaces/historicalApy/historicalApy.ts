@@ -1,6 +1,6 @@
 import { Status } from '../../types';
 
-interface IApy {
+export interface IApy {
     readonly 'gvt': number,
     readonly 'date': number,
     readonly 'pwrd': number,
@@ -31,4 +31,10 @@ export interface IHistoricalApy {
         readonly 'response2': IResponse | [],
         readonly 'response3': IResponse | [],
     }
+}
+
+export interface IHistoricalApyCheck {
+    status: Status,
+    msg: string,
+    data: any[],
 }

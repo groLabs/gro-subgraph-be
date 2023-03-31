@@ -21,12 +21,19 @@ import {
 
 
 /* parameters example:
-    network=ropsten
-    attr=apy_last7d,apy_last7d,apy_last7d
-    freq=twice_daily,daily,7day
-    start=1625057600,1625092600,1625097000
-    end=1629936000,1629936000,1629936000
+    attr=apy_current,apy_current,apy_current
+    freq=twice_daily,daily,weekly
+    start=1669913771,1669913771,1669913771
+    end=1672505771,1672505771,1672505771
 */
+
+/// @notice Fetches historical APY data based on provided attributes, frequency, start and end dates
+/// @dev Validates input data, retrieves and parses historical data, and returns the results in a formatted structure
+/// @param _attr An array of attributes to fetch historical data for
+/// @param _freq An array of frequencies corresponding to the attributes to fetch historical data for
+/// @param _start An array of start dates corresponding to the attributes to fetch historical data for
+/// @param _end An array of end dates corresponding to the attributes to fetch historical data for
+/// @return An IHistoricalApy object containing historical APY data or an error message
 export const getHistoricalApy = async (
     _attr: any,
     _freq: any,
@@ -35,7 +42,7 @@ export const getHistoricalApy = async (
 ) : Promise<IHistoricalApy> => {
     try {
         const res = checkData(_attr, _freq, _start, _end);
-        if (res.status === 'KO')
+        if (res.status === Status.ERROR)
             return historicalApyError(
                 now(),
                 res.msg,
