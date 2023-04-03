@@ -12,8 +12,6 @@ import {
 } from '../constants';
 
 
-
-
 /// @notice Calculates the APY for a given strategy based on the TVL, harvests,
 ///         strategy address, and threeCrv price
 /// @dev strategy apy = ( net profit / tvl ) * ( 365 / n ) , where:
@@ -30,6 +28,7 @@ export const calcStrategyApy = (
     _harvests: any[],
     strategyAddress: string,
     threeCrvPrice: number,
+    strategyAsset: number,
 ): string => {
     let netProfit = 0;
     let numHarvests = 0;
@@ -45,11 +44,16 @@ export const calcStrategyApy = (
     }
     const days = (_now - minHarvestTS) / TS_1D;
     if (harvests.length > 0) {
+        // there are harvests, so apy based on latest ones
         const apy = (((netProfit * threeCrvPrice) / numHarvests) / tvl) * (365 / days);
         return toStr(apy);
-    } else {
+    } else if (strategyAsset > 0.1) {
+        // no harvests but assets, so taking default apy
         const apy = DEFAULT_STRATEGY_APY.get(strategyAddress);
         return apy ? toStr(apy) : '0';
+    } else {
+        // no assets, so 0% apy
+        return '0';
     }
 }
 
@@ -67,6 +71,13 @@ const calcStrategies = (
     for (let i = 0; i < _strats.length; i++) {
         let str = _strats[i];
         const strategyAssetsUsd = parseFloat(str.strategy_debt) * threeCrvPrice;
+        const stratApy = calcStrategyApy(
+            tvl,
+            str.harvests,
+            str.id,
+            threeCrvPrice,
+            strategyAssetsUsd,
+        );
         const strat = {
             'name': str.strat_name,
             'display_name': str.strat_display_name,
@@ -74,12 +85,7 @@ const calcStrategies = (
             'protocol': str.protocol,
             'address': str.id,
             'amount': toStr(strategyAssetsUsd),
-            'last3d_apy': calcStrategyApy(
-                tvl,
-                str.harvests,
-                str.id,
-                threeCrvPrice,
-            ),
+            'last3d_apy': stratApy,
             'share': toStr(tvl > 0 ? strategyAssetsUsd / tvl : 0),
         }
         strats.push(strat);
@@ -109,6 +115,11 @@ const calcVault = (
     const reservesAmount = (tvl > strategyAssets)
         ? tvl - strategyAssets
         : 0;
+    // for (let i = 0; i < strats.length; i++) {
+    //     console.log(strats[i]);
+    // }
+    // const vaultApyV2 = strats.reduce((prev, current) => prev + (parseFloat(current.last3d_apy) * parseFloat(current.amount)) / tvl, 0);
+    // console.log('vault incl. reserves', tvl, 'eps', vaultApyV2);
     if (strats.length > 0) {
         return {
             'name': '3CRV',
@@ -116,6 +127,7 @@ const calcVault = (
             'amount': toStr(tvl),
             'share': '1.0',
             'last3d_apy': toStr(vaultApy),
+            // 'last3d_apy': toStr(vaultApyV2),
             'reserves': {
                 'name': '3CRV',
                 'display_name': '3CRV yVault',
