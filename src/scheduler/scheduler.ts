@@ -10,6 +10,7 @@ const apyJobSetup = '*/30 * * * *'; // mins
 // const apyJobSetup = '*/15 * * * * *'; // secs [for testing]
 
 
+/// @notice Schedules a job to retrieve and store historical APY data
 const historicalApyJob = async (): Promise<void> => {
     showInfo('Historical APY job scheduled');
     schedule.scheduleJob(apyJobSetup, async () => {
@@ -23,7 +24,7 @@ const historicalApyJob = async (): Promise<void> => {
     });
 }
 
-// @dev: store historical APY only if running in PROD environment (to avoid duplicating data in dev mode)
+/// @notice Starts the scheduled jobs if running in the production environment
 export const startJobs = async (): Promise<void> => {
     if (process.env.NODE_ENV === Env.PROD) {
         historicalApyJob();

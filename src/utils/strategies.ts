@@ -12,10 +12,19 @@ import {
 } from '../constants';
 
 
-// @dev: strategy apy = ( net profit / tvl ) * ( 365 / n ) , where:
-//       1) net profit = average(gain - loss) in USD of harvests between the last harvest X and harvests 7d days ago
-//       from this last harvest X in a range of 15 days from now.
-//       2) n = difference of days between [now] and [last harvest - 7d]
+
+
+/// @notice Calculates the APY for a given strategy based on the TVL, harvests,
+///         strategy address, and threeCrv price
+/// @dev strategy apy = ( net profit / tvl ) * ( 365 / n ) , where:
+///       1) net profit = average(gain - loss) in USD of harvests between the last harvest X and harvests 7d days ago
+///       from this last harvest X in a range of 15 days from now.
+///       2) n = difference of days between [now] and [last harvest - 7d]
+/// @param tvl The total value locked across all vaults
+/// @param _harvests An array of harvest events
+/// @param strategyAddress The address of the strategy to calculate the APY for
+/// @param threeCrvPrice The current price of the 3Crv token
+/// @return The APY of the given strategy as a string
 export const calcStrategyApy = (
     tvl: number,
     _harvests: any[],
@@ -44,6 +53,11 @@ export const calcStrategyApy = (
     }
 }
 
+/// @notice Calculates the properties of an array of IStrategy objects
+/// @param _strats An array of strategy objects with various properties
+/// @param tvl The total value locked across all vaults
+/// @param threeCrvPrice The current price of the 3Crv token
+/// @return An array of IStrategy objects containing information about the strategies
 const calcStrategies = (
     _strats: any[],
     tvl: number,
@@ -73,10 +87,15 @@ const calcStrategies = (
     return strats;
 }
 
-// @dev: vault apy = sum(Strategy APYs)
-// - LockedProfit & releaseFactor are not used to calculate Vault APY because this wouldn't reflect
-// negative APYs in case that losses > lockedProfit
-// TODO: if multiple GVaults, reserves can't be TVL - StrategyAssets   (should be GVault.vaultAssets)
+/// @notice Calculates the properties of a single IVault object
+/// @dev vault apy = sum(Strategy APYs)
+/// @dev lockedProfit & releaseFactor are not used to calculate Vault APY because this wouldn't reflect
+///      negative APYs in case that losses > lockedProfit
+/// @param _vault A single vault object with various properties
+/// @param strats An array of IStrategy objects
+/// @param tvl The total value locked across all vaults
+/// @return An IVault object containing information about the given vault
+/// @todo If multiple GVaults, reserves can't be TVL - StrategyAssets   (should be GVault.vaultAssets)
 const calcVault = (
     _vault: any,
     strats: IStrategy[],
@@ -111,7 +130,14 @@ const calcVault = (
     }
 }
 
-//@dev: With G^2, only one CRV Vault (aka GVault) instead of DAI, USDC & USDT Vaults
+
+/// @notice Calculates the properties of an ISystem object based on the input
+///         gvaults, TVL, and threeCrv price
+// /@dev With G^2, only one CRV Vault (aka GVault) instead of DAI, USDC & USDT Vaults
+/// @param gvaults An array of gvault objects with various properties
+/// @param tvl The total value locked across all vaults
+/// @param threeCrvPrice The current price of the 3Crv token
+/// @return An ISystem object containing information about the system
 export const getSystem = (
     gvaults: any[],
     tvl: number,

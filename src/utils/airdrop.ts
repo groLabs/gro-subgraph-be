@@ -4,6 +4,11 @@ import { getAirdropProofsUser } from '../handler/airdropHandler';
 import { IAirdropClaim } from '../interfaces/personalStats/IAirdropClaim';
 
 
+/// @notice Retrieves airdrop data for a given account and processes airdrop claims
+/// @dev Filters out the first Airdrop contract version and updates the airdrop data based on existing claims
+/// @param account The account for which to retrieve airdrop data
+/// @param airdropClaims An array of IAirdropClaim objects representing the account's airdrop claims
+/// @return An array of IAirdrop objects with updated claim data
 export const getAirdrops = (
     account: string,
     airdropClaims: IAirdropClaim[],

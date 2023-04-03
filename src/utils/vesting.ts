@@ -11,6 +11,16 @@ import {
 } from '../constants';
 
 
+/// @notice Calculates vesting bonus details based on various parameters
+/// @param totalGro The total Gro amount
+/// @param netReward The net reward amount
+/// @param currentTime The current Unix timestamp
+/// @param startTime The start time of the vesting period
+/// @param totalLockedAmount The total locked amount
+/// @param totalBonus The total bonus amount
+/// @param globalStartTime The global start time
+/// @param initUnlockedPercent The initial unlocked percentage
+/// @return An IVestingBonus object containing vesting bonus info
 export const getVestingBonus = (
     totalGro: number,
     netReward: number,
@@ -45,6 +55,11 @@ export const getVestingBonus = (
     return result;
 }
 
+/// @notice Retrieves the vesting airdrop details for the specified account
+/// @param account The account address for which to retrieve vesting airdrop details
+/// @param userData The user data object containing claim information
+/// @param currentTimestamp The current Unix timestamp
+/// @return An IVestingAirdrop object containing vesting airdrop information
 export const getVestingAirdrop = (
     account: string,
     userData: any,

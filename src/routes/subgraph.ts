@@ -31,13 +31,18 @@ import express, {
 
 const router = express.Router();
 
+
+/// @notice Wraps an asynchronous request handler with error handling
+/// @param fn The asynchronous request handler function to wrap
+/// @return The wrapped asynchronous request handler function with error handling
 const wrapAsync = (fn: RequestHandler): RequestHandler => {
     return (req: Request, res: Response, next: NextFunction) => {
         Promise.resolve(fn(req, res, next)).catch(next);
     };
 }
 
-// E.g.: http://localhost:3015/subgraph/gro_stats_mc?subgraph=prod_hosted
+/// @notice Handles the /gro_stats_mc API endpoint to retrieve GRO stats from subgraphs
+/// @dev API example: http://localhost:3015/subgraph/gro_stats_mc?subgraph=prod_hosted
 router.get(
     '/gro_stats_mc',
     validateApiRequest([
@@ -78,7 +83,8 @@ router.get(
     })
 );
 
-// E.g.: http://localhost:3015/subgraph/gro_personal_position_mc?address=0x60ff7DcB4a9c1a89B18Fa2D1Bb9444143BbEA9BD&subgraph=prod_studio
+/// @notice Handles the /gro_personal_position_mc API endpoint to retrieve personal position for a specific address from subgraphs
+/// @dev API example: http://localhost:3015/subgraph/gro_personal_position_mc?address=0x...&subgraph=prod_studio
 router.get(
     '/gro_personal_position_mc',
     validateApiRequest([
@@ -126,8 +132,10 @@ router.get(
     })
 );
 
-// e.g.: http://localhost:3015/subgraph/historical_apy?network=mainnet&attr=apy_current,apy_current,apy_current&freq=twice_daily,daily,weekly&start=1669913771,1669913771,1669913771&end=1672505771,1672505771,1672505771
-// @dev: only `apy_current` is currently stored in the DB; any other apy will return null values
+/// @notice Handles the /historical_apy API endpoint to retrieve historical APY data for a
+///         specific network, attribute, frequency, start time, and end time
+/// @dev Only `apy_current` is currently stored in the DB; any other apy will return null values
+/// @dev API example: http://localhost:3015/subgraph/historical_apy?network=mainnet&attr=apy_current,apy_current,apy_current&freq=twice_daily,daily,weekly&start=1669913771,1669913771,1669913771&end=1672505771,1672505771,1672505771
 router.get(
     '/historical_apy',
     validateApiRequest([
@@ -164,7 +172,8 @@ router.get(
     })
 );
 
-// E.g.: http://localhost:3015/subgraph/status?subgraph=prod_hosted
+/// @notice Handles the /status API endpoint to retrieve the status of subgraphs
+/// @dev API example: http://localhost:3015/subgraph/status?subgraph=prod_hosted
 router.get(
     '/status',
     wrapAsync(async (_: Request, res: Response) => {

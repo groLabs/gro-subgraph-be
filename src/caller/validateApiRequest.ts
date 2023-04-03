@@ -14,6 +14,10 @@ import {
 } from 'express';
 
 
+/// @notice Sends an error response based on the provided route and errors
+/// @param res the Response object
+/// @param route the Route enum value
+/// @param errors a string containing the error messages
 const sendErrorResponse = (
     res: Response,
     route: Route,
@@ -32,6 +36,10 @@ const sendErrorResponse = (
     }
 };
 
+/// @notice Validates an API request based on the provided validation chain and route
+/// @param validations an array of ValidationChain objects for request validation
+/// @param route the Route enum value
+/// @return an asynchronous middleware function for Express.js
 export const validateApiRequest = (
     validations: ValidationChain[],
     route: Route,

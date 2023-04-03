@@ -11,6 +11,10 @@ import {
 } from '../interfaces/groStats/IGroStats';
 
 
+/// @notice Parses and aggregates Gro protocol statistics from Ethereum and Avalanche networks
+/// @param stats_eth The IGroStatsEthereum object containing Gro protocol statistics for the Ethereum network
+/// @param stats_avax The IGroStatsAvalanche object containing Gro protocol statistics for the Avalanche network
+/// @return An IGroStats object containing the combined statistics and total TVL for both networks
 export const groStatsParser = (
     stats_eth: IGroStatsEthereum,
     stats_avax: IGroStatsAvalanche,

@@ -25,6 +25,10 @@ import {
 } from '../utils/staker';
 
 
+/// @notice Parses the personal stats from the Ethereum subgraph response
+/// @param account The user's Ethereum address as a string
+/// @param stats_eth The Ethereum subgraph data to be parsed
+/// @return An IPersonalStatsEthereum object containing the parsed data from the Ethereum subgraph response
 export const parsePersonalStatsSubgraphEthereum = (
     account: string,
     stats_eth: any

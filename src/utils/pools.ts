@@ -8,6 +8,10 @@ import {
 } from '../constants';
 
 
+/// @notice Gets the price of a token based on the provided pool ID
+/// @param pool - The pool ID to find the token price
+/// @param price - An object containing various token prices
+/// @return The price of the token corresponding to the provided pool ID
 const getPrice = (
     pool: number,
     price: ITokenPriceUsd,
@@ -32,6 +36,12 @@ const getPrice = (
     }
 }
 
+/// @notice Calculates the annual percentage yield (APY) of pool fees for a given pool
+/// @param poolId - The ID of the pool
+/// @param swaps - An array containing swap data
+/// @param poolData - An array containing pool data
+/// @param nowTS - The current timestamp
+/// @return The calculated APY of pool fees for the given pool ID
 const getApyPoolFees = (
     poolId: number,
     swaps: any[],
@@ -109,6 +119,11 @@ const getApyPoolFees = (
     }
 }
 
+/// @notice Calculates the APY of a token for a given pool ID
+/// @param poolId - The ID of the pool
+/// @param pwrdApy - The APY of the PWRD token
+/// @param gvtApy - The APY of the GVT token
+/// @return The calculated APY of the token for the given pool ID
 const getApyToken = (
     poolId: number,
     pwrdApy: number,
@@ -128,6 +143,13 @@ const getApyToken = (
     }
 }
 
+/// @notice Calculates the APY of rewards for a given pool
+/// @param groUsdPrice - The price of GRO in USD
+/// @param groPerBlock - The amount of GRO rewards per block
+/// @param poolAllocPoint - The allocation points for the pool
+/// @param totalAllocPoint - The total allocation points
+/// @param stakedTvl - The total value locked (TVL) in the pool
+/// @return The calculated APY of rewards for the given pool
 const getApyRewards = (
     groUsdPrice: number,
     groPerBlock: number,
@@ -143,6 +165,11 @@ const getApyRewards = (
     }
 }
 
+/// @notice Calculates the amount of unstaked tokens in a pool
+/// @param poolId - The ID of the pool
+/// @param coreData - An object containing core data of the protocol
+/// @param stakedSupply - The amount of staked tokens in the pool
+/// @return The amount of unstaked tokens in the pool, in string format
 const getUnstaked = (
     poolId: number,
     coreData: any,
@@ -176,6 +203,12 @@ const getUnstaked = (
     return result;
 }
 
+/// @notice Calculates the total value locked (TVL) in a pool
+/// @param poolId - The ID of the pool
+/// @param coreData - An object containing core data of the protocol
+/// @param price - An object containing various token prices
+/// @param staked - The amount of staked tokens in the pool
+/// @return The TVL of the pool, in string format
 const getTvl = (
     poolId: number,
     coreData: any,
@@ -209,6 +242,17 @@ const getTvl = (
     return toStr(totalSupply * getPrice(poolId, price));
 }
 
+/// @notice Generates an array of pool objects with updated data
+/// @param poolData - An array containing pool data
+/// @param stakerData - An array containing staker data
+/// @param masterData - An object containing data from the master contract
+/// @param coreData - An object containing core data of the protocol
+/// @param prices - An object containing various token prices
+/// @param swaps - An array containing swap data
+/// @param nowTS - The current timestamp
+/// @param pwrdApy - The APY of the PWRD token
+/// @param gvtApy - The APY of the GVT token
+/// @return An array of updated pool objects
 export const getPools = (
     poolData: any[],
     stakerData: any[],

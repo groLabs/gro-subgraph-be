@@ -24,8 +24,6 @@ dotenvExpand.expand(env);
                             await etlPersonalStats(
                                 params[1] as Subgraph,
                                 params[2],
-                                0,
-                                []
                             );
                         } else {
                             console.log(`Field <subgraph> must have a valid value (eg.: prod_hosted, test_studio...)`);

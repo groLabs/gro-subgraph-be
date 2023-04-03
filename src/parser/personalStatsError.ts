@@ -10,13 +10,18 @@ import {
 } from './personalStatsEmpty';
 
 
-
+/// @notice Creates an empty totals object with default values
 const emptyTotals = {
     'ethereum': NA,
     'avalanche': NA,
     'total': NA
 }
 
+/// @notice Creates an IPersonalStatsTotals object with error status and a given error message
+/// @param currentTimestamp The current timestamp as a string
+/// @param address The user's address as a string
+/// @param error_msg The error message to be included in the IPersonalStatsTotals object
+/// @return An IPersonalStatsTotals object with error status and a given error message
 export const personalStatsError = (
     currentTimestamp: string,
     address: string,

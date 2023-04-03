@@ -4,12 +4,17 @@ const { combine, timestamp, printf, errors } = format;
 const logFolder = './';
 
 
+/// @notice Formats the logger output
 const logMsgFormat = printf(({ level, message, timestamp, stack }) => {
     return (stack)
         ? `${timestamp} ${level}: ${message} - ${stack}`
         : `${timestamp} ${level}: ${message}`;
 });
 
+/// @notice Creates a logger to handle logs, exceptions, and rejections using the Winston library
+/// @dev Configures daily rotating file transports for logging with custom formatting, 
+///      log retention, and file rotation settings
+/// @return A Winston logger instance with the specified configuration
 export const logger = createLogger({
     format: combine(errors({ stack: true }), timestamp(), logMsgFormat),
     transports: [

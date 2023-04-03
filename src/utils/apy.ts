@@ -5,16 +5,20 @@ import {
 } from '../constants';
 
 
-// avoid division by 0
+/// @notice Default values (avoid division by 0)
 const rekt = {
     'pwrd': toStr(0),
     'gvt': toStr(0),
 }
 
-// @dev: 
-// - preset pwrd apy with G^2, other gains/losses goes to gvt
-// - if no tranche APY (e.g.: GoLive + migration with no harvests yet), 
-//   set tranche APY to average Convex strategies APY
+/// @notice Calculates the core APY for GVT and PWRD tranches
+/// @dev Fixed PWRD APY in G^2; other gains/losses goes to gvt
+/// @dev If no tranche APY (e.g.: GoLive + migration with no harvests yet), 
+//       set tranche APY to average Convex strategies APY
+/// @param tvlGvt The total value locked in GVT
+/// @param tvlPwrd The total value locked in PWRD
+/// @param trancheApy The APY for the current tranche
+/// @return An object containing the calculated APYs for PWRD and GVT tranches
 export const getCoreApy = (
     tvlGvt: number,
     tvlPwrd: number,

@@ -12,6 +12,12 @@ import {
 } from '../interfaces/personalStats/IPersonalStats';
 
 
+/// @notice Combines personal stats from the Ethereum and Avalanche subgraphs into a single 
+///         IPersonalStatsTotals object
+/// @param stats_eth The parsed IPersonalStatsEthereum object containing Ethereum subgraph data
+/// @param stats_avax The parsed IPersonalStatsAvalanche object containing Avalanche subgraph data
+/// @return An IPersonalStatsTotals object containing the combined data from Ethereum and
+///         Avalanche subgraphs
 export const personalStatsSubgraphParserTotals = (
     stats_eth: IPersonalStatsEthereum,
     stats_avax: IPersonalStatsAvalanche,

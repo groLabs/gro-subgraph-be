@@ -11,6 +11,9 @@ import {
 } from '../utils/labs';
 
 
+/// @notice Parses raw Avalanche Gro protocol statistics and returns a formatted IGroStatsAvalanche object
+/// @param stats_avax Raw Avalanche Gro protocol statistics data
+/// @return A formatted IGroStatsAvalanche object containing parsed data
 export const groStatsParserAvalanche = (
     stats_avax: any
 ): IGroStatsAvalanche => {

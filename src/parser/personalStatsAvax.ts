@@ -11,6 +11,9 @@ import {
 } from '../types';
 
 
+/// @notice Parses personal stats data from the Avalanche subgraph and returns a structured object
+/// @param stats_avax Raw data received from the Avalanche subgraph
+/// @return An IPersonalStatsAvalanche object containing the parsed data
 export const parsePersonalStatsSubgraphAvalanche = (
     stats_avax: any
 ): IPersonalStatsAvalanche => {

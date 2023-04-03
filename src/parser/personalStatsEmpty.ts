@@ -16,7 +16,11 @@ import {
 } from '../constants';
 
 
-
+/// @notice Creates an empty user object for the Ethereum network with default values
+/// @param currentTimestamp The current timestamp as a string
+/// @param address The user's Ethereum address as a string
+/// @param status A status value to indicate the state of the user data
+/// @return An IPersonalStatsEthereum object with default values and properties
 export const emptyEthUser = (
     currentTimestamp: string,
     address: string,
@@ -170,6 +174,9 @@ export const emptyEthUser = (
     return result;
 };
 
+/// @notice Creates an empty user object for the Avalanche network with default values
+/// @param status A status value to indicate the state of the user data
+/// @return An IPersonalStatsAvalanche object with default values and properties
 export const emptyAvaxUser = (
     status: Status
 ): IPersonalStatsAvalanche => {
@@ -266,6 +273,8 @@ export const emptyAvaxUser = (
     }
 }
 
+/// @notice Creates an empty vesting airdrop object with default values
+/// @return An object with default values and properties for a vesting airdrop
 export const EMPTY_VESTING_AIRDROP = {
     'name': NA,
     'token': NA,
@@ -276,6 +285,8 @@ export const EMPTY_VESTING_AIRDROP = {
     'proofs': []
 }
 
+/// @notice Creates an empty pool object with default values
+/// @return An object with default values and properties for a pool
 export const NO_POOL = {
     'net_reward': NA,
     'balance': NA,
@@ -286,6 +297,8 @@ export const NO_POOL = {
     }
 }
 
+/// @notice Creates an empty pool object with default values
+/// @return An object with default values and properties for a pool
 export const EMPTY_POOL = {
     'net_reward': toStr(0),
     'balance': toStr(0),
@@ -296,6 +309,8 @@ export const EMPTY_POOL = {
     }
 }
 
+/// @notice Creates an empty vesting airdrop proof object with default values
+/// @return An IVestingAirdropProof object with default values and properties for a vesting airdrop proof
 export const EMPTY_VESTING_AIRDROP_PROOF: IVestingAirdropProof = {
     'name': NA,
     'token': NA,

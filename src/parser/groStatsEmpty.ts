@@ -19,6 +19,11 @@ import {
 } from '../interfaces/groStats/IGroStats';
 
 
+/// @notice Creates empty Gro protocol statistics objects with default values
+/// @dev Used to initialize or return when data is not available or when there is an error
+/// @param currentTimestamp The current timestamp as a string
+/// @param status The status of the Gro protocol statistics (Status.OK or Status.ERROR)
+/// @return An empty IGroStats object with default values
 export const emptyGroStats = (
     currentTimestamp: string,
     status: Status
@@ -42,6 +47,10 @@ export const emptyGroStats = (
     }
 }
 
+/// @notice Creates empty Gro protocol statistics objects with default values for Ethereum
+/// @param currentTimestamp The current timestamp as a string
+/// @param status The status of the Ethereum Gro protocol statistics (Status.OK or Status.ERROR)
+/// @return An empty IGroStatsEthereum object with default values
 export const emptyGroStatsEth = (
     currentTimestamp: string,
     status: Status
@@ -87,6 +96,9 @@ export const emptyGroStatsEth = (
     }
 }
 
+/// @notice Creates empty Gro protocol statistics objects with default values for Avalanche
+/// @param status The status of the Avalanche Gro protocol statistics (Status.OK or Status.ERROR)
+/// @return An empty IGroStatsAvalanche object with default values
 export const emptyGroStatsAvax = (
     status: Status
 ): IGroStatsAvalanche => {
@@ -117,6 +129,7 @@ export const emptyGroStatsAvax = (
     }
 }
 
+/// @notice Default empty IStrategy object with NA values
 export const EMPTY_STRATEGY: IStrategy = {
     'name': NA,
     'display_name': NA,
@@ -128,6 +141,7 @@ export const EMPTY_STRATEGY: IStrategy = {
     'share': NA,
 }
 
+/// @notice Default empty IVault object with NA values
 export const EMPTY_VAULT: IVault = {
     'amount': NA,
     'display_name': NA,
@@ -144,11 +158,13 @@ export const EMPTY_VAULT: IVault = {
     'strategies': [EMPTY_STRATEGY],
 }
 
+/// @notice Default empty IExposure object with empty arrays
 export const EMPTY_EXPOSURE: IExposure = {
     'stablecoins': [],
     'protocols': [],
 }
 
+/// @notice Default empty IVaultAvax object with NA values
 export const EMPTY_AVAX_VAULT: IVaultAvax = {
     'name': NA,
     'display_name': NA,

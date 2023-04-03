@@ -18,6 +18,10 @@ import {
 } from '../constants';
 
 
+/// @notice Parses raw Ethereum Gro protocol statistics and returns a formatted IGroStatsEthereum object
+/// @param stats_eth Raw Ethereum Gro protocol statistics data
+/// @param nowTS Current timestamp
+/// @return A formatted IGroStatsEthereum object containing parsed data
 export const groStatsParserEthereum = (
     stats_eth: any,
     nowTS: number,

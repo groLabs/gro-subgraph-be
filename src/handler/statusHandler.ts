@@ -17,6 +17,10 @@ import { callSubgraph } from '../caller/subgraphCaller';
 import { IIndexStatues } from '../interfaces/subgraph/IIndexStatuses';
 
 
+/// @notice Checks the status of subgraphs and returns an array of IStatusNetwork objects
+/// @dev Iterates through the subgraph indexing statuses and checks for errors, health, and sync status
+/// @param _data The IIndexStatues object containing the subgraph indexing statuses
+/// @return An array of IStatusNetwork objects with subgraph status details
 const checkStatus = (_data: IIndexStatues): IStatusNetwork[] => {
     const data = _data.indexingStatuses;
     if (data.length === 0) {
@@ -34,6 +38,9 @@ const checkStatus = (_data: IIndexStatues): IStatusNetwork[] => {
     });
 }
 
+/// @notice Handles the request for the global health status of subgraphs
+/// @dev Calls the subgraph with the provided status URL and processes the result to return the global status
+/// @return The global status object (IStatus) containing the current timestamp and subgraph statuses
 export const statusHandler = async (): Promise<IStatus> => {
     const tsNow = parseInt(now());
     try {

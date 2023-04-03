@@ -10,6 +10,10 @@ import {
 } from './groStatsEmpty';
 
 
+/// @notice Creates an error IGroStats object with a given error message
+/// @param currentTimestamp The current timestamp
+/// @param error_msg The error message to include in the result
+/// @return An IGroStats object with the error status and provided error message
 export const groStatsError = (
     currentTimestamp: string,
     error_msg: string,

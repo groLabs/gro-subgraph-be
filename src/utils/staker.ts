@@ -11,6 +11,10 @@ import {
 } from '../parser/personalStatsEmpty';
 
 
+/// @notice Gets pool data for a specific pool by poolId
+/// @param poolId The ID of the pool to get data for
+/// @param stats_eth The object containing various stats, including user pool data
+/// @return IPool object containing data for the specified pool, such as balance and rewards
 export const getPool = (
     poolId: number,
     stats_eth: any
@@ -71,6 +75,10 @@ export const getPool = (
     }
 }
 
+/// @notice Gets data for all pools combined
+/// @dev Sums up the data for all pools and returns an IPool object with the combined data
+/// @param pools An array of IPool objects containing data for individual pools
+/// @return IPool object containing combined data for all pools
 export const getAllPools = (pools: IPool[]): IPool => {
     let net_reward = 0;
     let balance = 0;
@@ -102,6 +110,13 @@ export const getAllPools = (pools: IPool[]): IPool => {
     }
 }
 
+/// @notice Calculates rewards for a specific pool
+/// @dev Returns the calculated reward amount based on poolId, balance, and rewardDebt
+/// @param poolId The ID of the pool to calculate rewards for
+/// @param _balance The balance of the pool
+/// @param _rewardDebt The reward debt of the pool
+/// @param stats_eth The object containing various stats, including staker and master data
+/// @return Calculated reward amount for the specified pool
 export const calcRewards = (
     poolId: number,
     _balance: string,
@@ -131,6 +146,14 @@ export const calcRewards = (
     }
 }
 
+/// @notice Calculates Gro balance combined across pools and vesting
+/// @param pool0GroAmount Gro amount from pool 0
+/// @param vestingAmount Gro amount from vesting
+/// @param teamAmount Gro amount from the team
+/// @param pools An array of IPool objects containing data for individual pools
+/// @param poolDatas An array of IPoolData objects containing data for individual pools
+/// @return IGroBalanceCombined object containing total Gro balance and a breakdown of 
+///         the balance across pools and vesting
 export const getGroBalanceCombined = (
     pool0GroAmount: number,
     vestingAmount: number,

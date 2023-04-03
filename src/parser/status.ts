@@ -5,6 +5,12 @@ import {
 } from '../interfaces/status/IStatus';
 
 
+/// @notice Constructs a status network object with the given status, error,
+///         and deployment ID
+/// @param status The status of the network
+/// @param error The error message, if any
+/// @param deploymentId The subgraph deployment ID
+/// @return An object representing the status of the network
 export const statusNetwork = (
     status: Status,
     error: string,
@@ -15,6 +21,12 @@ export const statusNetwork = (
     'deployment_id': deploymentId,
 });
 
+/// @notice Constructs an array of IStatusNetwork objects with an error status
+///         and the given error message
+/// @dev Used to create an error status network array for a given error message
+/// @param err The error message or error object
+/// @return An array containing a single IStatusNetwork object with an error status
+///         and the given error message
 export const statusNetworkError = (
     err: Error | string,
 ): IStatusNetwork[] => ([{
@@ -23,6 +35,13 @@ export const statusNetworkError = (
     'deployment_id': 'N/A',
 }]);
 
+
+/// @notice Constructs a global status object with the given status, timestamp,
+///         and network statuses
+/// @param status The overall status of the system
+/// @param ts The current timestamp
+/// @param networks An array of network status objects
+/// @return An object representing the global status of the system
 export const globalStatus = (
     status: Status,
     ts: string,

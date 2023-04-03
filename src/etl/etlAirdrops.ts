@@ -15,11 +15,16 @@ import {
 let airdropProofs: IAirdropProof[] = [];
 let vestingAirdrops: IVestingAirdropProof;
 
-// Global getters
+/// @notice Getter function for airdrop proofs
+/// @return an array of airdrop proofs
 export const getAirdropProofs = () => airdropProofs;
+
+/// @notice Getter function for vesting airdrop proofs
+/// @return a vesting airdrop proof object
 export const getVestingAirdropProofs = () => vestingAirdrops;
 
-// @dev: excludes the first 6 airdrops
+/// @notice Reads airdrop proof files and stores them in a global array
+/// @dev Excludes the first 6 airdrops
 export const readAirdropProofs = (): void => {
     try {
         const files = fs.readdirSync(path.join(__dirname, `/../data/airdrops`))
@@ -38,6 +43,7 @@ export const readAirdropProofs = (): void => {
     }
 }
 
+/// @notice Reads vesting airdrop proof files and stores them in a global object
 export const readVestingAirdropProofs = (): void => {
     try {
         const file = path.join(__dirname, `/../data/vestingAirdrops/airdrop-vesting-ust.json`);

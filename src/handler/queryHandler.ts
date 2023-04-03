@@ -7,6 +7,9 @@ import { showError } from './logHandler';
 import { QUERY_ERROR } from '../constants';
 config();
 
+
+/// @notice Provides a database connection and query handling functionality
+/// @dev Reads the database configuration from environment variables and initializes a connection pool
 const dbConnection = {
     host: process.env.DB_HOST as string,
     port: process.env.DB_PORT as number | undefined,
@@ -14,13 +17,10 @@ const dbConnection = {
     password: process.env.DB_PASSWORD as string,
     database: process.env.DB_INSTANCE as string,
 }
-
 if (!dbConnection.host) {
     showError('handler/queryHandler.ts', 'db settings in .env not found');
 }
-
 const pool = new pg.Pool(dbConnection);
-
 const ERROR = {
     status: 400,
 };
@@ -28,6 +28,11 @@ const NO_DATA = {
     status: 204,
 }
 
+/// @notice Executes a SQL query file with the provided parameters
+/// @dev Reads the query file, validates the option, and calls singleQuery function to execute the query
+/// @param file The SQL query file name
+/// @param params An array of parameters for the SQL query
+/// @return The query result with a status code or an error status code if there's an issue
 export const query = async (
     file: string,
     params: any[],
@@ -47,8 +52,13 @@ export const query = async (
     }
 }
 
-// @dev: PostgreSQL is auto committing/rolling back, so adding commit after the query will generate
-//       "postgres@postgres:[7435]:WARNING: there is no transaction in progress" issue
+/// @notice Executes a single SQL query using the connection pool
+/// @dev PostgreSQL is auto committing/rolling back, so adding commit after the query would generate
+//       "postgres@postgres:[7435]:WARNING: there is no transaction in progress" issue -> already fixed
+/// @param q The SQL query string
+/// @param file The SQL query file name (for error reporting)
+/// @param params An array of parameters for the SQL query
+/// @return The query result with a status code, no data status code, or an error status code if there's an issue
 const singleQuery = async (
     q: string,
     file: string,

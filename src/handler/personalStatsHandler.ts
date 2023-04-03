@@ -8,6 +8,13 @@ import { callSubgraph } from '../caller/subgraphCaller';
 import { ITransferTxSubgraph } from '../interfaces/subgraph/ITransferTxSubgraph';
 
 
+/// @notice Fetches personal stats for an account from a subgraph and combines data from multiple iterations
+/// @dev Calls a subgraph with the provided URL and account, handling errors and iterating until all data is fetched
+/// @param url The subgraph URL to fetch personal stats from
+/// @param account The account address for which personal stats are being fetched
+/// @param lastBlockTS The last block timestamp, initially set to 0
+/// @param result The accumulated result from previous iterations, initially set to null
+/// @return The combined personal stats data fetched from the subgraph, or null if an error occurs
 export const getPersonalStats = async (
     url: string,
     account: string,
@@ -80,10 +87,17 @@ export const getPersonalStats = async (
 }
 
 // Remove any repeated record from last Transfers call that already existed in previous calls
-// This is needed because the the graphql query is based on block number 'gte', so when doing iterations,
-// any previous Transfer needs to be removed from the last Transfers call, and also because there can be
-// multiple Transfers with same block number (eg: emergency withdrawal)
-// e.g.: 0xb58d5e530a42e6cc150310ed187c0d78812a8ee709fe842ad2d6931ba32a06c7
+
+
+/// @notice Removes duplicate transactions from an array of current transfers, based on an array of previous transfers
+/// @dev Compares current and previous transfers, and filters out any current transfer that already exists in the previous transfers
+/// @dev This is needed because the GraphQL query is based on block number 'gte', so when doing iterations,
+///      any previous Transfer needs to be removed from the last Transfers call, and also because there can be
+///      multiple Transfers with same block number (eg: emergency withdrawal)
+//       e.g.: 0xb58d5e530a42e6cc150310ed187c0d78812a8ee709fe842ad2d6931ba32a06c7
+/// @param curr An array of current transfers
+/// @param prev An array of previous transfers
+/// @return An array of current transfers with duplicates removed
 const removeRepeated = (
     curr: ITransferTxSubgraph[],
     prev: ITransferTxSubgraph[]

@@ -7,6 +7,11 @@ import { IVault } from '../interfaces/groStats/avalanche/IVault';
 import { IStrategy } from '../interfaces/groStats/avalanche/IStrategy';
 
 
+/// @notice Generates an array of IVault objects based on the input Avax strategies and TVL
+/// @dev Calculates vault shares, strategy shares, and reserve assets from the given strategies and TVL
+/// @param _strats An array of strategy objects with various properties
+/// @param tvl The total value locked (TVL) across all vaults
+/// @return An array of IVault objects containing information about the vaults and their associated strategies
 export const getLabs = (
     _strats: any[],
     tvl: number,
@@ -64,6 +69,10 @@ export const getLabs = (
     return vaults;
 }
 
+/// @notice Calculates the TVL for each vault and the total TVL across all vaults
+/// @dev Iterates through the input strategies and aggregates the total assets for each vault and the total TVL
+/// @param _strats An array of strategy objects with various properties
+/// @return An ITvl object containing the TVL for each vault and the total TVL across all vaults
 export const getTvl = (_strats: any[]): ITvl => {
     let tvl: ITvl = emptyGroStatsAvax(Status.OK).tvl;
     let totalTvl = 0;

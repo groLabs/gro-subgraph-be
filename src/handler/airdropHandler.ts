@@ -10,7 +10,11 @@ import {
 } from '../etl/etlAirdrops';
 
 
-// @dev: <participated> assumes being in the airdrop list even if no claim
+/// @notice Retrieves a list of airdrop proofs for the given user address
+/// @dev Iterates through airdrops, finds user in proofs, and compiles airdrop data for the user
+/// @dev <participated> assumes being in the airdrop list even if no claim
+/// @param userAddress The Ethereum address of the user to get airdrop proofs for
+/// @return An array of airdrop data for the given user address
 export const getAirdropProofsUser = (userAddress: string): IAirdrop[] => {
     try {
         let result: IAirdrop[] = [];
@@ -53,6 +57,10 @@ export const getAirdropProofsUser = (userAddress: string): IAirdrop[] => {
     }
 }
 
+/// @notice Retrieves vesting airdrop proofs for the given user address
+/// @dev Iterates through vesting airdrops, finds user in proofs, and compiles vesting airdrop data for the user
+/// @param userAddress The Ethereum address of the user to get vesting airdrop proofs for
+/// @return A vesting airdrop data object for the given user address
 export const getVestingAirdropProofsUser = (userAddress: string): IVestingAirdrop => {
     const proofs = getVestingAirdropProofs();
     for (let i = 0; i < proofs.airdrops.length; i++) {

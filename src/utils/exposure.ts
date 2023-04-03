@@ -4,6 +4,12 @@ import { IExposure } from '../interfaces/groStats/ethereum/IExposure';
 import { IExposureItem } from '../interfaces/groStats/ethereum/IExposureItem';
 
 
+/// @notice Calculates the exposure of vaults to different stablecoins and protocols
+/// @dev Computes the exposure by iterating through the vaults and their strategies,
+///      aggregating values for stablecoins and protocols
+/// @param vaults An array of IVault objects containing info about vaults and their strategies
+/// @return An IExposure object containing arrays of stablecoin and protocol exposures with
+///         their concentrations and display names
 export const getExposures = (
     vaults: IVault[],
 ): IExposure => {
