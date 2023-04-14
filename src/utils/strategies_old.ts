@@ -1,7 +1,7 @@
 import {
     toStr,
     now as _now
-} from '../utils/utils';
+} from './utils';
 import {
     TS_1D,
     TS_7D,

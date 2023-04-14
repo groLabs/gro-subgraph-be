@@ -1,15 +1,8 @@
+import { toStr } from './utils';
+import { DEFAULT_STRATEGY_APY } from '../constants';
 import { EMPTY_VAULT } from '../parser/groStatsEmpty';
 import { IVault } from '../interfaces/groStats/ethereum/IVault';
 import { IStrategy } from '../interfaces/groStats/ethereum/IStrategy';
-import {
-    now,
-    toStr,
-} from './utils';
-import {
-    TS_1D,
-    TS_7D,
-    DEFAULT_STRATEGY_APY,
-} from '../constants';
 
 
 /// @notice Calculates the APY for a given strategy based on the TVL, harvests,
@@ -29,23 +22,19 @@ export const calcStrategyApy = (
     strategyAddress: string,
     threeCrvPrice: number,
     strategyAsset: number,
+    releaseFactor: number,
 ): string => {
-    let netProfit = 0;
-    let numHarvests = 0;
-    let harvests = _harvests.filter((item: any) => item.strategy_address.id === strategyAddress);
-    const _now = parseInt(now());
-    const maxHarvestTS = Math.max(...harvests.map(item => item.block_timestamp));
-    const minHarvestTS = maxHarvestTS - TS_7D;
-    for (let i = 0; i < harvests.length; i++) {
-        if (harvests[i].block_timestamp >= minHarvestTS) {
-            netProfit += harvests[i].gain - harvests[i].loss;
-            numHarvests++;
-        }
-    }
-    const days = (_now - minHarvestTS) / TS_1D;
+    const harvests = _harvests.filter((item: any) => item.strategy_address.id === strategyAddress);
     if (harvests.length > 0) {
-        // there are harvests, so apy based on latest ones
-        const apy = (((netProfit * threeCrvPrice) / numHarvests) / tvl) * (365 / days);
+        // there are harvests, so apy based on the last one (even assets are pulled out)
+        const latestHarvest = harvests.reduce((prev, current) => {
+            return prev.block_timestamp > current.block_timestamp ? prev : current;
+        });
+        const lockedProfit = latestHarvest.loss > latestHarvest.locked_profit_before_loss
+            ? latestHarvest.locked_profit_before_loss - latestHarvest.loss
+            : latestHarvest.locked_profit;
+        const netProfitUsd = (lockedProfit / tvl) * threeCrvPrice;
+        const apy = releaseFactor > 0 ? ((netProfitUsd * 365 * 86400) / releaseFactor) : 0;
         return toStr(apy);
     } else if (strategyAsset > 0.1) {
         // no harvests but assets, so taking default apy
@@ -66,6 +55,7 @@ const calcStrategies = (
     _strats: any[],
     tvl: number,
     threeCrvPrice: number,
+    releaseFactor: number,
 ): IStrategy[] => {
     let strats: IStrategy[] = [];
     for (let i = 0; i < _strats.length; i++) {
@@ -77,6 +67,7 @@ const calcStrategies = (
             str.id,
             threeCrvPrice,
             strategyAssetsUsd,
+            releaseFactor,
         );
         const strat = {
             'name': str.strat_name,
@@ -94,9 +85,7 @@ const calcStrategies = (
 }
 
 /// @notice Calculates the properties of a single IVault object
-/// @dev vault apy = sum(Strategy APYs)
-/// @dev lockedProfit & releaseFactor are not used to calculate Vault APY because this wouldn't reflect
-///      negative APYs in case that losses > lockedProfit
+/// @dev vault apy =sum(strategy APY * strategy asset / vault assets)
 /// @param _vault A single vault object with various properties
 /// @param strats An array of IStrategy objects
 /// @param tvl The total value locked across all vaults
@@ -107,7 +96,10 @@ const calcVault = (
     strats: IStrategy[],
     tvl: number,
 ): IVault => {
-    const vaultApy = strats.reduce((prev, current) => prev + parseFloat(current.last3d_apy), 0);
+    //const vaultApy = strats.reduce((prev, current) => prev + parseFloat(current.last3d_apy), 0);
+    const vaultApy = strats.reduce(
+        (prev, current) => prev + (parseFloat(current.last3d_apy) * parseFloat(current.amount)) / tvl, 0);
+console.log('vaultApy', vaultApy);
     const strategyAssets = strats.reduce((prev, current) => prev + parseFloat(current.amount), 0);
     // Strategies are updated on harvest or withdrawal events, whereas tvl is updated on every transfer:
     // reserves could show small negative amounts if no recent harvests + nothing in reserve,
@@ -115,11 +107,6 @@ const calcVault = (
     const reservesAmount = (tvl > strategyAssets)
         ? tvl - strategyAssets
         : 0;
-    // for (let i = 0; i < strats.length; i++) {
-    //     console.log(strats[i]);
-    // }
-    // const vaultApyV2 = strats.reduce((prev, current) => prev + (parseFloat(current.last3d_apy) * parseFloat(current.amount)) / tvl, 0);
-    // console.log('vault incl. reserves', tvl, 'eps', vaultApyV2);
     if (strats.length > 0) {
         return {
             'name': '3CRV',
@@ -127,7 +114,6 @@ const calcVault = (
             'amount': toStr(tvl),
             'share': '1.0',
             'last3d_apy': toStr(vaultApy),
-            // 'last3d_apy': toStr(vaultApyV2),
             'reserves': {
                 'name': '3CRV',
                 'display_name': '3CRV yVault',
@@ -161,6 +147,7 @@ export const getSystem = (
             gvaults[i].strategies,
             tvl,
             threeCrvPrice,
+            gvaults[i].release_factor,
         );
         const vault = calcVault(
             gvaults[i],
