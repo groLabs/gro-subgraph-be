@@ -1,4 +1,5 @@
 import { toStr } from '../utils/utils';
+import { getAirdrops } from '../utils/airdrop';
 import { IVestingAirdropProof } from '../interfaces/personalStats/IVestingAirdropProof';
 import {
     IPersonalStatsEthereum,
@@ -42,7 +43,10 @@ export const emptyEthUser = (
             'uniswap_gro_usdc': 0,
             'curve_pwrd3crv': 0,
         },
-        'airdrops': [],
+        'airdrops': getAirdrops(
+            address,
+            [],
+        ),
         'transaction': {
             'deposits': [],
             'withdrawals': [],
