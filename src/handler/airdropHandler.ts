@@ -23,7 +23,7 @@ export const getAirdropProofsUser = (userAddress: string): IAirdrop[] => {
             // search user in proofs in case-insensitively 
             const proofs = airdrops[i].proofs;
             const user = proofs[Object.keys(proofs).find(key => key.toLowerCase() === userAddress)!];
-            const expired = moment.unix(parseInt(airdrops[i].expiry_ts)).isAfter(moment().unix())
+            const expired = moment().utc().isAfter(moment.unix(parseInt(airdrops[i].expiry_ts)).utc())
                 ? true
                 : false;
             const amount = user
