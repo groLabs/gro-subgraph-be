@@ -7,8 +7,7 @@
   "license": "MIT",
   "scripts": {
     "start:prod": "NODE_ENV=prod DISCORD=true ts-node ./src/bin/www.ts",
-    "start:prod:backup": "NODE_ENV=prod DISCORD=false ts-node ./src/bin/www.ts",
-    "start:test": "NODE_ENV=dev DISCORD=false ts-node ./src/bin/www.ts",
+    "start:prod:backup": "NODE_ENV=dev DISCORD=true ts-node ./src/bin/www.ts",
     "start:dev": "NODE_ENV=dev DISCORD=true nodemon ./src/bin/www.ts"
   },
   "dependencies": {
