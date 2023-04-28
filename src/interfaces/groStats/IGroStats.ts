@@ -42,6 +42,7 @@ export interface IGroStatsAvalanche {
 export interface IGroStats {
     'gro_stats_mc': {
         readonly 'status': Status,
+        readonly 'error_msg': string,
         readonly 'current_timestamp': string,
         readonly 'network': string,
         readonly 'mc_totals': {

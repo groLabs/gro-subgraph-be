@@ -1,3 +1,4 @@
+import { statusHandler } from './handler/statusHandler';
 import { etlPersonalStats } from './etl/etlPersonalStats';
 import { etlHistoricalApy } from './etl/etlHistoricalApy';
 import { sendDiscordMessage } from './handler/discordHandler';
@@ -46,7 +47,15 @@ dotenvExpand.expand(env);
                     console.dir(result, { depth: null });
                     break;
                 case 'discord':
-                    await sendDiscordMessage(DiscordAlert.BOT_ALERT, 'exception description');
+                    await sendDiscordMessage(
+                        DiscordAlert.BOT_ALERT,
+                        '[X] Test alert',
+                        'no error description'
+                    );
+                    break;
+                case 'status':
+                    const status = await statusHandler();
+                    console.log(status);
                     break;
                 default:
                     console.log(`Unknown parameter/s: ${params}`);

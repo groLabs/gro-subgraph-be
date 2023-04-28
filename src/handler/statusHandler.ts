@@ -12,8 +12,10 @@ import {
     statusNetworkError,
 } from '../parser/status';
 import { now } from '../utils/utils';
+import { DiscordAlert } from '../types';
 import { showInfo } from '../handler/logHandler';
 import { callSubgraph } from '../caller/subgraphCaller';
+import { sendDiscordMessage } from '../handler/discordHandler';
 import { IIndexStatues } from '../interfaces/subgraph/IIndexStatuses';
 
 
@@ -43,13 +45,20 @@ const checkStatus = (_data: IIndexStatues): IStatusNetwork[] => {
 /// @return The global status object (IStatus) containing the current timestamp and subgraph statuses
 export const statusHandler = async (): Promise<IStatus> => {
     const tsNow = parseInt(now());
+    const alert = '[WARN] E6 - Get subgraph status failed';
     try {
         const statusURL = process.env.SG_STATUS;
         if (!statusURL) {
+            const msg = 'env variable <SG_STATUS> missing';
+            await sendDiscordMessage(
+                DiscordAlert.BOT_ALERT,
+                alert,
+                msg
+            );
             return globalStatus(
                 Status.ERROR,
                 tsNow.toString(),
-                statusNetworkError('env variable <SG_STATUS> missing'),
+                statusNetworkError(msg),
             );
         } else {
             const result = await callSubgraph(statusURL, '', 0, 0, Route.STATUS, tsNow);
@@ -62,7 +71,13 @@ export const statusHandler = async (): Promise<IStatus> => {
             } if (result.data) {
                 const sg = checkStatus(result.data);
                 const error = sg.find((item) => item.status === Status.ERROR);
-                showInfo(`Health status requested -> status: [${error ? Status.ERROR : Status.OK}]`);
+                showInfo(`Health status requested -> status: ${error ? Status.ERROR : Status.OK}`);
+                if (error)
+                    await sendDiscordMessage(
+                        DiscordAlert.CRIT_ACTION,
+                        '[CRIT] E5 - Subgraph sync error',
+                        error.error_msg,
+                    );
                 return globalStatus(
                     error ? Status.ERROR : Status.OK,
                     tsNow.toString(),
@@ -77,6 +92,11 @@ export const statusHandler = async (): Promise<IStatus> => {
             }
         }
     } catch (err) {
+        await sendDiscordMessage(
+            DiscordAlert.BOT_ALERT,
+            alert,
+            err as string,
+        );
         return globalStatus(
             Status.ERROR,
             tsNow.toString(),

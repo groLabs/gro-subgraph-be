@@ -54,7 +54,7 @@ export const DISCORD_CHANNELS = {
         'BOT_LOG':
             process.env.DISCORD_TEST_BOT_LOG,
         'CRIT_ACTION':
-            process.env.DISCORD_TEST_BOT_LOG,
+            process.env.DISCORD_TEST_CRIT_ACTION,
     },
 }
 

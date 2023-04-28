@@ -32,6 +32,7 @@ export const emptyGroStats = (
     return {
         'gro_stats_mc': {
             'status': Status.ERROR,
+            'error_msg': '',
             'current_timestamp': currentTimestamp,
             'network': NetworkName.MAINNET,
             'mc_totals': {

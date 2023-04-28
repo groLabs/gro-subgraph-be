@@ -14,19 +14,23 @@ config();
 
 export const sendDiscordMessage = async (
     alert: DiscordAlert,
+    category: string,
     message: string,
 ) => {
     try {
         const node_env = process.env.NODE_ENV?.toLowerCase() === 'prod' ? 'PROD' : 'TEST';
         const url = DISCORD_CHANNELS[node_env][alert];
         if (typeof url === 'string') {
+            const [title, detail = ''] = category.split('\n');
             const webhookClient = new WebhookClient({ url });
             const embed = new EmbedBuilder()
-                // .setTitle('Testing')
+                .setTitle(title)
                 .setDescription(`\`\`\`${message}\`\`\``)
                 .setColor(0x00FFFF);
+            if (detail) {
+                embed.addFields({ name: 'at', value: detail });
+            }
             await webhookClient.send({
-                // content: 'yet another test',
                 username: 'Subgraph',
                 avatarURL: SUBGRAPH_LOGO_URL,
                 embeds: [embed],
