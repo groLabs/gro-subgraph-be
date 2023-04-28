@@ -6,9 +6,10 @@
   "author": "Sergi Juanati <wint3rmute@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start:prod": "NODE_ENV=prod ts-node ./src/bin/www.ts",
-    "start:test": "NODE_ENV=dev ts-node ./src/bin/www.ts",
-    "start:dev": "NODE_ENV=dev nodemon ./src/bin/www.ts"
+    "start:prod": "NODE_ENV=prod DISCORD=true ts-node ./src/bin/www.ts",
+    "start:prod:backup": "NODE_ENV=prod DISCORD=false ts-node ./src/bin/www.ts",
+    "start:test": "NODE_ENV=dev DISCORD=false ts-node ./src/bin/www.ts",
+    "start:dev": "NODE_ENV=dev DISCORD=true nodemon ./src/bin/www.ts"
   },
   "dependencies": {
     "@types/config": "^3.3.0",
@@ -22,6 +23,7 @@
     "bignumber.js": "^9.1.1",
     "config": "^3.3.9",
     "cors": "^2.8.5",
+    "discord.js": "^14.9.0",
     "dotenv": "^16.0.3",
     "dotenv-expand": "^10.0.0",
     "express": "^4.18.2",

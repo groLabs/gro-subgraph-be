@@ -1,4 +1,8 @@
+import { DiscordAlert } from '../types';
 import { logger } from '../utils/logger';
+import { sendDiscordMessage } from '../handler/discordHandler';
+import { config } from 'dotenv';
+config();
 
 
 /// @notice Logs an informational message using the logger
@@ -26,5 +30,8 @@ export const showError = (
     path: string,
     err: any
 ): void => {
-    logger.error(`${path}: ${err}`);
+    const msg = `${path}: ${err}`;
+    logger.error(msg);
+    if (process.env.DISCORD === 'true')
+        sendDiscordMessage(DiscordAlert.BOT_LOG, msg);
 }

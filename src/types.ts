@@ -83,3 +83,9 @@ export enum SqlCommand {
   TRUNCATE = 'truncate',
   UPDATE = 'update',
 }
+
+export enum DiscordAlert {
+  BOT_ALERT = 'BOT_ALERT',
+  BOT_LOG = 'BOT_LOG',
+  CRIT_ACTION = 'CRIT_ACTION',
+}

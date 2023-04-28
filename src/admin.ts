@@ -1,11 +1,15 @@
-import { Subgraph } from './types';
 import { etlPersonalStats } from './etl/etlPersonalStats';
 import { etlHistoricalApy } from './etl/etlHistoricalApy';
+import { sendDiscordMessage } from './handler/discordHandler';
+import {
+    Subgraph,
+    DiscordAlert,
+} from './types';
 import {
     readAirdropProofs,
     readVestingAirdropProofs,
 } from './etl/etlAirdrops';
-import { getAirdropProofsUser } from './handler/airdropHandler'
+import { getAirdropProofsUser } from './handler/airdropHandler';
 // enable dotenv
 import * as dotenv from 'dotenv';
 import * as dotenvExpand from 'dotenv-expand';
@@ -41,13 +45,15 @@ dotenvExpand.expand(env);
                     let result = readVestingAirdropProofs();
                     console.dir(result, { depth: null });
                     break;
+                case 'discord':
+                    await sendDiscordMessage(DiscordAlert.BOT_ALERT, 'exception description');
+                    break;
                 default:
                     console.log(`Unknown parameter/s: ${params}`);
                     break;
             }
         } else {
-            // try something directly
-            await etlHistoricalApy();
+            console.log('missing params');
         }
         process.exit(0);
     } catch (err) {
