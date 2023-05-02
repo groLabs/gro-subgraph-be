@@ -12,6 +12,12 @@ import { config } from 'dotenv';
 config();
 
 
+/// @notice Sends a message to a Discord channel based on the provided alert, category, and message
+/// @dev The function constructs a Discord webhook client, creates an embed for the message,
+/// and sends it to the Discord channel
+/// @param alert The alert level of the message, used to determine the Discord channel
+/// @param category The category of the message, which is split into a title and detail for the embed
+/// @param message The main content of the message (e.g: the API URL)
 export const sendDiscordMessage = async (
     alert: DiscordAlert,
     category: string,
