@@ -65,6 +65,7 @@ export enum NetworkName {
 }
 
 export enum NetworkId {
+  UNKNOWN = '0',
   MAINNET = '1',
   AVALANCHE = '43114',
 }

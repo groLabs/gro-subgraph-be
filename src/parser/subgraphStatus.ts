@@ -1,4 +1,8 @@
-import { Status } from '../types';
+import { getNetworkIdbyDeploymentId } from '../utils/utils';
+import {
+    Status,
+    NetworkId,
+} from '../types';
 import {
     ISubgraphStatus,
     ISubgraphStatusNetwork,
@@ -15,9 +19,10 @@ export const statusNetwork = (
     status: Status,
     error: string,
     deploymentId: string
-) => ({
+): ISubgraphStatusNetwork => ({
     'status': status,
     'error_msg': error,
+    'network_id': getNetworkIdbyDeploymentId(deploymentId),
     'deployment_id': deploymentId,
 });
 
@@ -32,6 +37,7 @@ export const statusNetworkError = (
 ): ISubgraphStatusNetwork[] => ([{
     'status': Status.ERROR,
     'error_msg': err instanceof Error ? err.message : err,
+    'network_id': NetworkId.UNKNOWN,
     'deployment_id': 'N/A',
 }]);
 

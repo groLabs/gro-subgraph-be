@@ -1,8 +1,12 @@
-import { Status } from '../../types';
+import {
+    Status,
+    NetworkId,
+} from '../../types';
 
 export interface ISubgraphStatusNetwork {
     readonly 'status': Status,
     readonly 'error_msg': string,
+    readonly 'network_id': NetworkId,
     readonly 'deployment_id': string,
 }
 

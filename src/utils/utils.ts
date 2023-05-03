@@ -1,5 +1,8 @@
 import moment from 'moment';
-import { Subgraph as sg } from '../types';
+import {
+    NetworkId,
+    Subgraph as sg,
+} from '../types';
 import { BigNumber as BN } from 'bignumber.js';
 import { IUrl } from '../interfaces/url/IUrl';
 
@@ -101,4 +104,16 @@ export const bnToDecimal = (
     const scale = BN(10).pow(precision);
     const result = BN(amount).div(scale).toFixed(decimals);
     return parseFloat(result);
+}
+
+export const getNetworkIdbyDeploymentId = (
+    deploymentId: string,
+): NetworkId => {
+    if (deploymentId === process.env.DEPLOYMENT_ID_ETH) {
+        return NetworkId.MAINNET;
+    } else if (deploymentId === process.env.DEPLOYMENT_ID_AVAX) {
+        return NetworkId.AVALANCHE;
+    } else {
+        return NetworkId.UNKNOWN;
+    }
 }
