@@ -84,8 +84,4 @@ function onListening() {
 }
 
 // start scheduled jobs
-(
-    async () => {
-        await startJobs();
-    }
-)();
+startJobs();
