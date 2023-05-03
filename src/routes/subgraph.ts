@@ -4,7 +4,9 @@ import { DiscordAlert } from '../types';
 import { etlGroStats } from '../etl/etlGroStats';
 import { showError } from '../handler/logHandler';
 import { groStatsError } from '../parser/groStatsError';
-import { statusHandler } from '../handler/statusHandler';
+import { botStatusError } from '../parser/botStatusError';
+import { botStatusHandler } from '../handler/botStatusHandler';
+import { subgraphStatusHandler } from '../handler/subgraphStatusHandler';
 import { etlPersonalStats } from '../etl/etlPersonalStats';
 import { sendDiscordMessage } from '../handler/discordHandler';
 import { validateApiRequest } from '../caller/validateApiRequest';
@@ -23,7 +25,7 @@ import {
 import {
     globalStatus,
     statusNetworkError,
-} from '../parser/status';
+} from '../parser/subgraphStatus';
 import express, {
     Request,
     Response,
@@ -227,11 +229,11 @@ router.get(
 /// @notice Handles the /status API endpoint to retrieve the status of subgraphs
 /// @dev API example: http://localhost:3015/subgraph/status?subgraph=prod_hosted
 router.get(
-    '/status',
+    '/subgraph_status',
     wrapAsync(async (req: Request, res: Response) => {
         const alert = `[WARN] E6 - Get subgraph status failed \n${req.originalUrl}`;
         try {
-            const status = await statusHandler();
+            const status = await subgraphStatusHandler();
             res.json(status);
         } catch (err) {
             showError('routes/subgraph.ts->status', err);
@@ -244,6 +246,64 @@ router.get(
                 Status.ERROR,
                 now(),
                 statusNetworkError(err as Error | string),
+            ));
+        }
+    })
+);
+
+router.get(
+    '/bot_status',
+    validateApiRequest([
+        query('subgraph')
+            .trim()
+            .notEmpty().withMessage(`field <subgraph> can't be empty`)],
+        Route.BOT_STATUS,
+    ),
+    wrapAsync(async (req: Request, res: Response) => {
+        // E7 alert is sent from an external service if this API call is not reachable or
+        // returns unexpected results
+        const alert = `[WARN] E2 - Get gro stats failed \n${req.originalUrl}`;
+        try {
+            // if errors during validation, response has been already sent, so just exit
+            const errors = validationResult(req);
+            if (!errors.isEmpty())
+                return;
+            const { subgraph } = req.query;
+            if (Object.values(Subgraph).includes(subgraph as Subgraph)) {
+                // address & subgraph fields are correct
+                const botStatus = await botStatusHandler(
+                    subgraph as Subgraph,
+                );
+                if (botStatus.bot_status.status === Status.ERROR) {
+                    await sendDiscordMessage(
+                        DiscordAlert.BOT_ALERT,
+                        alert,
+                        botStatus.bot_status.error_msg,
+                    );
+                }
+                res.json(botStatus);
+            } else if (subgraph) {
+                // subgraph value is incorrect
+                const err_msg = `unknown target subgraph <${subgraph}>`;
+                showError('routes->subgraph.ts->bot_status', err_msg);
+                await sendDiscordMessage(
+                    DiscordAlert.BOT_ALERT,
+                    alert,
+                    err_msg,
+                );
+                res.json(botStatusError(
+                    err_msg
+                ));
+            }
+        } catch (err) {
+            showError('routes/subgraph.ts->bot_status', err);
+            await sendDiscordMessage(
+                DiscordAlert.BOT_ALERT,
+                alert,
+                `routes/subgraph.ts->bot_status: ${err}`,
+            );
+            res.json(botStatusError(
+                err as string,
             ));
         }
     })

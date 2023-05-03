@@ -1,14 +1,15 @@
 import axios from 'axios';
 import { TS_15D } from '../constants';
-import { queryStatus } from '../graphql/status';
 import { IError } from '../interfaces/url/IError';
 import { showError } from '../handler/logHandler';
-import { IQuery } from '../interfaces/status/IQuery';
+import { queryBotStatus } from '../graphql/botStatus';
 import { queryGroStatsEth } from '../graphql/groStatsEth';
 import { queryGroStatsAvax } from '../graphql/groStatsAvax';
+import { IQuery } from '../interfaces/subgraphStatus/IQuery';
+import { queryGraphStatus } from '../graphql/subgraphStatus';
 import { queryPersonalStatsEth } from '../graphql/personalStatsEth';
 import { queryPersonalStatsAvax } from '../graphql/personalStatsAvax';
-import { 
+import {
     Route,
     Status,
 } from '../types';
@@ -45,7 +46,7 @@ const getQuery = (
     route: Route,
     tsNow: number
 ): IQuery => {
-    if (route === Route.STATUS) {
+    if (route === Route.SUBGRAPH_STATUS) {
         const DEPLOYMENT_ID_ETH = process.env.DEPLOYMENT_ID_ETH;
         const DEPLOYMENT_ID_AVAX = process.env.DEPLOYMENT_ID_AVAX;
         if (!DEPLOYMENT_ID_ETH || !DEPLOYMENT_ID_AVAX) {
@@ -54,8 +55,10 @@ const getQuery = (
             return wrapQuery(err, Status.ERROR);
         } else {
             const deployments = `"${DEPLOYMENT_ID_ETH}", "${DEPLOYMENT_ID_AVAX}"`;
-            return wrapQuery(queryStatus(deployments), Status.OK);
+            return wrapQuery(queryGraphStatus(deployments), Status.OK);
         }
+    } else if (route === Route.BOT_STATUS) {
+        return wrapQuery(queryBotStatus(), Status.OK);
     } else if (isEthSubgraph(url)) {
         if (route === Route.GRO_PERSONAL_POSITION_MC) {
             return wrapQuery(queryPersonalStatsEth(account, first, blockTS), Status.OK);
@@ -69,7 +72,7 @@ const getQuery = (
             return wrapQuery(queryGroStatsAvax(), Status.OK);
         }
     }
-    const err = `Unknown route ${route} or subgraph api ${url}`
+    const err = `Unknown route ${route} or subgraph api ${url}`;
     showError('caller/subgraphCaller.ts->getQuery()', err);
     return wrapQuery(err, Status.OK);
 };

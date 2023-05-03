@@ -1,7 +1,8 @@
-import { statusHandler } from './handler/statusHandler';
 import { etlPersonalStats } from './etl/etlPersonalStats';
 import { etlHistoricalApy } from './etl/etlHistoricalApy';
 import { sendDiscordMessage } from './handler/discordHandler';
+import { getAirdropProofsUser } from './handler/airdropHandler';
+import { subgraphStatusHandler } from './handler/subgraphStatusHandler';
 import {
     Subgraph,
     DiscordAlert,
@@ -10,7 +11,7 @@ import {
     readAirdropProofs,
     readVestingAirdropProofs,
 } from './etl/etlAirdrops';
-import { getAirdropProofsUser } from './handler/airdropHandler';
+
 // enable dotenv
 import * as dotenv from 'dotenv';
 import * as dotenvExpand from 'dotenv-expand';
@@ -54,7 +55,7 @@ dotenvExpand.expand(env);
                     );
                     break;
                 case 'status':
-                    const status = await statusHandler();
+                    const status = await subgraphStatusHandler();
                     console.log(status);
                     break;
                 default:

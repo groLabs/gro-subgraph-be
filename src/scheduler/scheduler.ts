@@ -1,6 +1,6 @@
 import { Env } from '../types';
 import schedule from 'node-schedule';
-import { statusHandler } from '../handler/statusHandler';
+import { subgraphStatusHandler } from '../handler/subgraphStatusHandler';
 import { etlHistoricalApy } from '../etl/etlHistoricalApy';
 import {
     showInfo,
@@ -34,6 +34,6 @@ const scheduleJob = (scheduleSetup: string, jobName: string, jobFunction: () => 
 export const startJobs = (): void => {
     if (process.env.NODE_ENV === Env.PROD) {
         scheduleJob(apyJobSetup, 'Historical APY', etlHistoricalApy);
-        scheduleJob(statusApiSetup, 'Status API', statusHandler);
+        scheduleJob(statusApiSetup, 'Status API', subgraphStatusHandler);
     }
 }

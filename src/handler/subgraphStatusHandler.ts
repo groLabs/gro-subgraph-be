@@ -3,19 +3,19 @@ import {
     Status,
 } from '../types';
 import {
-    IStatus,
-    IStatusNetwork,
-} from '../interfaces/status/IStatus';
+    ISubgraphStatus,
+    ISubgraphStatusNetwork,
+} from '../interfaces/subgraphStatus/ISubgraphStatus';
 import {
     globalStatus,
     statusNetwork,
     statusNetworkError,
-} from '../parser/status';
+} from '../parser/subgraphStatus';
 import { now } from '../utils/utils';
 import { DiscordAlert } from '../types';
-import { showInfo } from '../handler/logHandler';
+import { showInfo } from './logHandler';
 import { callSubgraph } from '../caller/subgraphCaller';
-import { sendDiscordMessage } from '../handler/discordHandler';
+import { sendDiscordMessage } from './discordHandler';
 import { IIndexStatues } from '../interfaces/subgraph/IIndexStatuses';
 
 
@@ -23,7 +23,7 @@ import { IIndexStatues } from '../interfaces/subgraph/IIndexStatuses';
 /// @dev Iterates through the subgraph indexing statuses and checks for errors, health, and sync status
 /// @param _data The IIndexStatues object containing the subgraph indexing statuses
 /// @return An array of IStatusNetwork objects with subgraph status details
-const checkStatus = (_data: IIndexStatues): IStatusNetwork[] => {
+const checkStatus = (_data: IIndexStatues): ISubgraphStatusNetwork[] => {
     const data = _data.indexingStatuses;
     if (data.length === 0) {
         return [statusNetwork(Status.ERROR, 'deployment/s not found', 'N/A')];
@@ -43,7 +43,7 @@ const checkStatus = (_data: IIndexStatues): IStatusNetwork[] => {
 /// @notice Handles the request for the global health status of subgraphs
 /// @dev Calls the subgraph with the provided status URL and processes the result to return the global status
 /// @return The global status object (IStatus) containing the current timestamp and subgraph statuses
-export const statusHandler = async (): Promise<IStatus> => {
+export const subgraphStatusHandler = async (): Promise<ISubgraphStatus> => {
     const tsNow = parseInt(now());
     const alert = '[WARN] E6 - Get subgraph status failed';
     try {
@@ -61,7 +61,7 @@ export const statusHandler = async (): Promise<IStatus> => {
                 statusNetworkError(msg),
             );
         } else {
-            const result = await callSubgraph(statusURL, '', 0, 0, Route.STATUS, tsNow);
+            const result = await callSubgraph(statusURL, '', 0, 0, Route.SUBGRAPH_STATUS, tsNow);
             if (result.errors) {
                 return globalStatus(
                     Status.ERROR,

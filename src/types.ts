@@ -73,7 +73,8 @@ export enum Route {
   GRO_STATS_MC = 'gro_stats_mc',
   GRO_PERSONAL_POSITION_MC = 'gro_personal_position_mc',
   HISTORICAL_APY = 'historical_apy',
-  STATUS = 'status',
+  BOT_STATUS = 'bot_status',
+  SUBGRAPH_STATUS = 'subgraph_status',
 }
 
 export enum SqlCommand {

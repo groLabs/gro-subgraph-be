@@ -1,6 +1,10 @@
-import { Route } from '../types';
+import {
+    Route,
+    Status,
+} from '../types';
 import { now } from '../utils/utils';
 import { groStatsError } from '../parser/groStatsError';
+import { botStatusError } from '../parser/botStatusError';
 import { personalStatsError } from '../parser/personalStatsError';
 import { historicalApyError } from '../parser/historicalApyError';
 import {
@@ -33,6 +37,14 @@ const sendErrorResponse = (
         case Route.HISTORICAL_APY:
             res.status(400).json(historicalApyError(now(), errors));
             break;
+        case Route.BOT_STATUS:
+            res.status(400).json(botStatusError(errors));
+            break;
+        default:
+            res.status(400).json({
+                'status': Status.ERROR,
+                'error_msg': 'unknown route to send error response',
+            });
     }
 };
 

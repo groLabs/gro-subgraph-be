@@ -1,8 +1,8 @@
 import { Status } from '../types';
 import {
-    IStatus,
-    IStatusNetwork,
-} from '../interfaces/status/IStatus';
+    ISubgraphStatus,
+    ISubgraphStatusNetwork,
+} from '../interfaces/subgraphStatus/ISubgraphStatus';
 
 
 /// @notice Constructs a status network object with the given status, error,
@@ -21,15 +21,15 @@ export const statusNetwork = (
     'deployment_id': deploymentId,
 });
 
-/// @notice Constructs an array of IStatusNetwork objects with an error status
+/// @notice Constructs an array of ISubgraphStatusNetwork objects with an error status
 ///         and the given error message
 /// @dev Used to create an error status network array for a given error message
 /// @param err The error message or error object
-/// @return An array containing a single IStatusNetwork object with an error status
+/// @return An array containing a single ISubgraphStatusNetwork object with an error status
 ///         and the given error message
 export const statusNetworkError = (
     err: Error | string,
-): IStatusNetwork[] => ([{
+): ISubgraphStatusNetwork[] => ([{
     'status': Status.ERROR,
     'error_msg': err instanceof Error ? err.message : err,
     'deployment_id': 'N/A',
@@ -45,9 +45,11 @@ export const statusNetworkError = (
 export const globalStatus = (
     status: Status,
     ts: string,
-    networks: IStatusNetwork[],
-): IStatus => ({
-    'status': status,
-    'current_timestamp': ts,
-    'networks': networks,
+    networks: ISubgraphStatusNetwork[],
+): ISubgraphStatus => ({
+    'subgraph_status': {
+        'status': status,
+        'current_timestamp': ts,
+        'networks': networks,
+    }
 });
