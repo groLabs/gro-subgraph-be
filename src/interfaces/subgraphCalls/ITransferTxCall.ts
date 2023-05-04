@@ -3,7 +3,7 @@ import {
     TxType,
 } from '../../types';
 
-export interface ITransferTxSubgraph {
+export interface ITransferTxCall {
     readonly block_number: number
     readonly timestamp: number
     readonly hash: string

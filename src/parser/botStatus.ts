@@ -8,18 +8,37 @@ import {
     IBotStatusNetwork,
 } from '../interfaces/botStatus/IBotStatus';
 import {
+    IBotStatusCall,
+    IBotStatusCallError,
+} from '../interfaces/subgraphCalls/IBotStatusCall';
+import {
     botStatusError,
     botStatusNetworkError,
 } from './botStatusError';
 
 
-const parseStatus = (status: any, networkId: NetworkId): IBotStatusNetwork => {
-    if (status.errors)
+// Type guard to check if the object is of type IBotStatusCallError
+function isBotStatusCallError(status: IBotStatusCall): status is IBotStatusCallError {
+    return 'errors' in status;
+}
+
+/// @notice Parses a given bot status call and returns the corresponding bot status network
+/// @param status The IBotStatusCall object to parse
+/// @param networkId The NetworkId for the given status object
+/// @return An IBotStatusNetwork object containing the parsed status information
+const parseStatus = (
+    status: IBotStatusCall,
+    networkId: NetworkId
+): IBotStatusNetwork => {
+    if (isBotStatusCallError(status)) {
         return botStatusNetworkError(status.errors, networkId);
-    if (!status.data)
+    }
+    if (!status.data) {
         return botStatusNetworkError('Missing data from subgraph', networkId);
-    if (status.data._meta.hasIndexingErrors)
+    }
+    if (status.data._meta.hasIndexingErrors) {
         return botStatusNetworkError('Subgraph has indexing errors', networkId);
+    }
     return {
         'status': Status.OK,
         'error_msg': '',
@@ -30,11 +49,15 @@ const parseStatus = (status: any, networkId: NetworkId): IBotStatusNetwork => {
     };
 }
 
+/// @notice Parses the bot status call of two given networks and returns a combined bot status
+/// @param statusEth The bot status call object for Ethereum
+/// @param statusAvax The bot status call object for Avalanche
+/// @return An IBotStatus object containing the combined status of both networks
 export const botStatusParser = (
-    statusEth: any,
-    statusAvax: any,
+    statusEth: IBotStatusCall,
+    statusAvax: IBotStatusCall,
 ): IBotStatus => {
-    try {        
+    try {
         const ethResult = parseStatus(statusEth, NetworkId.MAINNET);
         const avaxResult = parseStatus(statusAvax, NetworkId.AVALANCHE);
         const result = {
@@ -43,7 +66,7 @@ export const botStatusParser = (
                 'error_msg': '',
                 'network': {
                     [NetworkId.MAINNET]: ethResult,
-                    [NetworkId.AVALANCHE]: avaxResult
+                    [NetworkId.AVALANCHE]: avaxResult,
                 }
             }
         }

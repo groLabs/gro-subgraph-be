@@ -5,7 +5,7 @@ import {
 import { Route } from '../types'; '../types';
 import { showError } from '../handler/logHandler';
 import { callSubgraph } from '../caller/subgraphCaller';
-import { ITransferTxSubgraph } from '../interfaces/subgraph/ITransferTxSubgraph';
+import { ITransferTxCall } from '../interfaces/subgraphCalls/ITransferTxCall';
 
 
 /// @notice Fetches personal stats for an account from a subgraph and combines data from multiple iterations
@@ -37,7 +37,7 @@ export const getPersonalStats = async (
         } else if (call.data.users.length === 0) {
             return call.data;
         } else {
-            let currentTransfers: ITransferTxSubgraph[] = call.data.users[0].transfers;
+            let currentTransfers: ITransferTxCall[] = call.data.users[0].transfers;
             const currentTransfersLength = currentTransfers.length;
             if (lastBlockTS === 0) {
                 // ** First iteration **
@@ -49,7 +49,7 @@ export const getPersonalStats = async (
             } else if (currentTransfersLength > 0) {
                 // ** Next iterations **
                 // Get last previous N Transfers (normally 3)
-                const prev: ITransferTxSubgraph[] = result.users[0].transfers.slice(
+                const prev: ITransferTxCall[] = result.users[0].transfers.slice(
                     Math.max(result.users[0].transfers.length - NUM_TRANSFER_CHECKS, 0)
                 );
                 // Remove any new Transfer already stored in result
@@ -68,7 +68,7 @@ export const getPersonalStats = async (
             // Transfers are extracted is ascending order but sent to the FE in descending order
             if (isReady) {
                 result.users[0].transfers
-                    .sort((a: ITransferTxSubgraph, b: ITransferTxSubgraph) => b.timestamp - a.timestamp);
+                    .sort((a: ITransferTxCall, b: ITransferTxCall) => b.timestamp - a.timestamp);
             }
 
             return (isReady)
@@ -99,9 +99,9 @@ export const getPersonalStats = async (
 /// @param prev An array of previous transfers
 /// @return An array of current transfers with duplicates removed
 const removeRepeated = (
-    curr: ITransferTxSubgraph[],
-    prev: ITransferTxSubgraph[]
-): ITransferTxSubgraph[] => {
+    curr: ITransferTxCall[],
+    prev: ITransferTxCall[]
+): ITransferTxCall[] => {
     curr = curr.filter((currItem) =>
         !prev.some((prevItem) =>
             prevItem.block_number === currItem.block_number && prevItem.token === currItem.token

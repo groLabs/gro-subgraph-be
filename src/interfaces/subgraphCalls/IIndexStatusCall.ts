@@ -1,12 +1,12 @@
 interface IChains {
-	'chainHeadBlock': {
-		'number': string,
+	readonly 'chainHeadBlock': {
+		readonly 'number': string,
 	},
-	'earliestBlock': {
-		'number': string,
+	readonly 'earliestBlock': {
+		readonly 'number': string,
 	},
-	'latestBlock': {
-		'number': string,
+	readonly 'latestBlock': {
+		readonly 'number': string,
 	}
 }
 
@@ -19,6 +19,6 @@ interface IIndexStatus {
 	readonly 'chains': IChains[],
 }
 
-export interface IIndexStatues {
+export interface IIndexStatusCall {
 	readonly 'indexingStatuses': IIndexStatus[],
 }

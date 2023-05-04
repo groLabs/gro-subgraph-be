@@ -16,14 +16,14 @@ import { DiscordAlert } from '../types';
 import { showInfo } from './logHandler';
 import { callSubgraph } from '../caller/subgraphCaller';
 import { sendDiscordMessage } from './discordHandler';
-import { IIndexStatues } from '../interfaces/subgraph/IIndexStatuses';
+import { IIndexStatusCall } from '../interfaces/subgraphCalls/IIndexStatusCall';
 
 
 /// @notice Checks the status of subgraphs and returns an array of IStatusNetwork objects
 /// @dev Iterates through the subgraph indexing statuses and checks for errors, health, and sync status
 /// @param _data The IIndexStatues object containing the subgraph indexing statuses
 /// @return An array of IStatusNetwork objects with subgraph status details
-const checkStatus = (_data: IIndexStatues): ISubgraphStatusNetwork[] => {
+const checkStatus = (_data: IIndexStatusCall): ISubgraphStatusNetwork[] => {
     const data = _data.indexingStatuses;
     if (data.length === 0) {
         return [statusNetwork(Status.ERROR, 'deployment/s not found', 'N/A')];
