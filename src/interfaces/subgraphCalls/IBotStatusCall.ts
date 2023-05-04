@@ -1,3 +1,6 @@
+import { IErrorResponse } from './IErrorResponse';
+
+/// @notice Defines the structure of an status call object
 export interface IBotStatusCallData {
     readonly 'data': {
         readonly 'masterDatas': {
@@ -13,8 +16,4 @@ export interface IBotStatusCallData {
     }
 }
 
-export interface IBotStatusCallError {
-    readonly 'errors': string;
-}
-
-export type IBotStatusCall = IBotStatusCallData | IBotStatusCallError;
+export type IBotStatusCall = IBotStatusCallData | IErrorResponse;

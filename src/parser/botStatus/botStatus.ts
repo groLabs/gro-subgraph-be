@@ -1,4 +1,7 @@
 import { showError } from '../../handler/logHandler';
+import { parseGraphQlError } from '../../utils/utils';
+import { IErrorResponse } from '../../interfaces/subgraphCalls/IErrorResponse';
+import { IBotStatusCall } from '../../interfaces/subgraphCalls/IBotStatusCall';
 import {
     Status,
     NetworkId,
@@ -8,17 +11,13 @@ import {
     IBotStatusNetwork,
 } from '../../interfaces/botStatus/IBotStatus';
 import {
-    IBotStatusCall,
-    IBotStatusCallError,
-} from '../../interfaces/subgraphCalls/IBotStatusCall';
-import {
     botStatusError,
     botStatusNetworkError,
 } from './botStatusError';
 
 
 // Type guard to check if the object is of type IBotStatusCallError
-function isBotStatusCallError(status: IBotStatusCall): status is IBotStatusCallError {
+function isBotStatusCallError(status: IBotStatusCall): status is IErrorResponse {
     return 'errors' in status;
 }
 
@@ -31,7 +30,8 @@ const parseStatus = (
     networkId: NetworkId
 ): IBotStatusNetwork => {
     if (isBotStatusCallError(status)) {
-        return botStatusNetworkError(status.errors, networkId);
+        const err_msg = parseGraphQlError(status);
+        return botStatusNetworkError(err_msg, networkId);
     }
     if (!status.data) {
         return botStatusNetworkError('Missing data from subgraph', networkId);
@@ -60,10 +60,22 @@ export const botStatusParser = (
     try {
         const ethResult = parseStatus(statusEth, NetworkId.MAINNET);
         const avaxResult = parseStatus(statusAvax, NetworkId.AVALANCHE);
+        const status = (ethResult.status === Status.OK && avaxResult.status === Status.OK)
+            ? Status.OK
+            : Status.ERROR;
+        // Show errors from both Eth & Avax if they are different (Set avoids repeating the same error description)
+        const errorMessages = new Set<string>();
+        if (ethResult.error_msg) {
+            errorMessages.add(ethResult.error_msg);
+        }
+        if (avaxResult.error_msg) {
+            errorMessages.add(avaxResult.error_msg);
+        }
+        const err_msg = Array.from(errorMessages).join(', ');
         const result = {
             'bot_status': {
-                'status': (ethResult.status === Status.OK && avaxResult.status === Status.OK) ? Status.OK : Status.ERROR,
-                'error_msg': '',
+                'status': status,
+                'error_msg': err_msg,
                 'network': {
                     [NetworkId.MAINNET]: ethResult,
                     [NetworkId.AVALANCHE]: avaxResult,
