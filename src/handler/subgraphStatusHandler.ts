@@ -10,7 +10,7 @@ import {
     globalStatus,
     statusNetwork,
     statusNetworkError,
-} from '../parser/subgraphStatus';
+} from '../parser/subgraphStatus/subgraphStatus';
 import { now } from '../utils/utils';
 import { DiscordAlert } from '../types';
 import { showInfo } from './logHandler';

@@ -1,15 +1,15 @@
-import { Status } from '../types';
-import { showError } from '../handler/logHandler';
+import { Status } from '../../types';
+import { showError } from '../../handler/logHandler';
 import { personalStatsError } from './personalStatsError';
 import {
     now,
     toStr
-} from '../utils/utils';
+} from '../../utils/utils';
 import {
     IPersonalStatsEthereum,
     IPersonalStatsAvalanche,
     IPersonalStatsTotals,
-} from '../interfaces/personalStats/IPersonalStats';
+} from '../../interfaces/personalStats/IPersonalStats';
 
 
 /// @notice Combines personal stats from the Ethereum and Avalanche subgraphs into a single 

@@ -5,7 +5,7 @@
     - Romad ratio
     - Past 5 closed positions
 */
-import { EMPTY_AVAX_VAULT } from '../parser/groStatsEmpty';
+import { EMPTY_AVAX_VAULT } from '../parser/groStats/groStatsEmpty';
 import { IVault } from '../interfaces/groStats/avalanche/IVault';
 
 

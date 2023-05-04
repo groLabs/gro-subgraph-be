@@ -8,7 +8,7 @@ import { IGroBalanceCombined } from '../interfaces/personalStats/IGroBalanceComb
 import {
     NO_POOL,
     EMPTY_POOL,
-} from '../parser/personalStatsEmpty';
+} from '../parser/personalStats/personalStatsEmpty';
 
 
 /// @notice Gets pool data for a specific pool by poolId

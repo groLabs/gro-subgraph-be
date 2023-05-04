@@ -1,12 +1,12 @@
-import { getNetworkIdbyDeploymentId } from '../utils/utils';
+import { getNetworkIdbyDeploymentId } from '../../utils/utils';
 import {
     Status,
     NetworkId,
-} from '../types';
+} from '../../types';
 import {
     ISubgraphStatus,
     ISubgraphStatusNetwork,
-} from '../interfaces/subgraphStatus/ISubgraphStatus';
+} from '../../interfaces/subgraphStatus/ISubgraphStatus';
 
 
 /// @notice Constructs a status network object with the given status, error,

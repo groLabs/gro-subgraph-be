@@ -1,6 +1,6 @@
-import { Status } from '../types';
-import { LAUNCH_TIMESTAMP_ETH } from '../constants';
-import { IHistoricalApy } from '../interfaces/historicalApy/historicalApy';
+import { Status } from '../../types';
+import { LAUNCH_TIMESTAMP_ETH } from '../../constants';
+import { IHistoricalApy } from '../../interfaces/historicalApy/historicalApy';
 
 
 /// @notice Creates an error response for historical APY data

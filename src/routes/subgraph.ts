@@ -2,14 +2,14 @@ import { config } from 'dotenv';
 import { now } from '../utils/utils';
 import { etlGroStats } from '../etl/etlGroStats';
 import { isAddress } from '@ethersproject/address';
-import { groStatsError } from '../parser/groStatsError';
-import { botStatusError } from '../parser/botStatusError';
+import { groStatsError } from '../parser/groStats/groStatsError';
+import { botStatusError } from '../parser/botStatus/botStatusError';
 import { etlPersonalStats } from '../etl/etlPersonalStats';
 import { sendErrorAndResponse } from './sendAlertAndResponse';
 import { botStatusHandler } from '../handler/botStatusHandler';
 import { validateApiRequest } from '../caller/validateApiRequest';
-import { personalStatsError } from '../parser/personalStatsError';
-import { historicalApyError } from '../parser/historicalApyError';
+import { personalStatsError } from '../parser/personalStats/personalStatsError';
+import { historicalApyError } from '../parser/historicalApy/historicalApyError';
 import { getHistoricalApy } from '../handler/historicalApyHandler';
 import { subgraphStatusHandler } from '../handler/subgraphStatusHandler';
 import {
@@ -24,7 +24,7 @@ import {
 import {
     globalStatus,
     statusNetworkError,
-} from '../parser/subgraphStatus';
+} from '../parser/subgraphStatus/subgraphStatus';
 import express, {
     Request,
     Response,

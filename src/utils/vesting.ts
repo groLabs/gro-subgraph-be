@@ -1,6 +1,6 @@
 import { toStr } from './utils';
 import { showError } from '../handler/logHandler';
-import { EMPTY_VESTING_AIRDROP } from '../parser/personalStatsEmpty';
+import { EMPTY_VESTING_AIRDROP } from '../parser/personalStats/personalStatsEmpty';
 import { getVestingAirdropProofsUser } from '../handler/airdropHandler';
 import { IVestingBonus } from '../interfaces/personalStats/IVestingBonus';
 import { IVestingAirdrop } from '../interfaces/personalStats/IVestingAirdrop';

@@ -1,9 +1,9 @@
-import { NA } from '../constants';
-import { IPersonalStatsTotals} from '../interfaces/personalStats/IPersonalStats';
+import { NA } from '../../constants';
+import { IPersonalStatsTotals} from '../../interfaces/personalStats/IPersonalStats';
 import {
     Status,
     NetworkName
-} from '../types';
+} from '../../types';
 import { 
     emptyEthUser, 
     emptyAvaxUser

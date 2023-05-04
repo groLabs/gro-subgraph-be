@@ -1,7 +1,7 @@
 import { QUERY_ERROR } from '../constants';
 import { etlGroStats } from './etlGroStats';
 import { query } from '../handler/queryHandler';
-import { parseHistoricalApyQuery } from '../parser/historicalApy';
+import { parseHistoricalApyQuery } from '../parser/historicalApy/historicalApy';
 import {
     Status,
     Subgraph

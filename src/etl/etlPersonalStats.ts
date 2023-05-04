@@ -1,10 +1,10 @@
 import { Subgraph } from '../types';
 import { parseGraphQlError } from '../utils/utils';
-import { personalStatsError } from '../parser/personalStatsError';
+import { personalStatsError } from '../parser/personalStats/personalStatsError';
 import { getPersonalStats } from '../handler/personalStatsHandler';
-import { parsePersonalStatsSubgraphEthereum } from '../parser/personalStatsEth';
-import { parsePersonalStatsSubgraphAvalanche } from '../parser/personalStatsAvax';
-import { personalStatsSubgraphParserTotals } from '../parser/personalStatsTotals';
+import { parsePersonalStatsSubgraphEthereum } from '../parser/personalStats/personalStatsEth';
+import { parsePersonalStatsSubgraphAvalanche } from '../parser/personalStats/personalStatsAvax';
+import { personalStatsSubgraphParserTotals } from '../parser/personalStats/personalStatsTotals';
 import { IPersonalStatsTotals } from '../interfaces/personalStats/IPersonalStats';
 import {
     now,

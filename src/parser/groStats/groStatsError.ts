@@ -1,9 +1,9 @@
-import { NA } from '../constants';
-import { IGroStats } from '../interfaces/groStats/IGroStats';
+import { NA } from '../../constants';
+import { IGroStats } from '../../interfaces/groStats/IGroStats';
 import {
     Status,
     NetworkName,
-} from '../types';
+} from '../../types';
 import {
     emptyGroStatsEth,
     emptyGroStatsAvax,

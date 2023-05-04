@@ -1,9 +1,9 @@
 import { DiscordAlert } from '../types';
+import { showError } from '../handler/logHandler';
 import {
     DISCORD_CHANNELS,
     SUBGRAPH_LOGO_URL,
 } from '../constants';
-import { showError } from '../handler/logHandler';
 import {
     EmbedBuilder,
     WebhookClient,

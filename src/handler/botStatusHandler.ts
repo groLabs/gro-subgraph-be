@@ -1,8 +1,8 @@
 import { getUrl } from '../utils/utils';
 import { TX_ITERATION } from '../constants';
-import { botStatusParser } from '../parser/botStatus';
+import { botStatusParser } from '../parser/botStatus/botStatus';
 import { callSubgraph } from '../caller/subgraphCaller';
-import { botStatusError } from '../parser/botStatusError';
+import { botStatusError } from '../parser/botStatus/botStatusError';
 import {
     Route,
     Subgraph

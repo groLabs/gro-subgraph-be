@@ -1,11 +1,11 @@
 import {
     Status,
     NetworkId
-} from '../types';
+} from '../../types';
 import {
     IBotStatus,
     IBotStatusNetwork,
-} from '../interfaces/botStatus/IBotStatus';
+} from '../../interfaces/botStatus/IBotStatus';
 
 
 export const botStatusNetworkError = (

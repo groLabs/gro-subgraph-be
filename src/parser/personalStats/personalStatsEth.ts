@@ -1,28 +1,28 @@
-import { getAirdrops } from '../utils/airdrop';
-import { showError } from '../handler/logHandler';
+import { getAirdrops } from '../../utils/airdrop';
+import { showError } from '../../handler/logHandler';
 import { emptyEthUser } from './personalStatsEmpty';
-import { IPool } from '../interfaces/personalStats/IPool';
-import { ITransferTx } from '../interfaces/personalStats/ITransferTx';
-import { IApprovalTx } from '../interfaces/personalStats/IApprovalTx';
-import { IPersonalStatsEthereum } from '../interfaces/personalStats/IPersonalStats';
+import { IPool } from '../../interfaces/personalStats/IPool';
+import { ITransferTx } from '../../interfaces/personalStats/ITransferTx';
+import { IApprovalTx } from '../../interfaces/personalStats/IApprovalTx';
+import { IPersonalStatsEthereum } from '../../interfaces/personalStats/IPersonalStats';
 import {
     now,
     toStr
-} from '../utils/utils';
+} from '../../utils/utils';
 import {
     getVestingBonus,
     getVestingAirdrop,
-} from '../utils/vesting';
+} from '../../utils/vesting';
 import {
     Status,
     NetworkId,
     NetworkName,
-} from '../types';
+} from '../../types';
 import {
     getPool,
     getAllPools,
     getGroBalanceCombined,
-} from '../utils/staker';
+} from '../../utils/staker';
 
 
 /// @notice Parses the personal stats from the Ethereum subgraph response

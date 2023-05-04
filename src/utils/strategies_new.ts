@@ -1,6 +1,6 @@
 import { toStr } from './utils';
 import { DEFAULT_STRATEGY_APY } from '../constants';
-import { EMPTY_VAULT } from '../parser/groStatsEmpty';
+import { EMPTY_VAULT } from '../parser/groStats/groStatsEmpty';
 import { IVault } from '../interfaces/groStats/ethereum/IVault';
 import { IStrategy } from '../interfaces/groStats/ethereum/IStrategy';
 

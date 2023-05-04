@@ -1,11 +1,11 @@
 import { Subgraph } from '../types';
 import { parseGraphQlError } from '../utils/utils';
-import { groStatsParser } from '../parser/groStats';
-import { groStatsError } from '../parser/groStatsError';
+import { groStatsParser } from '../parser/groStats/groStats';
+import { groStatsError } from '../parser/groStats/groStatsError';
 import { getGroStats } from '../handler/groStatsHandler';
 import { IGroStats } from '../interfaces/groStats/IGroStats';
-import { groStatsParserEthereum } from '../parser/groStatsEth';
-import { groStatsParserAvalanche } from '../parser/groStatsAvax';
+import { groStatsParserEthereum } from '../parser/groStats/groStatsEth';
+import { groStatsParserAvalanche } from '../parser/groStats/groStatsAvax';
 import {
     now,
     getUrl,

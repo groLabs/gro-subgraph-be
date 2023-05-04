@@ -1,22 +1,22 @@
-import { toStr } from '../utils/utils';
-import { IVault } from '../interfaces/groStats/ethereum/IVault';
-import { IVault as IVaultAvax } from '../interfaces/groStats/avalanche/IVault';
-import { IStrategy } from '../interfaces/groStats/ethereum/IStrategy';
-import { IExposure } from '../interfaces/groStats/ethereum/IExposure';
+import { toStr } from '../../utils/utils';
+import { IVault } from '../../interfaces/groStats/ethereum/IVault';
+import { IVault as IVaultAvax } from '../../interfaces/groStats/avalanche/IVault';
+import { IStrategy } from '../../interfaces/groStats/ethereum/IStrategy';
+import { IExposure } from '../../interfaces/groStats/ethereum/IExposure';
 import {
     Status,
     NetworkName,
-} from '../types';
+} from '../../types';
 import {
     NA,
     LAUNCH_TIMESTAMP_ETH,
     LAUNCH_TIMESTAMP_AVAX,
-} from '../constants';
+} from '../../constants';
 import {
     IGroStats,
     IGroStatsEthereum,
     IGroStatsAvalanche,
-} from '../interfaces/groStats/IGroStats';
+} from '../../interfaces/groStats/IGroStats';
 
 
 /// @notice Creates empty Gro protocol statistics objects with default values

@@ -1,14 +1,14 @@
-import { toStr } from '../utils/utils';
-import { LAUNCH_TIMESTAMP_AVAX } from '../constants';
-import { IGroStatsAvalanche } from '../interfaces/groStats/IGroStats';
+import { toStr } from '../../utils/utils';
+import { LAUNCH_TIMESTAMP_AVAX } from '../../constants';
+import { IGroStatsAvalanche } from '../../interfaces/groStats/IGroStats';
 import {
     Status,
     NetworkName,
-} from '../types';
+} from '../../types';
 import {
     getTvl,
     getLabs,
-} from '../utils/labs';
+} from '../../utils/labs';
 
 
 /// @notice Parses raw Avalanche Gro protocol statistics and returns a formatted IGroStatsAvalanche object

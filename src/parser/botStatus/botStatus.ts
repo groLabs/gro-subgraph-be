@@ -1,16 +1,16 @@
-import { showError } from '../handler/logHandler';
+import { showError } from '../../handler/logHandler';
 import {
     Status,
     NetworkId,
-} from '../types';
+} from '../../types';
 import {
     IBotStatus,
     IBotStatusNetwork,
-} from '../interfaces/botStatus/IBotStatus';
+} from '../../interfaces/botStatus/IBotStatus';
 import {
     IBotStatusCall,
     IBotStatusCallError,
-} from '../interfaces/subgraphCalls/IBotStatusCall';
+} from '../../interfaces/subgraphCalls/IBotStatusCall';
 import {
     botStatusError,
     botStatusNetworkError,

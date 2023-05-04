@@ -1,14 +1,14 @@
-import { NA } from '../constants';
-import { toStr } from '../utils/utils';
-import { showError } from '../handler/logHandler';
+import { NA } from '../../constants';
+import { toStr } from '../../utils/utils';
+import { showError } from '../../handler/logHandler';
 import { emptyAvaxUser } from './personalStatsEmpty';
-import { ITransferTx } from '../interfaces/personalStats/ITransferTx';
-import { IApprovalTx } from '../interfaces/personalStats/IApprovalTx';
-import { IPersonalStatsAvalanche } from '../interfaces/personalStats/IPersonalStats';
+import { ITransferTx } from '../../interfaces/personalStats/ITransferTx';
+import { IApprovalTx } from '../../interfaces/personalStats/IApprovalTx';
+import { IPersonalStatsAvalanche } from '../../interfaces/personalStats/IPersonalStats';
 import {
     Status,
     NetworkId,
-} from '../types';
+} from '../../types';
 
 
 /// @notice Parses personal stats data from the Avalanche subgraph and returns a structured object

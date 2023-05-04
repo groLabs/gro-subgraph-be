@@ -3,10 +3,10 @@ import {
     Status,
 } from '../types';
 import { now } from '../utils/utils';
-import { groStatsError } from '../parser/groStatsError';
-import { botStatusError } from '../parser/botStatusError';
-import { personalStatsError } from '../parser/personalStatsError';
-import { historicalApyError } from '../parser/historicalApyError';
+import { groStatsError } from '../parser/groStats/groStatsError';
+import { botStatusError } from '../parser/botStatus/botStatusError';
+import { personalStatsError } from '../parser/personalStats/personalStatsError';
+import { historicalApyError } from '../parser/historicalApy/historicalApyError';
 import {
     ValidationChain,
     validationResult,

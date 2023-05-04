@@ -1,14 +1,14 @@
-import { NA } from '../constants';
-import { toStr } from '../utils/utils';
+import { NA } from '../../constants';
+import { toStr } from '../../utils/utils';
 import {
     Status,
     NetworkName,
-} from '../types';
+} from '../../types';
 import {
     IGroStats,
     IGroStatsEthereum,
     IGroStatsAvalanche,
-} from '../interfaces/groStats/IGroStats';
+} from '../../interfaces/groStats/IGroStats';
 
 
 /// @notice Parses and aggregates Gro protocol statistics from Ethereum and Avalanche networks

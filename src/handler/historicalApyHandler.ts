@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { now } from '../utils/utils';
 import { LAUNCH_TIMESTAMP_ETH } from '../constants';
-import { historicalApyError } from '../parser/historicalApyError';
+import { historicalApyError } from '../parser/historicalApy/historicalApyError';
 import {
     showInfo,
     showError,
@@ -17,7 +17,7 @@ import {
 import {
     checkData,
     parseData
-} from '../parser/historicalApy';
+} from '../parser/historicalApy/historicalApy';
 
 
 /* parameters example:

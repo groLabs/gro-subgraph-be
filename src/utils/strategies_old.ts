@@ -2,12 +2,8 @@ import {
     toStr,
     now as _now
 } from './utils';
-import {
-    TS_1D,
-    TS_7D,
-    DEFAULT_STRATEGY_APY,
-} from '../constants';
-import { EMPTY_VAULT } from '../parser/groStatsEmpty';
+import { DEFAULT_STRATEGY_APY } from '../constants';
+import { EMPTY_VAULT } from '../parser/groStats/groStatsEmpty';
 import { IVault } from '../interfaces/groStats/ethereum/IVault';
 import { IStrategy } from '../interfaces/groStats/ethereum/IStrategy';
 

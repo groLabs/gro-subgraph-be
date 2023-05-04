@@ -2,7 +2,7 @@
 import fs from 'fs';
 import path from 'path';
 import { IAirdropProof } from '../interfaces/personalStats/IAirdropProof';
-import { EMPTY_VESTING_AIRDROP_PROOF } from '../parser/personalStatsEmpty';
+import { EMPTY_VESTING_AIRDROP_PROOF } from '../parser/personalStats/personalStatsEmpty';
 import { IVestingAirdropProof } from '../interfaces/personalStats/IVestingAirdropProof';
 import {
     showInfo,

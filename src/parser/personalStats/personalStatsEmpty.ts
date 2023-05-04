@@ -1,20 +1,20 @@
-import { toStr } from '../utils/utils';
-import { getAirdrops } from '../utils/airdrop';
-import { IVestingAirdropProof } from '../interfaces/personalStats/IVestingAirdropProof';
+import { toStr } from '../../utils/utils';
+import { getAirdrops } from '../../utils/airdrop';
+import { IVestingAirdropProof } from '../../interfaces/personalStats/IVestingAirdropProof';
 import {
     IPersonalStatsEthereum,
     IPersonalStatsAvalanche,
-} from '../interfaces/personalStats/IPersonalStats';
+} from '../../interfaces/personalStats/IPersonalStats';
 import {
     Status,
     NetworkId,
     NetworkName,
-} from '../types';
+} from '../../types';
 import {
     NA,
     LAUNCH_TIMESTAMP_ETH,
     LAUNCH_TIMESTAMP_AVAX,
-} from '../constants';
+} from '../../constants';
 
 
 /// @notice Creates an empty user object for the Ethereum network with default values
