@@ -1,4 +1,5 @@
 import { Subgraph } from '../types';
+import { parseGraphQlError } from '../utils/utils';
 import { groStatsParser } from '../parser/groStats';
 import { groStatsError } from '../parser/groStatsError';
 import { getGroStats } from '../handler/groStatsHandler';
@@ -23,6 +24,7 @@ export const etlGroStats = async (
     subgraph: Subgraph,
 ): Promise<IGroStats> => {
     try {
+        let err_msg = '';
         const tsNow = parseInt(now());
         const url = getUrl(subgraph);
         const [resultEth, resultAvax] = await Promise.all([
@@ -30,10 +32,12 @@ export const etlGroStats = async (
             getGroStats(url.AVAX, tsNow),
         ]);
         if (resultEth.errors) {
-            return groStatsError(tsNow.toString(), resultEth.errors);
+            err_msg = parseGraphQlError(resultEth);
+            return groStatsError(tsNow.toString(), err_msg);
         }
         if (resultAvax.errors) {
-            return groStatsError(tsNow.toString(), resultAvax.errors);
+            err_msg = parseGraphQlError(resultAvax);
+            return groStatsError(tsNow.toString(), err_msg);
         }
         if (resultEth && resultAvax) {
             const resultEthParsed = groStatsParserEthereum(resultEth, tsNow);

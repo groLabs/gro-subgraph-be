@@ -11,6 +11,7 @@
     "start:dev": "NODE_ENV=dev DISCORD=true nodemon ./src/bin/www.ts"
   },
   "dependencies": {
+    "@ethersproject/address": "^5.7.0",
     "@types/config": "^3.3.0",
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.17",

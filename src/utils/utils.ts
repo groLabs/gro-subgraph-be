@@ -1,11 +1,11 @@
 import moment from 'moment';
+import { IUrl } from '../interfaces/url/IUrl';
+import { BigNumber as BN } from 'bignumber.js';
+import { IErrorResponse } from '../interfaces/subgraphCalls/IErrorResponse';
 import {
     NetworkId,
     Subgraph as sg,
 } from '../types';
-import { BigNumber as BN } from 'bignumber.js';
-import { IUrl } from '../interfaces/url/IUrl';
-
 
 /// @notice Returns the appropriate URL for the specified subgraph
 /// @param subgraph The subgraph for which to get the URL
@@ -106,6 +106,9 @@ export const bnToDecimal = (
     return parseFloat(result);
 }
 
+/// @notice Determines the NetworkId based on the given subgraph deployment ID
+/// @param deploymentId The subgraph deployment ID to identify the network
+/// @return The NetworkId associated with the given subgraph deployment ID
 export const getNetworkIdbyDeploymentId = (
     deploymentId: string,
 ): NetworkId => {
@@ -116,4 +119,14 @@ export const getNetworkIdbyDeploymentId = (
     } else {
         return NetworkId.UNKNOWN;
     }
+}
+
+/// @notice Extracts the error message from a GraphQL error response
+/// @param err_msg The GraphQL error response object
+/// @return The error message from the GraphQL error response
+export const parseGraphQlError = (err_msg: IErrorResponse): string => {
+    const result = (err_msg.errors.length > 0)
+    ? err_msg.errors[0].message
+    : JSON.stringify(err_msg.errors);
+    return result;
 }

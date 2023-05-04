@@ -1,18 +1,17 @@
 import { config } from 'dotenv';
 import { now } from '../utils/utils';
-import { DiscordAlert } from '../types';
 import { etlGroStats } from '../etl/etlGroStats';
-import { showError } from '../handler/logHandler';
+import { isAddress } from '@ethersproject/address';
 import { groStatsError } from '../parser/groStatsError';
 import { botStatusError } from '../parser/botStatusError';
-import { botStatusHandler } from '../handler/botStatusHandler';
-import { subgraphStatusHandler } from '../handler/subgraphStatusHandler';
 import { etlPersonalStats } from '../etl/etlPersonalStats';
-import { sendDiscordMessage } from '../handler/discordHandler';
+import { sendErrorAndResponse } from './sendAlertAndResponse';
+import { botStatusHandler } from '../handler/botStatusHandler';
 import { validateApiRequest } from '../caller/validateApiRequest';
 import { personalStatsError } from '../parser/personalStatsError';
 import { historicalApyError } from '../parser/historicalApyError';
 import { getHistoricalApy } from '../handler/historicalApyHandler';
+import { subgraphStatusHandler } from '../handler/subgraphStatusHandler';
 import {
     query,
     validationResult
@@ -46,8 +45,17 @@ const wrapAsync = (fn: RequestHandler): RequestHandler => {
     };
 }
 
+/// @notice Checks for validation errors in an API request
+/// @param req The Express request object to check for validation errors
+/// @return A boolean value indicating whether the request has any validation errors
+const handleValidationError = (req: Request): boolean => {
+    const errors = validationResult(req);
+    return (!errors.isEmpty()) ? true : false;
+};
+
 /// @notice Handles the /gro_stats_mc API endpoint to retrieve GRO stats from subgraphs
 /// @dev API example: http://localhost:3015/subgraph/gro_stats_mc?subgraph=prod_hosted
+const groStatsPath = 'routes->subgraph.ts->gro_stats_mc';
 router.get(
     '/gro_stats_mc',
     validateApiRequest([
@@ -57,12 +65,11 @@ router.get(
         Route.GRO_STATS_MC,
     ),
     wrapAsync(async (req: Request, res: Response) => {
-        const alert = `[WARN] E2 - Get gro stats failed \n${req.originalUrl}`;
+        const alertCategory = `[WARN] E2 - Get gro stats failed \n${req.originalUrl}`;
         try {
-            // if errors during validation, response has been already sent, so just exit
-            const errors = validationResult(req);
-            if (!errors.isEmpty())
-                return;
+            // if errors during validation, response has already been sent, so just exit
+            if (handleValidationError(req)) return;
+
             const { subgraph } = req.query;
             if (Object.values(Subgraph).includes(subgraph as Subgraph)) {
                 // address & subgraph fields are correct
@@ -70,44 +77,42 @@ router.get(
                     subgraph as Subgraph,
                 );
                 if (groStats.gro_stats_mc.status === Status.ERROR) {
-                    await sendDiscordMessage(
-                        DiscordAlert.BOT_ALERT,
-                        alert,
+                    await sendErrorAndResponse(
+                        groStatsPath,
                         groStats.gro_stats_mc.error_msg,
+                        alertCategory,
+                        res,
+                        groStats,
                     );
+                } else {
+                    res.json(groStats);
                 }
-                res.json(groStats);
             } else if (subgraph) {
-                // subgraph value is incorrect
+                // target subgraph is not correct
                 const err_msg = `unknown target subgraph <${subgraph}>`;
-                showError('routes->subgraph.ts->gro_stats_mc', err_msg);
-                await sendDiscordMessage(
-                    DiscordAlert.BOT_ALERT,
-                    alert,
+                await sendErrorAndResponse(
+                    groStatsPath,
                     err_msg,
+                    alertCategory,
+                    res,
+                    groStatsError(now(), err_msg),
                 );
-                res.json(groStatsError(
-                    now(),
-                    err_msg
-                ));
             }
         } catch (err) {
-            showError('routes/subgraph.ts->gro_stats_mc', err);
-            await sendDiscordMessage(
-                DiscordAlert.BOT_ALERT,
-                alert,
-                `routes/subgraph.ts->gro_stats_mc: ${err}`,
-            );
-            res.json(groStatsError(
-                now(),
+            await sendErrorAndResponse(
+                groStatsPath,
                 err as string,
-            ));
+                alertCategory,
+                res,
+                groStatsError(now(), err as string),
+            );
         }
     })
 );
 
 /// @notice Handles the /gro_personal_position_mc API endpoint to retrieve personal position for a specific address from subgraphs
 /// @dev API example: http://localhost:3015/subgraph/gro_personal_position_mc?address=0x...&subgraph=prod_studio
+const groPersonalPositionPath = 'routes/subgraph.ts->gro_personal_position_mc';
 router.get(
     '/gro_personal_position_mc',
     validateApiRequest([
@@ -121,54 +126,61 @@ router.get(
         Route.GRO_PERSONAL_POSITION_MC
     ),
     wrapAsync(async (req: Request, res: Response) => {
-        const alert = `[WARN] E1 - Get personal stats failed \n${req.originalUrl}`;
+        const alertCategory = `[WARN] E1 - Get personal stats failed \n${req.originalUrl}`;
         try {
-            // if errors during validation, response has been already sent, so just exit
-            const errors = validationResult(req);
-            if (!errors.isEmpty())
-                return;
+            // if errors during validation, response has already been sent, so just exit
+            if (handleValidationError(req)) return;
+
             const { subgraph, address } = req.query;
             if (Object.values(Subgraph).includes(subgraph as Subgraph)) {
+                // check if address is EVM-compatible
+                if (!isAddress(address as string)) {
+                    const msg = `Invalid EVM-compatible address ${address}`;
+                    await sendErrorAndResponse(
+                        groPersonalPositionPath,
+                        msg,
+                        alertCategory,
+                        res,
+                        personalStatsError(now(), address?.toString() || 'N/A', msg),
+                    );
+                    return;
+                }
                 // address & subgraph fields are correct
                 const personalStats = await etlPersonalStats(
                     subgraph as Subgraph,
                     address as string,
                 );
                 if (personalStats.gro_personal_position_mc.status === Status.ERROR) {
-                    await sendDiscordMessage(
-                        DiscordAlert.BOT_ALERT,
-                        alert,
+                    await sendErrorAndResponse(
+                        groPersonalPositionPath,
                         personalStats.gro_personal_position_mc.error_msg,
+                        alertCategory,
+                        res,
+                        personalStats,
                     );
+                } else {
+                    res.json(personalStats);
                 }
-                res.json(personalStats);
+
             } else if (subgraph) {
-                // subgraph value is incorrect
+                // target subgraph is not correct
                 const err_msg = `unknown target subgraph <${subgraph}>`;
-                showError('routes->subgraph.ts->gro_personal_position_mc', err_msg);
-                await sendDiscordMessage(
-                    DiscordAlert.BOT_ALERT,
-                    alert,
+                await sendErrorAndResponse(
+                    groPersonalPositionPath,
                     err_msg,
+                    alertCategory,
+                    res,
+                    personalStatsError(now(), address?.toString() || 'N/A', err_msg),
                 );
-                res.json(personalStatsError(
-                    now(),
-                    address?.toString() || 'N/A',
-                    err_msg
-                ));
             }
         } catch (err) {
-            showError('routes/subgraph.ts->gro_personal_position_mc', err);
-            await sendDiscordMessage(
-                DiscordAlert.BOT_ALERT,
-                alert,
-                `routes/subgraph.ts->gro_personal_position_mc: ${err}`,
-            );
-            res.json(personalStatsError(
-                now(),
-                'N/A',
+            await sendErrorAndResponse(
+                groPersonalPositionPath,
                 err as string,
-            ));
+                alertCategory,
+                res,
+                personalStatsError(now(), 'N/A', err as string),
+            );
         }
     })
 );
@@ -177,6 +189,7 @@ router.get(
 ///         specific network, attribute, frequency, start time, and end time
 /// @dev Only `apy_current` is currently stored in the DB; any other apy will return null values
 /// @dev API example: http://localhost:3015/subgraph/historical_apy?network=mainnet&attr=apy_current,apy_current,apy_current&freq=twice_daily,daily,weekly&start=1669913771,1669913771,1669913771&end=1672505771,1672505771,1672505771
+const historicalApyPath = 'routes/subgraph.ts->historical_apy';
 router.get(
     '/historical_apy',
     validateApiRequest([
@@ -195,62 +208,65 @@ router.get(
         Route.HISTORICAL_APY
     ),
     wrapAsync(async (req: Request, res: Response) => {
-        const alert = `[WARN] E4 - Get historical apy failed \n${req.originalUrl}`;
+        const alertCategory = `[WARN] E4 - Get historical apy failed \n${req.originalUrl}`;
         try {
-            // if errors during validation, response has been already sent, so just exit
-            const errors = validationResult(req);
-            if (!errors.isEmpty())
-                return;
+            // if errors during validation, response has already been sent, so just exit
+            if (handleValidationError(req)) return;
+
             const { attr, freq, start, end } = req.query;
-            const groStats = await getHistoricalApy(attr, freq, start, end);
-            if (groStats.historical_stats.status === Status.ERROR) {
-                await sendDiscordMessage(
-                    DiscordAlert.BOT_ALERT,
-                    alert,
-                    groStats.historical_stats.error_msg || '',
+            const historicalApy = await getHistoricalApy(attr, freq, start, end);
+            if (historicalApy.historical_stats.status === Status.ERROR) {
+                await sendErrorAndResponse(
+                    historicalApyPath,
+                    historicalApy.historical_stats.error_msg || '',
+                    alertCategory,
+                    res,
+                    historicalApy,
                 );
+            } else {
+                res.json(historicalApy);
             }
-            res.json(groStats);
         } catch (err) {
-            showError('routes/subgraph.ts->historical_apy', err);
-            await sendDiscordMessage(
-                DiscordAlert.BOT_ALERT,
-                alert,
-                `routes/subgraph.ts->historical_apy: ${err}`,
-            );
-            res.json(historicalApyError(
-                now(),
+            await sendErrorAndResponse(
+                historicalApyPath,
                 err as string,
-            ));
+                alertCategory,
+                res,
+                historicalApyError(now(), err as string),
+            );
         }
     })
 );
 
-/// @notice Handles the /status API endpoint to retrieve the status of subgraphs
+/// @notice Handles the /subgraph_status API endpoint to retrieve the status of subgraphs
 /// @dev API example: http://localhost:3015/subgraph/status?subgraph=prod_hosted
+const subgraphStatusPath = 'routes/subgraph.ts->subgraph_status';
 router.get(
     '/subgraph_status',
     wrapAsync(async (req: Request, res: Response) => {
-        const alert = `[WARN] E6 - Get subgraph status failed \n${req.originalUrl}`;
+        const alertCategory = `[WARN] E6 - Get subgraph status failed \n${req.originalUrl}`;
         try {
             const status = await subgraphStatusHandler();
             res.json(status);
         } catch (err) {
-            showError('routes/subgraph.ts->status', err);
-            await sendDiscordMessage(
-                DiscordAlert.BOT_ALERT,
-                alert,
-                `routes/subgraph.ts->status: ${err}`,
+            await sendErrorAndResponse(
+                subgraphStatusPath,
+                err as string,
+                alertCategory,
+                res,
+                globalStatus(
+                    Status.ERROR,
+                    now(),
+                    statusNetworkError(err as Error | string),
+                ),
             );
-            res.json(globalStatus(
-                Status.ERROR,
-                now(),
-                statusNetworkError(err as Error | string),
-            ));
         }
     })
 );
 
+/// @notice Handles the /bot_status API endpoint to retrieve the status of the bot
+/// @dev API example: http://localhost:3015/subgraph/bot_status?subgraph=prod_hosted
+const botStatusPath = 'routes->subgraph.ts->bot_status';
 router.get(
     '/bot_status',
     validateApiRequest([
@@ -260,14 +276,13 @@ router.get(
         Route.BOT_STATUS,
     ),
     wrapAsync(async (req: Request, res: Response) => {
-        // E7 alert is sent from an external service if this API call is not reachable or
+        // E7 alertCategory is sent from an external service if this API call is not reachable or
         // returns unexpected results
-        const alert = `[WARN] E2 - Get gro stats failed \n${req.originalUrl}`;
+        const alertCategory = `[WARN] E2 - Get gro stats failed \n${req.originalUrl}`;
         try {
-            // if errors during validation, response has been already sent, so just exit
-            const errors = validationResult(req);
-            if (!errors.isEmpty())
-                return;
+            // if errors during validation, response has already been sent, so just exit
+            if (handleValidationError(req)) return;
+
             const { subgraph } = req.query;
             if (Object.values(Subgraph).includes(subgraph as Subgraph)) {
                 // address & subgraph fields are correct
@@ -275,36 +290,35 @@ router.get(
                     subgraph as Subgraph,
                 );
                 if (botStatus.bot_status.status === Status.ERROR) {
-                    await sendDiscordMessage(
-                        DiscordAlert.BOT_ALERT,
-                        alert,
+                    await sendErrorAndResponse(
+                        botStatusPath,
                         botStatus.bot_status.error_msg,
+                        alertCategory,
+                        res,
+                        botStatus,
                     );
+                } else {
+                    res.json(botStatus);
                 }
-                res.json(botStatus);
             } else if (subgraph) {
-                // subgraph value is incorrect
+                // target subgraph is not correct
                 const err_msg = `unknown target subgraph <${subgraph}>`;
-                showError('routes->subgraph.ts->bot_status', err_msg);
-                await sendDiscordMessage(
-                    DiscordAlert.BOT_ALERT,
-                    alert,
+                await sendErrorAndResponse(
+                    botStatusPath,
                     err_msg,
+                    alertCategory,
+                    res,
+                    botStatusError(err_msg),
                 );
-                res.json(botStatusError(
-                    err_msg
-                ));
             }
         } catch (err) {
-            showError('routes/subgraph.ts->bot_status', err);
-            await sendDiscordMessage(
-                DiscordAlert.BOT_ALERT,
-                alert,
-                `routes/subgraph.ts->bot_status: ${err}`,
-            );
-            res.json(botStatusError(
+            await sendErrorAndResponse(
+                botStatusPath,
                 err as string,
-            ));
+                alertCategory,
+                res,
+                botStatusError(err as string),
+            );
         }
     })
 );

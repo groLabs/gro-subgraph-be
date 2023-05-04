@@ -1,9 +1,10 @@
 import { Subgraph } from '../types';
+import { parseGraphQlError } from '../utils/utils';
+import { personalStatsError } from '../parser/personalStatsError';
 import { getPersonalStats } from '../handler/personalStatsHandler';
 import { parsePersonalStatsSubgraphEthereum } from '../parser/personalStatsEth';
 import { parsePersonalStatsSubgraphAvalanche } from '../parser/personalStatsAvax';
 import { personalStatsSubgraphParserTotals } from '../parser/personalStatsTotals';
-import { personalStatsError } from '../parser/personalStatsError';
 import { IPersonalStatsTotals } from '../interfaces/personalStats/IPersonalStats';
 import {
     now,
@@ -36,8 +37,8 @@ export const etlPersonalStats = async (
 
         if (resultEth.errors || resultAvax.errors) {
             const errors = resultEth.errors
-                ? resultEth.errors
-                : resultAvax.errors;
+                ? parseGraphQlError(resultEth)
+                : parseGraphQlError(resultAvax);
             return personalStatsError(now(), _account, errors);
         }
 
