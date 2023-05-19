@@ -94,6 +94,9 @@ export const emptyGroStatsEth = (
             'curve_pwrd3crv': NA,
         },
         'pools': [],
+        'checksum': {
+            'gvt_apy': [],
+        }
     }
 }
 

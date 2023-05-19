@@ -1,6 +1,9 @@
 import { config } from 'dotenv';
+import { JsonRpcProvider } from '@ethersproject/providers';
+
 config();
 
+// Global constants
 export const NA = 'N/A';
 export const PWRD_APY = 0.02;
 export const QUERY_ERROR = 400;
@@ -10,12 +13,15 @@ export const NUM_TRANSFER_CHECKS = 3; // # of TransferTx to be checked in getPer
 export const MAX_VEST_TIME = 31556952;
 export const LAUNCH_TIMESTAMP_ETH = '1622204347';
 export const LAUNCH_TIMESTAMP_AVAX = '1638483222';
-export const TS_1D = 86400;     // one day
-export const TS_7D = 604800;    // seven days
-export const TS_15D = 1296000;  // fifteen days
+export const TS_1D = 86400;     // one day in seconds
+export const TS_7D = 604800;    // seven days in seconds
+export const TS_15D = 1296000;  // fifteen days in seconds
 export const DECIMALS = 7;
+export const BLOCKS_PER_DAY = 6646; // On average, a new block is mined every ~13 seconds, therefore 24*60*60/13 = 6646 blocks per day
 export const BLOCKS_PER_YEAR = 2252571;
-export const PWRD_TVL_CORRECTION = 432.5559;  // correction due to rebasing (as of Nov'22)
+export const PWRD_TVL_CORRECTION = 432.5559;  // correction due to rebasing (as of Nov'22) - currently not used
+export const DAYS_GVT_APY = 7; // to compare current gvt price per share vs. gvt price per share N days ago, where N = DAYS_GVT_APY
+
 
 // UST Vesting Airdrop
 const ONE_MONTH_SECONDS = 2629746; // average year (including leap years) in seconds / 12
@@ -58,7 +64,14 @@ export const DISCORD_CHANNELS = {
     },
 }
 
+// Subgraph logo shown in Discord messages
 export const SUBGRAPH_LOGO_URL = process.env.SUBGRAPH_LOGO_URL;
+
+// RPC provider to retrieve block numbers from Ethereum
+export const RPC_PROVIDER = new JsonRpcProvider(
+    `https://mainnet.infura.io/v3/${process.env.INFURA_KEY}`, // infura provider
+    1, // mainnet
+);
 
 
 

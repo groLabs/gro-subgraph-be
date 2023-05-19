@@ -1,5 +1,6 @@
 import { IApy } from './ethereum/IApy';
 import { IPool } from './ethereum/IPool';
+import { IGvtApy } from './ethereum/IGvtApy';
 import { IExposure } from './ethereum/IExposure';
 import { ITvl as ITvlEth } from './ethereum/ITvl';
 import { ITvl as ITvlAvax } from './avalanche/ITvl';
@@ -26,6 +27,9 @@ export interface IGroStatsEthereum {
     readonly 'exposure': IExposure,
     readonly 'token_price_usd': ITokenPriceUsd,
     readonly 'pools': IPool[] | null,
+    readonly 'checksum': {
+        'gvt_apy': IGvtApy[] | null,
+    }
 }
 
 export interface IGroStatsAvalanche {

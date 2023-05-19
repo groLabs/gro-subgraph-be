@@ -2,10 +2,12 @@
 /// @dev Constructs a query string to fetch data from the Ethereum subgraph
 /// @param tsNow The current timestamp in seconds
 /// @param ts15d The timestamp 15 days ago in seconds
+/// @param block_gvt_ndays_ago block number N days ago to calculate the gvt apy
 /// @return A GraphQL query string to fetch data related to the Gro protocol on Ethereum
 export const queryGroStatsEth = (
     tsNow: number,
     ts15d: number,
+    block_gvt_ndays_ago: number,
 ) => (
     `{
         _meta {
@@ -32,6 +34,9 @@ export const queryGroStatsEth = (
             balancer_gro_weth
             curve_pwrd3crv
             three_crv
+        }
+        prices_ago: prices (block: { number: ${block_gvt_ndays_ago} }) {
+            gvt_ago: gvt
         }
         factors {
             pwrd

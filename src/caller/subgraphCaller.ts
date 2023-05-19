@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { TS_15D } from '../constants';
 import { IError } from '../interfaces/url/IError';
+import { IBlockNumbers } from '../interfaces/blockNumbers/IBlockNumbers';
 import { showError } from '../handler/logHandler';
 import { queryBotStatus } from '../graphql/botStatus';
 import { queryGroStatsEth } from '../graphql/groStatsEth';
@@ -17,6 +17,14 @@ import {
     isEthSubgraph,
     isAvaxSubgraph
 } from '../utils/utils';
+import {
+    TS_15D,
+    DAYS_GVT_APY,
+} from '../constants';
+import { 
+    blockData,
+    getBlockNumbers,
+} from './blockCaller';
 
 
 /// @notice Wraps a given query string with a status
@@ -37,6 +45,7 @@ const wrapQuery = (query: string, status: Status): IQuery => {
 /// @param blockTS The block timestamp to start fetching records from (starts with 0)
 /// @param route The route for which the query should be generated
 /// @param tsNow The current timestamp
+/// @param blocks The block number N days ago for the gvt apy calc (if groStats query)
 /// @return An IQuery object containing the status and generated query data
 const getQuery = (
     url: string,
@@ -44,7 +53,8 @@ const getQuery = (
     first: number,
     blockTS: number,
     route: Route,
-    tsNow: number
+    tsNow: number,
+    blocks: IBlockNumbers,
 ): IQuery => {
     if (route === Route.SUBGRAPH_STATUS) {
         const DEPLOYMENT_ID_ETH = process.env.DEPLOYMENT_ID_ETH;
@@ -63,7 +73,9 @@ const getQuery = (
         if (route === Route.GRO_PERSONAL_POSITION_MC) {
             return wrapQuery(queryPersonalStatsEth(account, first, blockTS), Status.OK);
         } else if (route === Route.GRO_STATS_MC) {
-            return wrapQuery(queryGroStatsEth(tsNow, tsNow - TS_15D), Status.OK);
+            // @TODO: replace this to show 'NA' in case the status == NOK
+            const days = blocks.blockNumberNDaysAgo ? blocks.blockNumberNDaysAgo : blocks.dummyBlockNumber;
+            return wrapQuery(queryGroStatsEth(tsNow, tsNow - TS_15D, days), Status.OK);
         }
     } else if (isAvaxSubgraph(url)) {
         if (route === Route.GRO_PERSONAL_POSITION_MC) {
@@ -93,7 +105,11 @@ export const callSubgraph = async (
     route: Route,
     tsNow: number,
 ): Promise<any> => {
-    const query = getQuery(url, account, first, blockTS, route, tsNow);
+    // Update blocks only if it's an ethereum groStats request
+    const blocks = (route === Route.GRO_STATS_MC && isEthSubgraph(url))
+        ? await getBlockNumbers(DAYS_GVT_APY)
+        : blockData;
+    const query = getQuery(url, account, first, blockTS, route, tsNow, blocks);
     if (query.status === Status.ERROR) {
         return {
             errors: [query.data],

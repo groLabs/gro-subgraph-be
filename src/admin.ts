@@ -1,3 +1,5 @@
+import { DAYS_GVT_APY } from './constants';
+import { getBlockNumbers } from './caller/blockCaller';
 import { etlPersonalStats } from './etl/etlPersonalStats';
 import { etlHistoricalApy } from './etl/etlHistoricalApy';
 import { sendDiscordMessage } from './handler/discordHandler';
@@ -57,6 +59,10 @@ dotenvExpand.expand(env);
                 case 'status':
                     const status = await subgraphStatusHandler();
                     console.log(status);
+                    break;
+                case 'block':
+                    const data = await getBlockNumbers(DAYS_GVT_APY);
+                    console.log(data);
                     break;
                 default:
                     console.log(`Unknown parameter/s: ${params}`);

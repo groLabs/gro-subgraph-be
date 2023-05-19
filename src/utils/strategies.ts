@@ -44,7 +44,7 @@ export const calcStrategyApy = (
     }
     const days = (_now - minHarvestTS) / TS_1D;
     if (harvests.length > 0) {
-        // there are harvests, so apy based on latest ones
+        // there are harvests, so apy based on latest ones      
         const apy = (((netProfit * threeCrvPrice) / numHarvests) / tvl) * (365 / days);
         return toStr(apy);
     } else if (strategyAsset > 0.1) {
@@ -107,7 +107,11 @@ const calcVault = (
     strats: IStrategy[],
     tvl: number,
 ): IVault => {
-    const vaultApy = strats.reduce((prev, current) => prev + parseFloat(current.last3d_apy), 0);
+    // Old gvault apy calc (wrong formula)
+    // const vaultApy = strats.reduce((prev, current) => prev + parseFloat(current.last3d_apy), 0);
+    // New gvault apy calc (right formula, but result is not aligend with apy calc based on price per share)
+    const vaultApy = strats.reduce((prev, current) =>
+        prev + parseFloat(current.last3d_apy) * (parseFloat(current.amount) / tvl), 0);
     const strategyAssets = strats.reduce((prev, current) => prev + parseFloat(current.amount), 0);
     // Strategies are updated on harvest or withdrawal events, whereas tvl is updated on every transfer:
     // reserves could show small negative amounts if no recent harvests + nothing in reserve,
@@ -115,11 +119,6 @@ const calcVault = (
     const reservesAmount = (tvl > strategyAssets)
         ? tvl - strategyAssets
         : 0;
-    // for (let i = 0; i < strats.length; i++) {
-    //     console.log(strats[i]);
-    // }
-    // const vaultApyV2 = strats.reduce((prev, current) => prev + (parseFloat(current.last3d_apy) * parseFloat(current.amount)) / tvl, 0);
-    // console.log('vault incl. reserves', tvl, 'eps', vaultApyV2);
     if (strats.length > 0) {
         return {
             'name': '3CRV',
@@ -127,7 +126,6 @@ const calcVault = (
             'amount': toStr(tvl),
             'share': '1.0',
             'last3d_apy': toStr(vaultApy),
-            // 'last3d_apy': toStr(vaultApyV2),
             'reserves': {
                 'name': '3CRV',
                 'display_name': '3CRV yVault',

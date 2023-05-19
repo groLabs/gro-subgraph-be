@@ -1,19 +1,22 @@
 #!/usr/bin/env ts-node
 
-// Module dependencies.
-import { app } from '../app';
 import http from 'http';
-import {
-    showInfo,
-    showError
-} from '../handler/logHandler';
+import { app } from '../app';
+import { Env } from '../types';
 import * as dotenv from 'dotenv';
+import { DAYS_GVT_APY } from '../constants';
 import * as dotenvExpand from 'dotenv-expand';
 import { startJobs } from '../scheduler/scheduler';
+import { getBlockNumbers } from '../caller/blockCaller';
 import {
     readAirdropProofs,
     readVestingAirdropProofs,
 } from '../etl/etlAirdrops';
+import {
+    showInfo,
+    showError,
+} from '../handler/logHandler';
+
 let env = dotenv.config();
 dotenvExpand.expand(env);
 
@@ -85,3 +88,11 @@ function onListening() {
 
 // start scheduled jobs
 startJobs();
+
+// retrieve block numbers for gvt apy calc at the bot startup. Then, 
+// it will be called every time there's a groStats API request
+(async () => {
+    if (process.env.NODE_ENV === Env.PROD) {
+        await getBlockNumbers(DAYS_GVT_APY);
+    }
+})();

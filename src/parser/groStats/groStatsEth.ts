@@ -1,13 +1,18 @@
+import { getPools } from '../../utils/pools';
+import { blockData } from '../../caller/blockCaller';
+import { EMPTY_EXPOSURE } from './groStatsEmpty';
+import { getSystem } from '../../utils/strategies';
+import { getExposures } from '../../utils/exposure';
+import { IGroStatsEthereum } from '../../interfaces/groStats/IGroStats';
 import {
     now,
     toStr,
 } from '../../utils/utils';
-import { getPools } from '../../utils/pools';
-import { getCoreApy } from '../../utils/apy';
-import { getSystem } from '../../utils/strategies';
-import { getExposures } from '../../utils/exposure';
-import { IGroStatsEthereum } from '../../interfaces/groStats/IGroStats';
-import { EMPTY_EXPOSURE } from './groStatsEmpty';
+import {
+    getCoreApy,
+    getCoreApyPps,
+    checksumGvtApy,
+} from '../../utils/apy';
 import {
     Status,
     NetworkName,
@@ -29,6 +34,7 @@ export const groStatsParserEthereum = (
     // console.dir(stats_eth, { depth: null });
     const md = stats_eth.masterDatas[0];
     const price = stats_eth.prices[0];
+    const priceAgo = stats_eth.prices_ago[0];
     const core = stats_eth.coreDatas[0];
     const factor = stats_eth.factors[0];
     const gvaults = stats_eth.gvaults;
@@ -51,10 +57,19 @@ export const groStatsParserEthereum = (
     const exposure = (system.vault)
         ? getExposures(system.vault)
         : EMPTY_EXPOSURE;
-    const currentApy = getCoreApy(
-        gvtTvl,
-        pwrdTvl,
-        parseFloat(system.last3d_apy),
+    // const currentApy = getCoreApy(
+    //     gvtTvl,
+    //     pwrdTvl,
+    //     parseFloat(system.last3d_apy),
+    // );
+    const currentApy = getCoreApyPps(
+        parseFloat(price.gvt),
+        parseFloat(priceAgo.gvt_ago),
+    );
+    const checkGvtApy = checksumGvtApy(
+        price.gvt,
+        priceAgo.gvt_ago,
+        blockData,
     );
     const pools = getPools(
         poolData,
@@ -64,17 +79,15 @@ export const groStatsParserEthereum = (
         price,
         poolSwaps,
         nowTS,
-        parseFloat(currentApy.pwrd),
-        parseFloat(currentApy.gvt),
+        parseFloat(currentApy.current.pwrd),
+        parseFloat(currentApy.current.gvt),
     );
     const result: IGroStatsEthereum = {
         'status': md.status as Status,
         'current_timestamp': currentTimestamp.toString(),
         'launch_timestamp': LAUNCH_TIMESTAMP_ETH,
         'network': NetworkName.MAINNET,
-        'apy': {
-            'current': currentApy,
-        },
+        'apy': currentApy,
         'tvl': {
             'pwrd': toStr(pwrdTvl),
             'gvt': toStr(gvtTvl),
@@ -94,6 +107,9 @@ export const groStatsParserEthereum = (
             'curve_pwrd3crv': toStr(price.curve_pwrd3crv),
         },
         'pools': pools,
+        'checksum': {
+            'gvt_apy': [checkGvtApy],
+        }
     }
     return result;
 }
