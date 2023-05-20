@@ -47,6 +47,7 @@ export const getCoreApy = (
 
 /// @notice Calculates the core APY for GVT tranche based on gvt price per share comparison [currently used]
 /// @dev Fixed PWRD APY in G^2; other gains/losses goes to gvt
+/// @dev If gvtPriceNdaysAgo < 0 means that blocks from an RPC couldn't be retrieved; therefore, showing gvt to 'NA'
 /// @param gvtPrice The gvt price per share now
 /// @param gvtPriceNdaysAgo The gvt price per share N days ago, where N is defined in DAYS_GVT_APY
 /// @return An object containing the calculated APYs for PWRD and GVT tranches
@@ -54,11 +55,15 @@ export const getCoreApyPps = (
     gvtPrice: number,
     gvtPriceNdaysAgo: number,
 ): IApy => {
-    const gvtApy = (1 + ((gvtPrice - gvtPriceNdaysAgo) / gvtPriceNdaysAgo)) ** (365 / DAYS_GVT_APY) - 1;
+    const gvtApy = (gvtPriceNdaysAgo >= 0)
+        ? toStr(
+            (1 + ((gvtPrice - gvtPriceNdaysAgo) / gvtPriceNdaysAgo)) ** (365 / DAYS_GVT_APY) - 1
+        )
+        : 'NA';
     return {
         'current': {
             'pwrd': toStr(PWRD_APY),
-            'gvt': toStr(gvtApy),
+            'gvt': gvtApy,
         }
     }
 }
@@ -74,13 +79,16 @@ export const checksumGvtApy = (
     gvtPriceNdaysAgo: string,
     blocks: IBlockNumbers,
 ): IGvtApy => {
+    const lastExecutionTimestamp = (blocks.lastExecutionTimestamp)
+        ? blocks.lastExecutionTimestamp.format('DD/MM/YYYY HH:mm:ss A z')
+        : null;
     return {
         'gvt_price': gvtPrice,
         'gvt_price_ndays_ago': gvtPriceNdaysAgo,
         'days': DAYS_GVT_APY,
         'latestBlockNumber': blocks.latestBlockNumber,
         'blockNumberNDaysAgo': blocks.blockNumberNDaysAgo,
-        'lastExecutionTimestamp': blocks.lastExecutionTimestamp,
+        'lastExecutionTimestamp': lastExecutionTimestamp,
         'status': blocks.status,
     }
 }

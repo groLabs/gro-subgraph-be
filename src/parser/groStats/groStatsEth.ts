@@ -64,7 +64,7 @@ export const groStatsParserEthereum = (
     // );
     const currentApy = getCoreApyPps(
         parseFloat(price.gvt),
-        parseFloat(priceAgo.gvt_ago),
+        (priceAgo.gvt_ago === 'NA') ? -1 : parseFloat(priceAgo.gvt_ago),
     );
     const checkGvtApy = checksumGvtApy(
         price.gvt,
@@ -80,7 +80,7 @@ export const groStatsParserEthereum = (
         poolSwaps,
         nowTS,
         parseFloat(currentApy.current.pwrd),
-        parseFloat(currentApy.current.gvt),
+        (currentApy.current.gvt === 'NA') ? 0 : parseFloat(currentApy.current.gvt),
     );
     const result: IGroStatsEthereum = {
         'status': md.status as Status,

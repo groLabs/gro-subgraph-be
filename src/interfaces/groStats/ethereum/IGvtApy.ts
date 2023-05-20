@@ -6,6 +6,6 @@ export interface IGvtApy {
     readonly 'days': number,
     readonly 'latestBlockNumber': number | null,
     readonly 'blockNumberNDaysAgo': number | null,
-    readonly 'lastExecutionTimestamp': moment.Moment | null,
+    readonly 'lastExecutionTimestamp': string | null,
     readonly 'status': Status,
 }

@@ -21,7 +21,7 @@ import {
     TS_15D,
     DAYS_GVT_APY,
 } from '../constants';
-import { 
+import {
     blockData,
     getBlockNumbers,
 } from './blockCaller';
@@ -65,23 +65,41 @@ const getQuery = (
             return wrapQuery(err, Status.ERROR);
         } else {
             const deployments = `"${DEPLOYMENT_ID_ETH}", "${DEPLOYMENT_ID_AVAX}"`;
-            return wrapQuery(queryGraphStatus(deployments), Status.OK);
+            return wrapQuery(
+                queryGraphStatus(deployments),
+                Status.OK
+            );
         }
     } else if (route === Route.BOT_STATUS) {
-        return wrapQuery(queryBotStatus(), Status.OK);
+        return wrapQuery(
+            queryBotStatus(),
+            Status.OK
+        );
     } else if (isEthSubgraph(url)) {
         if (route === Route.GRO_PERSONAL_POSITION_MC) {
-            return wrapQuery(queryPersonalStatsEth(account, first, blockTS), Status.OK);
+            return wrapQuery(
+                queryPersonalStatsEth(account, first, blockTS),
+                Status.OK
+            );
         } else if (route === Route.GRO_STATS_MC) {
-            // @TODO: replace this to show 'NA' in case the status == NOK
-            const days = blocks.blockNumberNDaysAgo ? blocks.blockNumberNDaysAgo : blocks.dummyBlockNumber;
-            return wrapQuery(queryGroStatsEth(tsNow, tsNow - TS_15D, days), Status.OK);
+            // If blocks can't be retrieved, use dummy block to prevent the graphql query from failing
+            const block_gvt_ndays_ago = blocks.blockNumberNDaysAgo ? blocks.blockNumberNDaysAgo : blocks.dummyBlockNumber;
+            return wrapQuery(
+                queryGroStatsEth(tsNow, tsNow - TS_15D, block_gvt_ndays_ago),
+                Status.OK
+            );
         }
     } else if (isAvaxSubgraph(url)) {
         if (route === Route.GRO_PERSONAL_POSITION_MC) {
-            return wrapQuery(queryPersonalStatsAvax(account, first, blockTS), Status.OK);
+            return wrapQuery(
+                queryPersonalStatsAvax(account, first, blockTS),
+                Status.OK
+            );
         } else if (route === Route.GRO_STATS_MC) {
-            return wrapQuery(queryGroStatsAvax(), Status.OK);
+            return wrapQuery(
+                queryGroStatsAvax(),
+                Status.OK
+            );
         }
     }
     const err = `Unknown route ${route} or subgraph api ${url}`;
@@ -90,7 +108,7 @@ const getQuery = (
 };
 
 /// @notice Calls a subgraph with a specific query and returns the result
-/// @param url The subgraph URL
+/// @param url The subgraph URL (Subgraph API routes in .env)
 /// @param account The user account address
 /// @param first The number of records to fetch
 /// @param blockTS The block timestamp to start fetching records from (starts with 0)
@@ -109,12 +127,14 @@ export const callSubgraph = async (
     const blocks = (route === Route.GRO_STATS_MC && isEthSubgraph(url))
         ? await getBlockNumbers(DAYS_GVT_APY)
         : blockData;
+    // Wraps the graphql query depending on the network and route
     const query = getQuery(url, account, first, blockTS, route, tsNow, blocks);
     if (query.status === Status.ERROR) {
         return {
             errors: [query.data],
         };
     }
+    // Execute the graphql query and return the result if successful, or the err description otherwise
     const path = 'caller/subgraphCaller.ts->callSubgraph()';
     const result = await axios.post(
         url,
@@ -125,6 +145,15 @@ export const callSubgraph = async (
                 `${path} [Error from Subgraph]`,
                 JSON.stringify(res.data.errors, null, 1),
             );
+        }
+        // In case of error when retrieving blocks, set gvt_ago to 'NA'
+        if (
+            blocks.status === Status.ERROR
+            && route === Route.GRO_STATS_MC
+            && isEthSubgraph(url)
+            && res.data.data.prices_ago.length > 0
+        ) {
+            res.data.data.prices_ago[0].gvt_ago = 'NA';
         }
         return res.data;
     }).catch(err => {

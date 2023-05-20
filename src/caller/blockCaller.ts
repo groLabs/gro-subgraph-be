@@ -1,6 +1,6 @@
 import moment from 'moment';
-import { Status } from '../types';
 import { RPC_PROVIDER as provider } from '../constants';
+import { sendDiscordMessage } from '../handler/discordHandler';
 import { IBlockNumbers } from '../interfaces/blockNumbers/IBlockNumbers';
 import {
     TS_1D,
@@ -10,6 +10,10 @@ import {
     showInfo,
     showError,
 } from '../handler/logHandler';
+import {
+    Status,
+    DiscordAlert,
+} from '../types';
 
 
 // Store the data in memory
@@ -48,13 +52,18 @@ export const getBlockNumbers = async (days: number): Promise<IBlockNumbers> => {
             blockData.status = Status.OK;
 
             const msgBlocks = `latestBlock: ${blockData.latestBlockNumber}, latestBlock${days}d: ${blockData.blockNumberNDaysAgo},`;
-            const msgTs = `latestExecutionTs: ${blockData.lastExecutionTimestamp}`;
+            const msgTs = `latestExecutionTs: ${blockData.lastExecutionTimestamp.format('DD/MM/YYYY HH:mm:ss A z')}`;
             showInfo(`Blocks for gvt apy calc updated -> ${msgBlocks} ${msgTs}`);
         }
         return blockData;
     } catch (err) {
         showError('caller/blockCaller.ts->getBlockNumbers()', err);
         blockData.status = Status.ERROR;
+        await sendDiscordMessage(
+            DiscordAlert.BOT_ALERT,
+            '[WARN] E8 - RPC call failed',
+            err as string,
+        );
         return blockData;
     }
 }
