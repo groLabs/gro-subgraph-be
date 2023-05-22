@@ -23,14 +23,20 @@ export const personalStatsSubgraphParserTotals = (
     stats_avax: IPersonalStatsAvalanche,
 ): IPersonalStatsTotals => {
     try {
+        const isMaintenance = (Status.WARNING) ? true : false;
+        const status = (stats_avax.status === Status.WARNING)
+            ? Status.WARNING
+            : (stats_eth.status === Status.OK && stats_avax.status === Status.OK)
+                ? Status.OK
+                : Status.ERROR;
+        const error_msg = (Status.WARNING)
+            ? `Maintenance in TheGraph's hosted service currently underway`
+            : '';
+
         const personalStats = {
             'gro_personal_position_mc': {
-                'status': (
-                    stats_eth.status === Status.OK
-                    && stats_avax.status === Status.OK)
-                    ? Status.OK
-                    : Status.ERROR,
-                'error_msg': '',
+                'status': status,
+                'error_msg': error_msg,
                 'current_timestamp': stats_eth.current_timestamp,
                 'address': stats_eth.address,
                 'network': stats_eth.network,
@@ -40,7 +46,7 @@ export const personalStatsSubgraphParserTotals = (
                         'avalanche': stats_avax.amount_added.total,
                         'total': toStr(
                             parseFloat(stats_eth.amount_added.total)
-                            + parseFloat(stats_avax.amount_added.total)
+                            + (!isMaintenance ? parseFloat(stats_avax.amount_added.total) : 0)
                         )
                     },
                     'amount_removed': {
@@ -48,7 +54,7 @@ export const personalStatsSubgraphParserTotals = (
                         'avalanche': stats_avax.amount_removed.total,
                         'total': toStr(
                             parseFloat(stats_eth.amount_removed.total)
-                            + parseFloat(stats_avax.amount_removed.total)
+                            + (!isMaintenance ? parseFloat(stats_avax.amount_removed.total) : 0)
                         )
                     },
                     'net_amount_added': {
@@ -56,7 +62,7 @@ export const personalStatsSubgraphParserTotals = (
                         'avalanche': stats_avax.net_amount_added.total,
                         'total': toStr(
                             parseFloat(stats_eth.net_amount_added.total)
-                            + parseFloat(stats_avax.net_amount_added.total)
+                            + (!isMaintenance ? parseFloat(stats_avax.net_amount_added.total) : 0)
                         )
                     },
                     'current_balance': {
@@ -64,7 +70,7 @@ export const personalStatsSubgraphParserTotals = (
                         'avalanche': stats_avax.current_balance.total,
                         'total': toStr(
                             parseFloat(stats_eth.current_balance.total)
-                            + parseFloat(stats_avax.current_balance.total)
+                            + (!isMaintenance ? parseFloat(stats_avax.current_balance.total) : 0)
                         )
                     },
                     'net_returns': {
@@ -72,7 +78,7 @@ export const personalStatsSubgraphParserTotals = (
                         'avalanche': stats_avax.net_returns.total,
                         'total': toStr(
                             parseFloat(stats_eth.net_returns.total)
-                            + parseFloat(stats_avax.net_returns.total)
+                            + (!isMaintenance ? parseFloat(stats_avax.net_returns.total) : 0)
                         )
                     },
                 },

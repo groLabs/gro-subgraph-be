@@ -51,10 +51,10 @@ export enum TxType {
   APPROVAL = 'approval',
 }
 
-// @dev: Should be aligned with subgraph schema
 export enum Status {
   OK = 'ok',
   ERROR = 'error',
+  WARNING = 'warning',
 }
 
 // @dev: Should be aligned with subgraph schema

@@ -23,19 +23,28 @@ export const groStatsParser = (
     let totalTVL = NA;
     let ethTVL = NA;
     let avaxTVL = NA;
+
     if (stats_eth.tvl.total && stats_avax.tvl.total) {
         ethTVL = stats_eth.tvl.total;
         avaxTVL = stats_avax.tvl.total;
-        totalTVL = toStr(parseFloat(stats_eth.tvl.total) + parseFloat(stats_avax.tvl.total));
+        totalTVL = (Status.WARNING)
+            ? stats_eth.tvl.total
+            : toStr(parseFloat(stats_eth.tvl.total) + parseFloat(stats_avax.tvl.total));
     }
+    const status = (stats_avax.status === Status.WARNING)
+        ? Status.WARNING
+        : (stats_eth.status === Status.OK && stats_avax.status === Status.OK)
+            ? Status.OK
+            : Status.ERROR;
+            
+    const error_msg = (Status.WARNING)
+        ? `Maintenance in TheGraph's hosted service currently underway`
+        : '';
+
     const result = {
         'gro_stats_mc': {
-            'status': (
-                stats_eth.status === Status.OK
-                && stats_avax.status === Status.OK)
-                ? Status.OK
-                : Status.ERROR,
-            'error_msg': '',
+            'status': status,
+            'error_msg': error_msg,
             'current_timestamp': stats_eth.current_timestamp,
             'network': NetworkName.MAINNET,
             'mc_totals': {

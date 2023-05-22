@@ -1,8 +1,8 @@
 import { toStr } from '../../utils/utils';
 import { IVault } from '../../interfaces/groStats/ethereum/IVault';
-import { IVault as IVaultAvax } from '../../interfaces/groStats/avalanche/IVault';
 import { IStrategy } from '../../interfaces/groStats/ethereum/IStrategy';
 import { IExposure } from '../../interfaces/groStats/ethereum/IExposure';
+import { IVault as IVaultAvax } from '../../interfaces/groStats/avalanche/IVault';
 import {
     Status,
     NetworkName,
@@ -108,7 +108,7 @@ export const emptyGroStatsAvax = (
 ): IGroStatsAvalanche => {
     const value = (status === Status.OK) ? toStr(0) : NA;
     return {
-        'status': Status.ERROR,
+        'status': status,
         'network': NetworkName.AVALANCHE,
         'launch_timestamp': LAUNCH_TIMESTAMP_AVAX,
         'tvl': {
