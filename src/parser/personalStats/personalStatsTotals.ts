@@ -23,13 +23,13 @@ export const personalStatsSubgraphParserTotals = (
     stats_avax: IPersonalStatsAvalanche,
 ): IPersonalStatsTotals => {
     try {
-        const isMaintenance = (Status.WARNING) ? true : false;
-        const status = (stats_avax.status === Status.WARNING)
+        const isMaintenance = (stats_avax.status === Status.WARNING) ? true : false;
+        const status = (isMaintenance)
             ? Status.WARNING
             : (stats_eth.status === Status.OK && stats_avax.status === Status.OK)
                 ? Status.OK
                 : Status.ERROR;
-        const error_msg = (Status.WARNING)
+        const error_msg = isMaintenance
             ? `Maintenance in TheGraph's hosted service currently underway`
             : '';
 
