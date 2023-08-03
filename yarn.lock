@@ -1364,6 +1364,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"express-rate-limit@npm:^6.8.1":
+  version: 6.8.1
+  resolution: "express-rate-limit@npm:6.8.1"
+  peerDependencies:
+    express: ^4 || ^5
+  checksum: 50b928b21d3a6e4fb6029e4c597ad3a90c326fe2b3f2e1810cb7ee6a44f25bc268c3444f13b79b88e70e932ac5c8fadeef85acddaf7bd5ff22f9799de5e1056a
+  languageName: node
+  linkType: hard
+
 "express-validator@npm:^7.0.1":
   version: 7.0.1
   resolution: "express-validator@npm:7.0.1"
@@ -1656,7 +1665,9 @@ __metadata:
     dotenv: ^16.3.1
     dotenv-expand: ^10.0.0
     express: ^4.18.2
+    express-rate-limit: ^6.8.1
     express-validator: ^7.0.1
+    helmet: ^7.0.0
     http-errors: ^2.0.0
     moment: ^2.29.4
     node-schedule: ^2.1.1
@@ -1706,6 +1717,13 @@ __metadata:
     inherits: ^2.0.3
     minimalistic-assert: ^1.0.1
   checksum: e350096e659c62422b85fa508e4b3669017311aa4c49b74f19f8e1bc7f3a54a584fdfd45326d4964d6011f2b2d882e38bea775a96046f2a61b7779a979629d8f
+  languageName: node
+  linkType: hard
+
+"helmet@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "helmet@npm:7.0.0"
+  checksum: 3622b8b68b7ac4736369fe7717adb5b87ddcdcda7c11c13277d79fb5670acab032e8c971835565b1d2144d234f3e0dbcd327a44249b9e61f0f64c0c753faf1bc
   languageName: node
   linkType: hard
 
