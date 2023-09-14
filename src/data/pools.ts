@@ -121,8 +121,8 @@ export const pools = [
         }
     },
     {
-        'deposit_url': 'https://curve.fi/factory/44/deposit',
-        'remove_url': 'https://curve.fi/factory/44/withdraw',
+        'deposit_url': 'https://curve.fi/#/ethereum/pools/factory-v2-44/deposit',
+        'remove_url': 'https://curve.fi/#/ethereum/pools/factory-v2-44/withdraw',
         'name': 'curve_meta_pwrd_3crv_4',
         'display_name': 'PWRD-3CRV',
         'type': 'curve_meta',
