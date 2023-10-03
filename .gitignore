@@ -10,3 +10,4 @@ schema.graphql
 subgraph-*.json
 src/data/airdrops
 src/data/vestingAirdrops
+src/data/avaxWallets

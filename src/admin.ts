@@ -13,6 +13,7 @@ import {
     readAirdropProofs,
     readVestingAirdropProofs,
 } from './etl/etlAirdrops';
+import { getAvaxBalances } from './caller/avaxBalances'
 
 // enable dotenv
 import * as dotenv from 'dotenv';
@@ -63,6 +64,9 @@ dotenvExpand.expand(env);
                 case 'block':
                     const data = await getBlockNumbers(DAYS_GVT_APY);
                     console.log(data);
+                    break;
+                case 'avaxBalances':
+                    await getAvaxBalances();
                     break;
                 default:
                     console.log(`Unknown parameter/s: ${params}`);
