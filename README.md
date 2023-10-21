@@ -2,11 +2,11 @@
 Subgraph bot
 ---
 
-TheGraph’s hosted service was able to provide data via API requests without any key, enabling any front-end to retrieve data directly from subgraphs without the need of any back-end.
+TheGraph's hosted service was capable of providing data through API requests without requiring any keys, allowing any front-end to retrieve data directly from subgraphs without necessitating a back-end.
 
-However, the hosted service will be sunset in 2023 Q1 and only subgraphs published in their decentralised network will be able to serve data through a paid API key; therefore, it is mandatory to have a back-end to safely handle the API key and serve data to our FE from Gro’s subgraphs.
+However, this hosted service is set to be phased out in 2023, and only subgraphs published on their decentralized network will have the capability to serve data through a paid API key. Consequently, having a back-end will be essential to securely manage the API key and serve data to our front-end from Gro's subgraphs.
 
-A new Node.js bot fully written in TypeScript has been implemented to achieve this data flow with the following setup:
+A new Node.js bot, fully developed in TypeScript, has been implemented to facilitate this data flow, with the following configuration:
 
 
 <table data-layout="default" data-local-id="de2e0d92-2355-459c-85ee-fa42f8223371" class="confluenceTable">
